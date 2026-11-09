@@ -476,7 +476,8 @@ const BACHECA = {
       titolo: "Chi guida il Vialar",
       gruppi: [
         { settore: "Direzione", membri: [
-          { nome: "Fabio Meringolo", ruolo: "Presidente · Maestro nazionale · Direttore tecnico della scuola tennis", resp: true }
+          { nome: "Fabio Meringolo", ruolo: "Maestro nazionale · Direttore tecnico della scuola tennis", resp: true, tag: "Presidente" },
+          { nome: "Gianmarco Meringolo", ruolo: "Istruttore 1° grado · Preparatore fisico 2° grado FITP", resp: true, tag: "Direttore sportivo" }
         ] },
         { settore: "Settore specializzazione", membri: [
           { nome: "Lorenzo Vincenti", ruolo: "Maestro nazionale · Preparatore fisico 2° grado FITP · Laureato in Scienze Motorie", resp: true },
@@ -944,7 +945,7 @@ function renderStaff(s) {
     const list = el("div", "staff-list" + (g.membri.length >= 3 && s.gruppi.length < 3 ? " due" : ""));
     g.membri.forEach(m => {
       const c = el("div", "staff-card" + (m.resp ? " resp" : ""));
-      if (m.resp) c.append(el("div", "staff-tag", "Responsabile"));
+      if (m.resp) c.append(el("div", "staff-tag", m.tag || "Responsabile"));
       c.append(el("div", "staff-nome", m.nome), el("div", "staff-ruolo", m.ruolo));
       list.append(c);
     });
