@@ -58,7 +58,7 @@ main { position: relative; z-index: 1; }
 .slide {
   position: absolute; inset: 0; padding: 30px 96px 60px;
   opacity: 0; transform: translateX(40px); transition: opacity .9s ease, transform .9s ease;
-  display: grid; grid-template-columns: 1.05fr .95fr; gap: 80px; align-items: center;
+  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 80px; align-items: center;
 }
 .slide.active { opacity: 1; transform: none; }
 .slide.single { grid-template-columns: 1fr; }
@@ -66,6 +66,7 @@ main { position: relative; z-index: 1; }
   display: inline-block; background: var(--white); color: var(--blue); font-weight: 800; font-size: 26px;
   letter-spacing: 3px; text-transform: uppercase; padding: 12px 28px; border-radius: 999px;
 }
+h1.lungo { font-size: 124px; }
 h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-height: .9; text-transform: uppercase; margin: 26px 0 30px; text-wrap: balance; }
 .lead-row { display: flex; gap: 28px; align-items: flex-start; }
 .lead-row::before { content: ""; flex: none; width: 64px; height: 6px; border-radius: 3px; background: var(--white); margin-top: 22px; }
@@ -96,6 +97,8 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-heigh
 .ig-qr img, .ig-qr canvas { display: block; width: 200px; height: 200px; }
 .ig-handle { font-family: var(--display); font-size: 66px; margin-top: 6px; }
 
+.locandina { grid-template-columns: 1fr; place-items: center; padding: 20px 96px 40px; }
+.locandina img { max-height: 820px; max-width: 100%; border-radius: 20px; border: 10px solid var(--white); box-shadow: 0 30px 70px rgba(11,42,110,.45); }
 .post { grid-template-columns: 640px 1fr; gap: 90px; }
 .post-media { width: 640px; height: 800px; border-radius: 26px; overflow: hidden; background: var(--white); border: 10px solid var(--white); box-shadow: 0 30px 70px rgba(11,42,110,.45); }
 .post-media img { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 16px; background: var(--white); }
@@ -158,29 +161,87 @@ const BACHECA = {
   postInRotazione: 4,       // quanti post recenti mostrare a tutto schermo tra una slide e l'altra
   avvisi: [
     "Benvenuti al T.C. Vialar",
-    "Preparazione atletica: classi dal lunedì al venerdì, 9–12",
-    "Scuola tennis dal lunedì al venerdì, 15–19",
-    "Linea ufficiale Mizuno per i ragazzi dell'agonistica: chiedi in segreteria",
-    "Illuminazione campi dalle 18:00"
+    "Cerca compagno attivo tutti i giorni: chiedi in segreteria",
+    "Corsi adulti con formula trimestrale: lunedì e mercoledì o martedì e giovedì, 19–21",
+    "Allenamento avanzato del lunedì sera, 21–23, con i maestri Matteo e Giordano",
+    "Incordatura in giornata, grip e overgrip: chiedi in segreteria",
+    "Visita medica presso il centro convenzionato per i tesserati del circolo"
   ],
+  /* Calendario eventi: aggiungi righe come { data: "2026-11-22", titolo: "Torneo sociale", luogo: "T.C. Vialar" } */
+  eventi: [],
+  /* Locandine a tutto schermo: metti l'immagine in assets/locandine/ e aggiungi { immagine: "assets/locandine/nome.jpg", titolo: "..." } */
+  locandine: [],
   slide: [
     {
       tipo: "testo",
-      kicker: "Scuola Tennis",
-      titolo: "In campo dal lunedì al venerdì",
-      testo: "Gruppi per età e livello sui 5 campi, con la preparazione atletica integrata nel programma settimanale.",
+      kicker: "Campi",
+      titolo: "Prenota il tuo campo",
+      testo: "Prenota in segreteria o su WhatsApp. Se ti manca il compagno, ci pensiamo noi.",
       fatti: [
-        { label: "Lunedì – Venerdì", value: "15–19" },
-        { label: "Campi dedicati", value: "5" },
-        { label: "Minitennis", note: "Bambini 4–10 anni", value: "4–10" }
+        { label: "Singolare", note: "a persona, 1 ora", value: "8 €" },
+        { label: "Doppio 1 ora", note: "a persona", value: "6 €" },
+        { label: "Doppio 2 ore", note: "a persona", value: "12 €" },
+        { label: "Luci dalle 18:00", note: "a persona", value: "+1,50 €" }
       ]
     },
     {
       tipo: "testo",
-      kicker: "Minitennis",
-      titolo: "I primi colpi, nel modo giusto",
-      testo: "Per i bambini dai 4 ai 10 anni lavoriamo prima di tutto su due cose: il movimento a rimbalzo e l'impugnatura corretta.",
-      chips: ["Movimento a rimbalzo", "Impugnatura", "Equilibrio", "Coordinazione"]
+      kicker: "Cerca compagno",
+      titolo: "Trova con chi giocare",
+      testo: "Il servizio è attivo tutti i giorni: dicci quando vuoi giocare e ti abbiniamo a un socio del tuo livello.",
+      fatti: [
+        { label: "Lunedì – Giovedì", value: "8–15 · 21–23" },
+        { label: "Venerdì", value: "8–15 · 19–23" },
+        { label: "Sabato", value: "8–21" },
+        { label: "Domenica", value: "8–23" }
+      ]
+    },
+    {
+      tipo: "testo",
+      kicker: "Scuola Tennis",
+      titolo: "Un percorso per ogni età",
+      testo: "Un'ora di tennis e un'ora di preparazione atletica, da 2 a 5 volte a settimana, più partite extra nel weekend.",
+      chips: ["Avviamento", "Pre-perfezionamento", "Perfezionamento", "Specializzazione"],
+      fatti: [
+        { label: "Dai 5 ai 13 anni", note: "lunedì – venerdì", value: "17–19" },
+        { label: "Dai 14 ai 18 anni", note: "lunedì – venerdì", value: "15–17" },
+        { label: "Allenamenti", note: "a settimana", value: "2–5" }
+      ]
+    },
+    {
+      tipo: "testo",
+      kicker: "Corsi adulti",
+      titolo: "Tennis e preparazione atletica",
+      testo: "Formula trimestrale: un'ora di tennis e un'ora di preparazione atletica in gruppo, con lavoro di rinforzo mirato al tennis.",
+      chips: ["Lunedì e mercoledì", "Martedì e giovedì"],
+      fatti: [
+        { label: "Orario", note: "due sere a settimana", value: "19–21" },
+        { label: "Tennis", note: "maestro / allievi", value: "1:4" },
+        { label: "Preparazione atletica", note: "preparatore / allievi", value: "1:8" }
+      ]
+    },
+    {
+      tipo: "testo",
+      kicker: "Allenamento avanzato",
+      titolo: "Gruppo dal 4.1 FITP in su",
+      testo: "Allenamento di gruppo per giocatori di livello avanzato, con preparazione atletica facoltativa prima del campo.",
+      fatti: [
+        { label: "Lunedì sera", note: "Maestri Matteo e Giordano", value: "21–23" },
+        { label: "Preparazione atletica", note: "lunedì, prima del campo", value: "20–21" },
+        { label: "Venerdì", note: "Maestro Lorenzo", value: "13–15" }
+      ]
+    },
+    {
+      tipo: "testo",
+      kicker: "Allenamento avanzato",
+      titolo: "Singolo o a pacchetto",
+      testo: "Il pacchetto comprende 4 allenamenti da fare entro il mese. Stessi prezzi il lunedì e il venerdì.",
+      fatti: [
+        { label: "Allenamento singolo", value: "25 €" },
+        { label: "Pacchetto 4 allenamenti", note: "20 € a lezione", value: "80 €" },
+        { label: "Preparazione atletica singola", value: "8 €" },
+        { label: "Pacchetto 4 preparazioni", note: "entro il mese", value: "25 €" }
+      ]
     },
     {
       tipo: "testo",
@@ -197,22 +258,26 @@ const BACHECA = {
     },
     {
       tipo: "testo",
-      kicker: "Campi",
-      titolo: "Prenota il tuo campo",
-      testo: "Chiedi in segreteria o scrivici su WhatsApp. Se ti manca il compagno, ti aiutiamo a trovarlo.",
+      kicker: "Incordatura",
+      titolo: "La tua racchetta, sempre uguale",
+      testo: "Salviamo corda e tensione nella tua scheda: la reincordiamo sempre uguale, finché non decidi di cambiare.",
       fatti: [
-        { label: "Singolare", note: "a persona, 1 ora", value: "8 €" },
-        { label: "Doppio 1 ora", note: "a persona", value: "6 €" },
-        { label: "Doppio 2 ore", note: "a persona", value: "12 €" },
-        { label: "Luci dalle 18:00", note: "a persona", value: "+1,50 €" }
+        { label: "Incordatura", note: "in base alla corda", value: "18–25 €" },
+        { label: "Grip e overgrip", note: "sostituzione in segreteria" },
+        { label: "Racchette test Dunlop e Yonex", note: "in collaborazione con Breakpoint" }
       ]
     },
     {
       tipo: "testo",
-      kicker: "Corsi e lezioni",
-      titolo: "Corsi adulti e lezioni individuali",
-      testo: "Impara o torna a giocare con i maestri del circolo, in gruppo o uno a uno. Orari e disponibilità in segreteria.",
-      chips: ["Corsi adulti", "Lezioni individuali", "Lezioni di coppia"]
+      kicker: "Il nostro staff",
+      titolo: "Oltre il tennis",
+      testo: "Preparatori atletici laureati in Scienze Motorie e istruttori di 2° grado FITP. Per i percorsi individuali basta prenotare.",
+      fatti: [
+        { label: "Nutrizionista", note: "su prenotazione" },
+        { label: "Fisioterapista", note: "su prenotazione" },
+        { label: "Preparatore mentale", note: "su prenotazione" },
+        { label: "Visita medica", note: "centro convenzionato per i tesserati" }
+      ]
     },
     {
       tipo: "testo",
@@ -221,6 +286,7 @@ const BACHECA = {
       testo: "L'abbigliamento del circolo a prezzo agevolato per i ragazzi dell'agonistica. Scegli i capi e ordina in segreteria.",
       cta: "Riservato ai ragazzi dell'agonistica"
     },
+    { tipo: "eventi" },
     { tipo: "instagram" }
   ]
 };
@@ -234,14 +300,16 @@ function renderTesto(s) {
   const slide = el("section", "slide");
   const left = el("div");
   const lr = el("div", "lead-row"); lr.append(el("p", "lead", s.testo));
-  left.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo), lr);
+  const h = el("h1", null, s.titolo); if (s.titolo.length > 22) h.classList.add("lungo");
+  left.append(el("div", "kicker", s.kicker), h, lr);
   slide.append(left);
   const right = el("div", "facts");
   (s.fatti || []).forEach(f => {
     const row = el("div", "fact");
     const lab = el("div", "fact-label", f.label);
     if (f.note) lab.append(el("span", "fact-note", f.note));
-    row.append(lab, el("div", "fact-value", f.value));
+    row.append(lab);
+    if (f.value) row.append(el("div", "fact-value", f.value));
     right.append(row);
   });
   if (s.chips && s.fatti) {
@@ -252,6 +320,36 @@ function renderTesto(s) {
   }
   if (s.cta) left.append(el("div", "cta", s.cta));
   if (!right.children.length) slide.classList.add("single"); else slide.append(right);
+  return slide;
+}
+
+function renderEventi() {
+  const oggi = new Date(); oggi.setHours(0, 0, 0, 0);
+  const prossimi = BACHECA.eventi.filter(e => new Date(e.data + "T23:59:00") >= oggi)
+    .sort((a, b) => a.data.localeCompare(b.data)).slice(0, 6);
+  if (!prossimi.length) return null;
+  const slide = el("section", "slide");
+  const left = el("div");
+  left.append(el("div", "kicker", "Calendario eventi"), el("h1", null, "Prossimi appuntamenti"));
+  const lr = el("div", "lead-row"); lr.append(el("p", "lead", "Tornei interni e fuori dal circolo: iscriviti in segreteria."));
+  left.append(lr);
+  const right = el("div", "facts");
+  prossimi.forEach(e => {
+    const d = new Date(e.data + "T12:00:00");
+    const row = el("div", "fact");
+    const lab = el("div", "fact-label", e.titolo);
+    if (e.luogo) lab.append(el("span", "fact-note", e.luogo));
+    row.append(lab, el("div", "fact-value", d.toLocaleDateString("it-IT", { day: "numeric", month: "short" })));
+    right.append(row);
+  });
+  slide.append(left, right);
+  return slide;
+}
+
+function renderLocandina(l) {
+  const slide = el("section", "slide locandina");
+  const img = new Image(); img.src = l.immagine; img.alt = l.titolo || "Locandina";
+  slide.append(img);
   return slide;
 }
 
@@ -302,7 +400,10 @@ const progress = document.getElementById("progress");
 let nodes = [], idx = 0;
 
 function build() {
-  const servizi = BACHECA.slide.map(s => s.tipo === "instagram" ? renderInstagram() : renderTesto(s));
+  const servizi = BACHECA.slide.map(s =>
+    s.tipo === "instagram" ? renderInstagram() : s.tipo === "eventi" ? renderEventi() : renderTesto(s)
+  ).filter(Boolean);
+  servizi.splice(1, 0, ...BACHECA.locandine.map(renderLocandina));
   const recenti = POSTS.slice(0, BACHECA.postInRotazione).map(renderPost);
   // alterna: servizio, post, servizio, post...
   nodes = [];
