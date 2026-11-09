@@ -169,7 +169,12 @@ footer { position: relative; z-index: 2; display: flex; align-items: center; bac
    CONTENUTI DELLA BACHECA — si modificano solo qui
    ============================================================ */
 const BACHECA = {
-  secondiPerSlide: 12,
+  secondiPerSlide: 12,      // usato solo se il calcolo automatico non è possibile
+  /* Durata automatica: più testo c'è, più a lungo resta la schermata (tra minimo e massimo).
+     Per forzare una durata su una singola schermata aggiungi  durata: 15  nella sua configurazione. */
+  durataMinima: 8,
+  durataMassima: 20,
+  durataLocandina: 12,
   instagram: "tennisclubvialar",
   postInRotazione: 4,       // quanti post recenti mostrare a tutto schermo tra una slide e l'altra
   avvisi: [
@@ -577,10 +582,13 @@ const progress = document.getElementById("progress");
 let nodes = [], idx = 0;
 
 function build() {
-  const servizi = BACHECA.slide.map(s =>
+  const servizi = BACHECA.slide.map(s => {
+    const n = (
     s.tipo === "instagram" ? renderInstagram() : s.tipo === "eventi" ? renderEventi() :
-    s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : renderTesto(s)
-  ).filter(Boolean);
+    s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : renderTesto(s));
+    if (n && s.durata) n.dataset.durata = s.durata;
+    return n;
+  }).filter(Boolean);
   const recenti = POSTS.slice(0, BACHECA.postInRotazione).map(renderPost);
   // alterna: servizio, post, servizio, post...
   nodes = [];
@@ -603,9 +611,23 @@ function show(i) {
   dots.style.visibility = (nodes[i].classList.contains("locandina") || nodes[i].classList.contains("foto")) ? "hidden" : "visible";
   progress.style.transition = "none"; progress.style.width = "0";
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    progress.style.transition = `width ${BACHECA.secondiPerSlide}s linear`;
+    progress.style.transition = `width ${durata(nodes[i])}s linear`;
     progress.style.width = "100%";
   }));
+}
+
+function durata(n) {
+  if (n.dataset.durata) return +n.dataset.durata;
+  if (n.classList.contains("locandina")) return BACHECA.durataLocandina;
+  if (n.classList.contains("post") && !n.classList.contains("con-immagine")) return 14; // post Instagram: il testo lungo viene tagliato a schermo
+  const parole = (n.textContent || "").trim().split(/\s+/).filter(Boolean).length;
+  // circa 4 parole al secondo per chi legge da qualche metro, più qualche secondo per guardare
+  const sec = Math.round(5 + parole / 4);
+  return Math.min(BACHECA.durataMassima, Math.max(BACHECA.durataMinima, sec));
+}
+
+function prossima() {
+  setTimeout(() => { idx = (idx + 1) % nodes.length; show(idx); prossima(); }, durata(nodes[idx]) * 1000);
 }
 
 async function loadPosts() {
@@ -618,7 +640,7 @@ async function loadPosts() {
 (async () => {
   await loadPosts();
   build(); show(0);
-  setInterval(() => { idx = (idx + 1) % nodes.length; show(idx); }, BACHECA.secondiPerSlide * 1000);
+  prossima();
 })();
 
 /* Aggiornamento automatico: ogni 5 minuti controlla se la bacheca o i post sono cambiati e si ricarica */
