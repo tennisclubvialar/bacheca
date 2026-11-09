@@ -2,9 +2,9 @@ name: Rinnova accesso Instagram
 
 # Il token di Instagram scade dopo 60 giorni: ogni settimana lo rinnoviamo
 # e salviamo quello nuovo nei segreti del repository.
+# Serve solo con il collegamento ufficiale (IG_TOKEN). Con Behold resta spento:
+# per riattivarlo, rimetti la riga schedule con cron "40 3 * * 1".
 on:
-  schedule:
-    - cron: "40 3 * * 1"   # lunedì notte
   workflow_dispatch:
 
 jobs:

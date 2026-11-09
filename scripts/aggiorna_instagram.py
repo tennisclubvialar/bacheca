@@ -1,7 +1,8 @@
 """Scarica gli ultimi post del profilo Instagram del circolo e li salva per la bacheca.
 
-Usa il collegamento ufficiale di Instagram (API con Instagram Login).
-Il token di accesso arriva dalla variabile d'ambiente IG_TOKEN (segreto di GitHub).
+Due sorgenti possibili (si usa la prima configurata):
+- BEHOLD_FEED_URL: indirizzo del feed JSON di Behold (behold.so), collegato a @tennisclubvialar
+- IG_TOKEN: token del collegamento ufficiale di Instagram (API con Instagram Login)
 """
 import json
 import os
@@ -10,7 +11,6 @@ import sys
 import urllib.parse
 import urllib.request
 
-API = "https://graph.instagram.com/v22.0/me/media"
 QUANTI = 12
 CARTELLA = pathlib.Path(__file__).resolve().parent.parent / "instagram"
 
@@ -24,39 +24,69 @@ def scarica(url, dest=None):
     return data
 
 
-def main():
-    token = os.environ.get("IG_TOKEN")
-    if not token:
-        sys.exit("Manca il segreto IG_TOKEN")
+def da_behold(url):
+    feed = json.loads(scarica(url))
+    for p in feed.get("posts", []):
+        sizes = p.get("sizes") or {}
+        img = None
+        for k in ("large", "full", "medium"):
+            img = (sizes.get(k) or {}).get("mediaUrl")
+            if img:
+                break
+        if not img:
+            img = p.get("thumbnailUrl") if p.get("mediaType") == "VIDEO" else p.get("mediaUrl")
+        yield {
+            "id": str(p.get("id")),
+            "img": img,
+            "caption": p.get("caption") or p.get("prunedCaption") or "",
+            "type": p.get("mediaType"),
+            "permalink": p.get("permalink"),
+            "timestamp": p.get("timestamp"),
+        }
+
+
+def da_instagram(token):
     campi = "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp"
-    url = f"{API}?{urllib.parse.urlencode({'fields': campi, 'limit': QUANTI, 'access_token': token})}"
+    url = "https://graph.instagram.com/v22.0/me/media?" + urllib.parse.urlencode(
+        {"fields": campi, "limit": QUANTI, "access_token": token})
     risposta = json.loads(scarica(url))
     if "error" in risposta:
         sys.exit(f"Errore Instagram: {risposta['error']}")
+    for m in risposta.get("data", []):
+        yield {
+            "id": m["id"],
+            "img": m.get("thumbnail_url") if m.get("media_type") == "VIDEO" else m.get("media_url"),
+            "caption": m.get("caption", ""),
+            "type": m.get("media_type"),
+            "permalink": m.get("permalink"),
+            "timestamp": m.get("timestamp"),
+        }
+
+
+def main():
+    if os.environ.get("BEHOLD_FEED_URL"):
+        sorgente = da_behold(os.environ["BEHOLD_FEED_URL"])
+    elif os.environ.get("IG_TOKEN"):
+        sorgente = da_instagram(os.environ["IG_TOKEN"])
+    else:
+        sys.exit("Nessuna sorgente configurata: imposta BEHOLD_FEED_URL o IG_TOKEN")
 
     CARTELLA.mkdir(exist_ok=True)
     posts, tenuti = [], set()
-    for m in risposta.get("data", []):
-        img = m.get("thumbnail_url") if m.get("media_type") == "VIDEO" else m.get("media_url")
-        if not img:
+    for m in sorgente:
+        if not m["img"] or len(posts) >= QUANTI:
             continue
         nome = f"{m['id']}.jpg"
         dest = CARTELLA / nome
         if not dest.exists():
             try:
-                scarica(img, dest)
+                scarica(m["img"], dest)
             except Exception as e:  # un'immagine non scaricabile non blocca le altre
                 print(f"Salto {m['id']}: {e}")
                 continue
         tenuti.add(nome)
-        posts.append({
-            "id": m["id"],
-            "image": f"instagram/{nome}",
-            "caption": m.get("caption", ""),
-            "type": m.get("media_type"),
-            "permalink": m.get("permalink"),
-            "timestamp": m.get("timestamp"),
-        })
+        posts.append({"id": m["id"], "image": f"instagram/{nome}", "caption": m["caption"],
+                      "type": m["type"], "permalink": m["permalink"], "timestamp": m["timestamp"]})
 
     for f in CARTELLA.glob("*.jpg"):
         if f.name not in tenuti:

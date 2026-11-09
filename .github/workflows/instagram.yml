@@ -2,7 +2,7 @@ name: Aggiorna post Instagram
 
 on:
   schedule:
-    - cron: "17 * * * *"   # ogni ora
+    - cron: "17 */3 * * *"   # ogni 3 ore (il piano gratuito di Behold aggiorna una volta al giorno)
   workflow_dispatch:        # avvio manuale da GitHub
 
 permissions:
@@ -19,6 +19,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Scarica gli ultimi post
         env:
+          BEHOLD_FEED_URL: ${{ secrets.BEHOLD_FEED_URL }}
           IG_TOKEN: ${{ secrets.IG_TOKEN }}
         run: python3 scripts/aggiorna_instagram.py
       - name: Salva se ci sono novità
