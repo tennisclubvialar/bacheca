@@ -101,6 +101,8 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-heigh
 .ig-handle { font-family: var(--display); font-size: 66px; margin-top: 6px; }
 
 .sponsor-grid { display: grid; gap: 22px; }
+.sponsor-grid.due { grid-template-columns: 1fr 1fr; }
+.sponsor-grid.due .sponsor-card { height: 260px; padding: 30px; }
 .sponsor-card { height: 220px; border-radius: 22px; display: grid; place-items: center; padding: 30px 50px; box-shadow: 0 20px 50px rgba(11,42,110,.3); }
 .sponsor-card img { max-width: 100%; max-height: 160px; object-fit: contain; }
 .locandina { grid-template-columns: 1fr; place-items: center; padding: 20px 96px 40px; }
@@ -378,14 +380,28 @@ const BACHECA = {
       cta: "Chiedi in segreteria la proposta su misura"
     },
     {
+      tipo: "testo",
+      kicker: "Partner",
+      titolo: "Nidea Web Marketing Agency",
+      testo: "Non ti rendiamo virale, ti rendiamo riconoscibile: presenza, identità, coerenza e fiducia per il tuo brand.",
+      fatti: [
+        { label: "Strategia e posizionamento", note: "identità, tono di voce, obiettivi" },
+        { label: "Contenuti social", note: "post, reel, stories e piani editoriali" },
+        { label: "Siti web ed e-commerce", note: "coerenti con l'identità del brand" },
+        { label: "Campagne ads", note: "dalla visibilità alla conversione" }
+      ],
+      cta: "nideawebagency.it · 389 96 25254"
+    },
+    {
       tipo: "sponsor",
       kicker: "Partner",
-      titolo: "Grazie ai nostri sponsor",
-      testo: "Le aziende che sostengono il T.C. Vialar e le sue attività.",
+      titolo: "Sponsor e partner",
+      testo: "Grazie alle aziende che sostengono il T.C. Vialar e le sue attività.",
       sponsor: [
         { nome: "BPER Banca", logo: "assets/sponsor/bper.png", sfondo: "#ffffff" },
         { nome: "Professionisti Immobiliari", logo: "assets/sponsor/professionisti-immobiliari.png", sfondo: "#3d485a" },
-        { nome: "Breakpoint", logo: "assets/sponsor/breakpoint.png", sfondo: "#ffffff" }
+        { nome: "Breakpoint", logo: "assets/sponsor/breakpoint.png", sfondo: "#d9dee4" },
+        { nome: "Nidea Web Marketing Agency", logo: "assets/sponsor/nidea.png", sfondo: "#202020" }
       ]
     },
     { tipo: "eventi" },
@@ -435,7 +451,7 @@ function renderSponsor(s) {
   const left = el("div");
   const lr = el("div", "lead-row"); lr.append(el("p", "lead", s.testo));
   left.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo), lr);
-  const grid = el("div", "sponsor-grid");
+  const grid = el("div", "sponsor-grid" + (s.sponsor.length > 3 ? " due" : ""));
   s.sponsor.forEach(sp => {
     const card = el("div", "sponsor-card"); card.style.background = sp.sfondo || "#fff";
     const img = new Image(); img.src = sp.logo; img.alt = sp.nome; card.append(img);
