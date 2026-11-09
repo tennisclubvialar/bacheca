@@ -219,15 +219,15 @@ h1.lungo { font-size: 138px; }
 /* Tema rosso (campagna preparazione atletica) */
 #stage::before { z-index: 0; }
 #stage .tema-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .9s ease;
-  background: linear-gradient(180deg, rgba(150,40,52,.62) 0%, rgba(166,48,58,.86) 40%, rgba(168,50,58,.95) 65%, #a8323a 100%), url("assets/sfondo.jpg") center top / cover no-repeat; }
+  background: linear-gradient(180deg, rgba(168,10,24,.72) 0%, rgba(206,20,34,.86) 40%, rgba(212,22,36,.95) 65%, #d8172a 100%), url("assets/sfondo.jpg") center top / cover no-repeat; }
 #stage.rosso .tema-layer { opacity: 1; }
 header, main, footer { position: relative; z-index: 1; }
-.tema-rosso .kicker { color: #a8323a; }
-.tema-rosso .fact { color: #6e1d26; }
-.tema-rosso .fact-value, .tema-rosso .fact-note { color: #a8323a; }
-.tema-rosso .fact:last-child:not(:first-child) { background: #6e1d26; color: #fff; }
+.tema-rosso .kicker { color: #d4162a; }
+.tema-rosso .fact { color: #6e0a14; }
+.tema-rosso .fact-value, .tema-rosso .fact-note { color: #d4162a; }
+.tema-rosso .fact:last-child:not(:first-child) { background: #6e0a14; color: #fff; }
 .tema-rosso .fact:last-child:not(:first-child) .fact-value, .tema-rosso .fact:last-child:not(:first-child) .fact-note { color: #f6d2d5; }
-.tema-rosso .cta { background: #fff; color: #a8323a; font-family: var(--display); font-weight: 400; font-size: 56px; text-transform: uppercase; padding: 16px 40px; }
+.tema-rosso .cta { background: #fff; color: #d4162a; font-family: var(--display); font-weight: 400; font-size: 56px; text-transform: uppercase; padding: 16px 40px; }
 .facts.griglia { grid-template-columns: 1fr 1fr; }
 .qrgrande { grid-template-columns: 1fr 620px; }
 .qr-card { background: #fff; border-radius: 30px; padding: 40px; display: grid; gap: 22px; justify-items: center; box-shadow: 0 30px 70px rgba(6,23,122,.4); }
@@ -243,7 +243,7 @@ header, main, footer { position: relative; z-index: 1; }
 .slide.single.tema-rosso h1 { font-size: 168px; margin: 20px 0 26px; }
 .slide.single.tema-rosso .lead { font-size: 46px; font-weight: 700; }
 .facts.griglia .fact { padding: 34px 36px; }
-.facts.griglia .fact:last-child:not(:first-child) { background: #fff; color: #6e1d26; }
+.facts.griglia .fact:last-child:not(:first-child) { background: #fff; color: #6e0a14; }
 
 @media (prefers-reduced-motion: reduce) {
   .slide.active * { animation: none !important; }
@@ -384,7 +384,7 @@ const BACHECA = {
       immagine: "assets/foto/scuola-tennis-gruppo.jpg"
     },
     {
-      tipo: "testo",
+      tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
       titolo: "Allenati per competere",
       testo: "L'obiettivo è formare giocatori capaci di competere a livelli sempre più alti, con un'organizzazione al massimo livello.",
@@ -395,7 +395,7 @@ const BACHECA = {
       ]
     },
     {
-      tipo: "testo",
+      tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
       titolo: "Lo staff",
       testo: "Due maestri nazionali guidano il gruppo, affiancati a rotazione da due maestri sparring ex 2.6 e da un preparatore atletico dedicato.",
@@ -408,7 +408,7 @@ const BACHECA = {
       ]
     },
     {
-      tipo: "testo",
+      tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
       titolo: "La settimana tipo",
       testo: "Ogni seduta comincia con il riscaldamento e si chiude con il defaticamento, e comprende un'ora di preparazione atletica.",
@@ -420,7 +420,7 @@ const BACHECA = {
       ]
     },
     {
-      tipo: "testo",
+      tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
       titolo: "Una dashboard per ogni atleta",
       testo: "Ogni ragazzo ha report personali con le valutazioni di maestri, preparatori atletici e preparatore mentale.",
