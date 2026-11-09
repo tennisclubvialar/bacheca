@@ -174,6 +174,7 @@ const BACHECA = {
     "Corsi adulti con formula trimestrale: lunedì e mercoledì o martedì e giovedì, 19–21",
     "Allenamento avanzato del lunedì sera, 21–23, con i maestri Matteo e Giordano",
     "Incordatura in giornata, grip e overgrip: chiedi in segreteria",
+    "Linea ufficiale Mizuno con il logo Vialar per tutti i soci: ordina online e ricevila al circolo o a casa",
     "Visita medica presso il centro convenzionato per i tesserati del circolo",
     "Festeggia il compleanno al circolo: lezione a tema, giochi e buffet per bambini e adulti"
   ],
@@ -360,10 +361,17 @@ const BACHECA = {
     },
     {
       tipo: "testo",
-      kicker: "Agonistica",
-      titolo: "Linea ufficiale Mizuno",
-      testo: "L'abbigliamento del circolo a prezzo agevolato per i ragazzi dell'agonistica. Scegli i capi e ordina in segreteria.",
-      cta: "Riservato ai ragazzi dell'agonistica"
+      kicker: "Linea ufficiale Mizuno",
+      titolo: "Indossa i colori del Vialar",
+      testo: "La stessa linea che vestono i nostri maestri, personalizzata con il logo Vialar e pensata per tutti i soci: in campo e fuori, fatti riconoscere come parte del circolo.",
+      fatti: [
+        { label: "Linea ufficiale Mizuno", note: "la stessa dei nostri maestri" },
+        { label: "Personalizzata", note: "con il logo Vialar" },
+        { label: "Ordini online", note: "comodamente da casa" },
+        { label: "Consegna", note: "al circolo o direttamente a casa tua" }
+      ],
+      qr: "",          // link dello shop online: quando c'è, compare il QR code da inquadrare
+      cta: "Per tutti i soci del T.C. Vialar"
     },
     {
       tipo: "testo",
@@ -437,6 +445,13 @@ function renderTesto(s) {
     const ch = el("div", "chips"); s.chips.forEach(c => ch.append(el("span", "chip", c))); right.append(ch);
   }
   if (s.cta) left.append(el("div", "cta", s.cta));
+  if (s.qr) {
+    const row = el("div", "ig-row");
+    const qr = el("div", "ig-qr");
+    try { new QRCode(qr, { text: s.qr, width: 200, height: 200, colorDark: "#0b2a6e", colorLight: "#ffffff" }); } catch (e) {}
+    const info = el("div"); info.append(el("div", "fact-note", "Inquadra e acquista"));
+    row.append(qr, info); left.append(row);
+  }
   if (s.immagine) {
     const media = el("div", "post-media");
     const img = new Image(); img.src = s.immagine; img.alt = s.titolo; media.append(img);
