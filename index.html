@@ -102,7 +102,8 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-heigh
 
 .sponsor-grid { display: grid; gap: 22px; }
 .sponsor-grid.due { grid-template-columns: 1fr 1fr; }
-.sponsor-grid.due .sponsor-card { height: 260px; padding: 30px; }
+.sponsor-grid.due .sponsor-card { height: 230px; padding: 30px; }
+.sponsor-grid.tre .sponsor-card { height: 200px; padding: 26px; }
 .sponsor-card { height: 220px; border-radius: 22px; display: grid; place-items: center; padding: 30px 50px; box-shadow: 0 20px 50px rgba(11,42,110,.3); }
 .sponsor-card img { max-width: 100%; max-height: 160px; object-fit: contain; }
 .locandina { grid-template-columns: 1fr; place-items: center; padding: 20px 96px 40px; }
@@ -410,7 +411,8 @@ const BACHECA = {
         { nome: "BPER Banca", logo: "assets/sponsor/bper.png", sfondo: "#ffffff" },
         { nome: "Professionisti Immobiliari", logo: "assets/sponsor/professionisti-immobiliari.png", sfondo: "#3d485a" },
         { nome: "Breakpoint", logo: "assets/sponsor/breakpoint.png", sfondo: "#d9dee4" },
-        { nome: "Nidea Web Marketing Agency", logo: "assets/sponsor/nidea.png", sfondo: "#202020" }
+        { nome: "Nidea Web Marketing Agency", logo: "assets/sponsor/nidea.png", sfondo: "#202020" },
+        { nome: "Centro medico VESA", logo: "assets/sponsor/vesa.png", sfondo: "#0b2a6e" }
       ]
     },
     { tipo: "eventi" },
@@ -467,7 +469,7 @@ function renderSponsor(s) {
   const left = el("div");
   const lr = el("div", "lead-row"); lr.append(el("p", "lead", s.testo));
   left.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo), lr);
-  const grid = el("div", "sponsor-grid" + (s.sponsor.length > 3 ? " due" : ""));
+  const grid = el("div", "sponsor-grid" + (s.sponsor.length > 3 ? " due" : "") + (s.sponsor.length > 4 ? " tre" : ""));
   s.sponsor.forEach(sp => {
     const card = el("div", "sponsor-card"); card.style.background = sp.sfondo || "#fff";
     const img = new Image(); img.src = sp.logo; img.alt = sp.nome; card.append(img);
