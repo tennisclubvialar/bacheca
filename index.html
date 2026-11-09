@@ -317,6 +317,21 @@ header, main, footer { position: relative; z-index: 1; }
 .videopieno-testo h1 { font-size: 150px; margin: 18px 0 0; }
 .slide.active.videopieno video { animation: zoom 1.2s ease-out both; }
 
+
+/* Meteo nell'intestazione (Open-Meteo, Roma - Via Paolo III) */
+header { gap: 40px; }
+.meteo { margin-left: auto; display: flex; align-items: center; gap: 26px; padding-right: 34px; border-right: 3px solid rgba(255,255,255,.35); }
+.meteo:empty { display: none; }
+.meteo-ora { display: flex; align-items: center; gap: 12px; }
+.meteo-ora svg { width: 64px; height: 64px; }
+.meteo-temp { font-family: var(--display); font-size: 64px; line-height: 1; }
+.meteo-prev { display: flex; gap: 18px; }
+.meteo-h { display: grid; justify-items: center; gap: 2px; font-weight: 700; }
+.meteo-h span { font-size: 18px; color: var(--mist); }
+.meteo-h svg { width: 34px; height: 34px; }
+.meteo-h b { font-size: 22px; }
+#stage.verticale .meteo-prev { display: none; }
+
 @media (prefers-reduced-motion: reduce) {
   .slide.active * { animation: none !important; }
   .slide { transition: none; transform: none; }
@@ -337,6 +352,7 @@ header, main, footer { position: relative; z-index: 1; }
           <div class="brand-sub">Circolo Sportivo Tennis Emilia De Vialar</div>
         </div>
       </div>
+      <div class="meteo" id="meteo" aria-label="Meteo a Roma"></div>
       <div class="clock">
         <div class="clock-time" id="time">--:--</div>
         <div class="clock-date" id="date"></div>
@@ -1171,6 +1187,55 @@ controllaAggiornamenti();
 setInterval(controllaAggiornamenti, 5 * 60 * 1000);
 /* ricarica comunque una volta a notte, per sicurezza */
 setTimeout(() => location.reload(), 6 * 60 * 60 * 1000);
+
+
+/* ===== Meteo: Open-Meteo, gratuito e senza chiave. Coordinate del circolo. ===== */
+const METEO = { lat: 41.8986, lon: 12.4486 };
+function iconaMeteo(code, notte) {
+  const st = 'fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"';
+  const sole = notte ? '<path d="M58 22a24 24 0 1 0 22 32 20 20 0 0 1-22-32z" ' + st + '/>'
+    : '<circle cx="50" cy="50" r="17" ' + st + '/><path d="M50 14v9M50 77v9M14 50h9M77 50h9M24 24l6 6M70 70l6 6M24 76l6-6M70 30l6-6" ' + st + '/>';
+  const nuvola = '<path d="M30 74h42a16 16 0 0 0 0-32 22 22 0 0 0-42 6 13 13 0 0 0 0 26z" ' + st + '/>';
+  const gocce = '<path d="M38 82l-4 9M52 82l-4 9M66 82l-4 9" ' + st + '/>';
+  const fiocchi = '<path d="M38 86h0M52 90h0M66 86h0" stroke="#fff" stroke-width="8" stroke-linecap="round"/>';
+  const lampo = '<path d="M54 70l-10 14h12l-8 12" ' + st + '/>';
+  let g;
+  if (code === 0) g = sole;
+  else if (code <= 2) g = '<g transform="translate(-14 -14) scale(.8)">' + sole + '</g>' + nuvola;
+  else if (code === 3 || code === 45 || code === 48) g = nuvola;
+  else if (code >= 95) g = nuvola + lampo;
+  else if ((code >= 71 && code <= 77) || code === 85 || code === 86) g = nuvola + fiocchi;
+  else g = nuvola + gocce;
+  return '<svg viewBox="0 0 100 100" aria-hidden="true">' + g + '</svg>';
+}
+async function aggiornaMeteo() {
+  try {
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=" + METEO.lat + "&longitude=" + METEO.lon +
+      "&current=temperature_2m,weather_code,is_day&hourly=temperature_2m,weather_code,is_day&forecast_hours=12&timezone=Europe%2FRome";
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) return;
+    const d = await r.json();
+    const box = document.getElementById("meteo");
+    const ora = el("div", "meteo-ora");
+    ora.innerHTML = iconaMeteo(d.current.weather_code, !d.current.is_day);
+    ora.append(el("div", "meteo-temp", Math.round(d.current.temperature_2m) + "°"));
+    const prev = el("div", "meteo-prev");
+    const adesso = Date.now();
+    let n = 0;
+    d.hourly.time.forEach((t, k) => {
+      const ts = new Date(t + ":00+01:00").getTime();
+      if (ts <= adesso || n >= 4 || (k % 2)) return;   // ogni 2 ore, 4 previsioni
+      const h = el("div", "meteo-h");
+      h.append(el("span", null, t.slice(11, 13)));
+      const ic = el("div"); ic.innerHTML = iconaMeteo(d.hourly.weather_code[k], !d.hourly.is_day[k]); h.append(ic.firstChild);
+      h.append(el("b", null, Math.round(d.hourly.temperature_2m[k]) + "°"));
+      prev.append(h); n++;
+    });
+    box.replaceChildren(ora, prev);
+  } catch (e) { /* senza rete il meteo resta nascosto */ }
+}
+aggiornaMeteo();
+setInterval(aggiornaMeteo, 30 * 60 * 1000);
 
 function tick() {
   const d = new Date();
