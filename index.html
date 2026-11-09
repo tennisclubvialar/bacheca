@@ -120,7 +120,7 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-heigh
 .sponsor-card.invito { background: transparent !important; border: 4px dashed rgba(255,255,255,.7); box-shadow: none; text-align: center; align-content: center; gap: 14px; }
 .invito-titolo { font-family: var(--display); font-size: 64px; line-height: 1; text-transform: uppercase; }
 .invito-testo { font-size: 28px; font-weight: 600; color: var(--mist); }
-.foto { grid-template-columns: 560px 1fr; gap: 60px; }
+.foto { grid-template-columns: minmax(0, 1fr) 1000px; gap: 70px; }
 .foto-media { height: 790px; border-radius: 26px; overflow: hidden; border: 10px solid var(--white); box-shadow: 0 30px 70px rgba(11,42,110,.45); }
 .foto-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .locandina { grid-template-columns: 1fr; place-items: center; padding: 20px 96px 40px; }
@@ -296,6 +296,17 @@ header, main, footer { position: relative; z-index: 1; }
 .staff-card.resp .staff-ruolo { color: var(--mist); }
 .slide.active .staff-card { animation: entra .7s cubic-bezier(.2,.8,.2,1) both; }
 .slide.active .staff-card:nth-child(2) { animation-delay: .15s; } .slide.active .staff-card:nth-child(3) { animation-delay: .3s; } .slide.active .staff-card:nth-child(4) { animation-delay: .45s; }
+
+
+/* Video e gallerie */
+.video-slide, .galleria { grid-template-columns: 1fr auto; gap: 90px; }
+.video-media { height: 860px; aspect-ratio: 9 / 16; border-radius: 28px; overflow: hidden; border: 10px solid #fff; box-shadow: 0 30px 70px rgba(6,23,122,.45); background: #000; }
+.video-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.galleria-media { position: relative; height: 860px; aspect-ratio: 3 / 4; border-radius: 28px; overflow: hidden; border: 10px solid #fff; box-shadow: 0 30px 70px rgba(6,23,122,.45); background: #fff; }
+.galleria-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity 1s ease, transform 6s ease-out; }
+.galleria-media img.on { opacity: 1; transform: scale(1); }
+.slide.active .video-media, .slide.active .galleria-media { animation: zoom .9s cubic-bezier(.2,.8,.2,1) both; }
+#stage.verticale .video-media, #stage.verticale .galleria-media { height: 1000px; justify-self: center; }
 
 @media (prefers-reduced-motion: reduce) {
   .slide.active * { animation: none !important; }
@@ -482,6 +493,20 @@ const BACHECA = {
       ]
     },
     {
+      tipo: "video", tema: "rosso",
+      kicker: "Settore performance",
+      titolo: "Ogni colpo conta",
+      testo: "Tecnica, ritmo e intensità: così si allenano i nostri ragazzi.",
+      video: "assets/video/agonista-colpi.mp4", poster: "assets/video/agonista-colpi.jpg"
+    },
+    {
+      tipo: "foto", tema: "rosso",
+      kicker: "Settore performance",
+      titolo: "Sempre in campo",
+      testo: "Il gruppo performance in trasferta al Piatti Tennis Center.",
+      immagine: "assets/foto/trasferta-piatti.jpg"
+    },
+    {
       tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
       titolo: "Nati per competere",
@@ -529,6 +554,13 @@ const BACHECA = {
         { label: "Dieta personalizzata", note: "con il nutrizionista" },
         { label: "Programma di allenamento", note: "su misura, specifico per il tennis" }
       ]
+    },
+    {
+      tipo: "video",
+      kicker: "Scuola tennis · avviamento",
+      titolo: "Si comincia giocando",
+      testo: "Coordinazione, equilibrio e i primi colpi: il tennis dei più piccoli è movimento e divertimento.",
+      video: "assets/video/minitennis.mp4", poster: "assets/video/minitennis.jpg"
     },
     {
       tipo: "testo",
@@ -673,6 +705,14 @@ const BACHECA = {
         { label: "Campagne ads", note: "dalla visibilità alla conversione" }
       ],
       cta: "nideawebagency.it · 389 96 25254"
+    },
+    {
+      tipo: "galleria",
+      kicker: "Tornei del circolo",
+      titolo: "Che emozione, ragazzi!",
+      testo: "Tornei, sfide e premiazioni: ogni torneo al Vialar è una festa per tutta la scuola tennis.",
+      immagini: ["assets/foto/premiazione-1.jpg", "assets/foto/premiazione-2.jpg", "assets/foto/premiazione-3.jpg", "assets/foto/premiazione-4.jpg", "assets/foto/premiazione-5.jpg"],
+      durata: 20
     },
     {
       tipo: "sponsor",
@@ -859,6 +899,32 @@ function renderStaff(s) {
   return slide;
 }
 
+function renderVideo(s) {
+  const slide = el("section", "slide video-slide");
+  const left = el("div");
+  const lr = el("div", "lead-row"); lr.append(el("p", "lead", s.testo));
+  left.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo), lr);
+  const media = el("div", "video-media");
+  const v = document.createElement("video");
+  v.src = s.video; if (s.poster) v.poster = s.poster;
+  v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto";
+  v.setAttribute("muted", ""); v.setAttribute("playsinline", "");
+  media.append(v);
+  slide.append(left, media);
+  return slide;
+}
+
+function renderGalleria(s) {
+  const slide = el("section", "slide galleria");
+  const left = el("div");
+  const lr = el("div", "lead-row"); lr.append(el("p", "lead", s.testo));
+  left.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo), lr);
+  const media = el("div", "galleria-media");
+  s.immagini.forEach((src, k) => { const im = new Image(); im.src = src; im.alt = ""; if (k === 0) im.className = "on"; media.append(im); });
+  slide.append(left, media);
+  return slide;
+}
+
 function renderEventi() {
   const oggi = new Date(); oggi.setHours(0, 0, 0, 0);
   const prossimi = BACHECA.eventi.filter(e => new Date(e.data + "T23:59:00") >= oggi)
@@ -929,7 +995,7 @@ function build() {
   const servizi = BACHECA.slide.map(s => {
     const n = (
     s.tipo === "instagram" ? renderInstagram() : s.tipo === "eventi" ? renderEventi() :
-    s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : s.tipo === "qrgrande" ? renderQrGrande(s) : s.tipo === "staff" ? renderStaff(s) : renderTesto(s));
+    s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : s.tipo === "qrgrande" ? renderQrGrande(s) : s.tipo === "staff" ? renderStaff(s) : s.tipo === "video" ? renderVideo(s) : s.tipo === "galleria" ? renderGalleria(s) : renderTesto(s));
     if (n && s.durata) n.dataset.durata = s.durata;
     if (n && s.sfondo) n.dataset.sfondo = s.sfondo;
     if (n && s.tema) n.classList.add("tema-" + s.tema);
@@ -962,11 +1028,23 @@ function build() {
 function show(i) {
   nodes.forEach((n, k) => n.classList.toggle("active", k === i));
   [...dots.children].forEach((d, k) => d.classList.toggle("on", k === i));
+  nodes.forEach((n, k) => n.querySelectorAll("video").forEach(v => {
+    if (k === i) { try { v.currentTime = 0; const p = v.play(); if (p) p.catch(() => {}); } catch (e) {} }
+    else { try { v.pause(); } catch (e) {} }
+  }));
+  clearInterval(window._gal);
+  const g = nodes[i].querySelector(".galleria-media");
+  if (g) {
+    const ims = [...g.querySelectorAll("img")]; let j = 0;
+    ims.forEach((im, k) => im.classList.toggle("on", k === 0));
+    const passo = Math.max(3, durata(nodes[i]) / ims.length);
+    window._gal = setInterval(() => { ims[j].classList.remove("on"); j = (j + 1) % ims.length; ims[j].classList.add("on"); }, passo * 1000);
+  }
   document.getElementById("stage").classList.toggle("rosso", nodes[i].classList.contains("tema-rosso"));
   const fl = document.querySelector(".foto-layer");
   if (nodes[i].dataset.sfondo) { fl.style.backgroundImage = `url("${nodes[i].dataset.sfondo}")`; fl.classList.add("on"); }
   else fl.classList.remove("on");
-  dots.style.visibility = (nodes[i].classList.contains("locandina") || nodes[i].classList.contains("foto")) ? "hidden" : "visible";
+  dots.style.visibility = (nodes[i].classList.contains("locandina") || nodes[i].classList.contains("foto") || nodes[i].classList.contains("galleria") || nodes[i].classList.contains("video-slide")) ? "hidden" : "visible";
   progress.style.transition = "none"; progress.style.width = "0";
   requestAnimationFrame(() => requestAnimationFrame(() => {
     progress.style.transition = `width ${durata(nodes[i])}s linear`;
@@ -977,6 +1055,7 @@ function show(i) {
 function durata(n) {
   if (n.dataset.durata) return +n.dataset.durata;
   if (n.classList.contains("locandina")) return BACHECA.durataLocandina;
+  if (n.classList.contains("video-slide")) return 12;
   if (n.classList.contains("post") && !n.classList.contains("con-immagine")) return 14; // post Instagram: il testo lungo viene tagliato a schermo
   const parole = (n.textContent || "").trim().split(/\s+/).filter(Boolean).length;
   // circa 4 parole al secondo per chi legge da qualche metro, più qualche secondo per guardare
