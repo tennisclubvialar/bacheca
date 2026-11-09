@@ -1,4 +1,342 @@
 {
-  "aggiornata": null,
-  "categorie": []
+  "aggiornata": "1 novembre 2026",
+  "fonte": "vialadder.com · classifica del 01/11/2026",
+  "categorie": [
+    {
+      "nome": "fascia A",
+      "titolo": "Top 10 fascia A",
+      "giocatori": [
+        {
+          "pos": 1,
+          "nome": "Vincenzoni",
+          "punti": 2009,
+          "var": 0
+        },
+        {
+          "pos": 2,
+          "nome": "De Sanctis V.",
+          "punti": 1793,
+          "var": 0
+        },
+        {
+          "pos": 3,
+          "nome": "Di Lorenzo",
+          "punti": 1683,
+          "var": 0
+        },
+        {
+          "pos": 4,
+          "nome": "Ara",
+          "punti": 1530,
+          "var": 0
+        },
+        {
+          "pos": 5,
+          "nome": "Buttinelli",
+          "punti": 1494,
+          "var": 1
+        },
+        {
+          "pos": 6,
+          "nome": "Deli",
+          "punti": 1471,
+          "var": 1
+        },
+        {
+          "pos": 7,
+          "nome": "Canciani G.",
+          "punti": 1429,
+          "var": -2
+        },
+        {
+          "pos": 8,
+          "nome": "Bonanni",
+          "punti": 1424,
+          "var": 2
+        },
+        {
+          "pos": 9,
+          "nome": "D'Andrea S.",
+          "punti": 1418,
+          "var": 0
+        },
+        {
+          "pos": 10,
+          "nome": "Mazzonna",
+          "punti": 1411,
+          "var": -2
+        }
+      ],
+      "sottotitolo": "I migliori 10 della fascia A · classifica del 1 novembre"
+    },
+    {
+      "nome": "fascia B",
+      "titolo": "Top 10 fascia B",
+      "giocatori": [
+        {
+          "pos": 1,
+          "nome": "Conte MA.",
+          "punti": 1362,
+          "var": 0
+        },
+        {
+          "pos": 2,
+          "nome": "Pietrosanto A.",
+          "punti": 1253,
+          "var": 0
+        },
+        {
+          "pos": 3,
+          "nome": "Macchioni",
+          "punti": 1244,
+          "var": 0
+        },
+        {
+          "pos": 4,
+          "nome": "Scoccia",
+          "punti": 1095,
+          "var": 0
+        },
+        {
+          "pos": 5,
+          "nome": "Imbriaco",
+          "punti": 1028,
+          "var": 0
+        },
+        {
+          "pos": 6,
+          "nome": "Anelli P.",
+          "punti": 1018,
+          "var": 0
+        },
+        {
+          "pos": 7,
+          "nome": "Sordi",
+          "punti": 967,
+          "var": 0
+        },
+        {
+          "pos": 8,
+          "nome": "Di Gerlando",
+          "punti": 949,
+          "var": 0
+        },
+        {
+          "pos": 9,
+          "nome": "Spinelli",
+          "punti": 925,
+          "var": 0
+        },
+        {
+          "pos": 10,
+          "nome": "Albino",
+          "punti": 890,
+          "var": 0
+        }
+      ],
+      "sottotitolo": "I migliori 10 della fascia B · classifica del 1 novembre"
+    },
+    {
+      "nome": "fascia C",
+      "titolo": "Top 10 fascia C",
+      "giocatori": [
+        {
+          "pos": 1,
+          "nome": "Funaro M.",
+          "punti": 551,
+          "var": 5
+        },
+        {
+          "pos": 2,
+          "nome": "Carpiceci",
+          "punti": 550,
+          "var": 2
+        },
+        {
+          "pos": 3,
+          "nome": "Fiore",
+          "punti": 549,
+          "var": -2
+        },
+        {
+          "pos": 4,
+          "nome": "Colacino",
+          "punti": 544,
+          "var": 1
+        },
+        {
+          "pos": 5,
+          "nome": "Tursi",
+          "punti": 541,
+          "var": -2
+        },
+        {
+          "pos": 6,
+          "nome": "Loy",
+          "punti": 540,
+          "var": 3
+        },
+        {
+          "pos": 7,
+          "nome": "Sponzilli",
+          "punti": 540,
+          "var": 2
+        },
+        {
+          "pos": 8,
+          "nome": "Schlegel",
+          "punti": 531,
+          "var": -2
+        },
+        {
+          "pos": 9,
+          "nome": "Pisi",
+          "punti": 527,
+          "var": 6
+        },
+        {
+          "pos": 10,
+          "nome": "Fuscaldi",
+          "punti": 526,
+          "var": 0
+        }
+      ],
+      "sottotitolo": "I migliori 10 della fascia C · classifica del 1 novembre"
+    },
+    {
+      "nome": "fascia D",
+      "titolo": "Top 10 fascia D",
+      "giocatori": [
+        {
+          "pos": 1,
+          "nome": "Paci",
+          "punti": 219,
+          "var": 2
+        },
+        {
+          "pos": 2,
+          "nome": "Sofo",
+          "punti": 219,
+          "var": 0
+        },
+        {
+          "pos": 3,
+          "nome": "Leonardi S.",
+          "punti": 214,
+          "var": 2
+        },
+        {
+          "pos": 4,
+          "nome": "Caiulo",
+          "punti": 212,
+          "var": 2
+        },
+        {
+          "pos": 5,
+          "nome": "Angotti",
+          "punti": 208,
+          "var": 2
+        },
+        {
+          "pos": 6,
+          "nome": "Ciabattoni",
+          "punti": 206,
+          "var": 2
+        },
+        {
+          "pos": 7,
+          "nome": "Macaluso",
+          "punti": 202,
+          "var": 6
+        },
+        {
+          "pos": 8,
+          "nome": "Nicoletti",
+          "punti": 199,
+          "var": 3
+        },
+        {
+          "pos": 9,
+          "nome": "Demcenko",
+          "punti": 198,
+          "var": 0
+        },
+        {
+          "pos": 10,
+          "nome": "Rossi G.",
+          "punti": 198,
+          "var": 3
+        }
+      ],
+      "sottotitolo": "I migliori 10 della fascia D · classifica del 1 novembre"
+    },
+    {
+      "nome": "in salita",
+      "titolo": "Chi sale",
+      "giocatori": [
+        {
+          "pos": 151,
+          "nome": "Di Castro",
+          "punti": 125,
+          "var": 10
+        },
+        {
+          "pos": 157,
+          "nome": "Tampieri",
+          "punti": 123,
+          "var": 9
+        },
+        {
+          "pos": 157,
+          "nome": "Tinari",
+          "punti": 123,
+          "var": 9
+        },
+        {
+          "pos": 157,
+          "nome": "Buono",
+          "punti": 123,
+          "var": 7
+        },
+        {
+          "pos": 59,
+          "nome": "Pisi",
+          "punti": 527,
+          "var": 6
+        },
+        {
+          "pos": 107,
+          "nome": "Macaluso",
+          "punti": 202,
+          "var": 6
+        },
+        {
+          "pos": 142,
+          "nome": "Leoni",
+          "punti": 130,
+          "var": 6
+        },
+        {
+          "pos": 23,
+          "nome": "Ranalli",
+          "punti": 741,
+          "var": 5
+        },
+        {
+          "pos": 38,
+          "nome": "Pacioni",
+          "punti": 582,
+          "var": 5
+        },
+        {
+          "pos": 51,
+          "nome": "Funaro M.",
+          "punti": 551,
+          "var": 5
+        }
+      ],
+      "sottotitolo": "Le scalate più belle della settimana · posizione in classifica generale",
+      "podio": false
+    }
+  ]
 }
