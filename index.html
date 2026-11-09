@@ -747,6 +747,12 @@ function renderQrGrande(s) {
   return slide;
 }
 
+/* In classifica i soci compaiono come "Cognome N." (cognome e iniziale del nome) */
+function nomeClassifica(g) {
+  if (g.cognome) return g.cognome + (g.nome ? " " + g.nome.trim()[0].toUpperCase() + "." : "");
+  return g.nome || "";
+}
+
 function renderClassifica(cat, agg) {
   const slide = el("section", "slide classifica");
   const top = el("div", "sponsor-top");
@@ -756,7 +762,7 @@ function renderClassifica(cat, agg) {
   const grid = el("div", "rank-grid");
   (cat.giocatori || []).slice(0, 10).forEach((g, k) => {
     const r = el("div", "rank" + (k < 3 ? " podio p" + (k + 1) : ""));
-    r.append(el("div", "rank-pos", String(g.pos || k + 1)), el("div", "rank-nome", g.nome));
+    r.append(el("div", "rank-pos", String(g.pos || k + 1)), el("div", "rank-nome", nomeClassifica(g)));
     r.append(g.var ? el("div", "rank-var " + (g.var > 0 ? "su" : "giu"), (g.var > 0 ? "▲ " : "▼ ") + Math.abs(g.var)) : el("div"));
     if (g.punti != null) r.append(el("div", "rank-punti", String(g.punti)));
     grid.append(r);
