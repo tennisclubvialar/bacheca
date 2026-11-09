@@ -456,11 +456,13 @@ const BACHECA = {
       kicker: "Lo staff tecnico",
       titolo: "In campo con i ragazzi",
       gruppi: [
-        { settore: "Perfezionamento e pre-perfezionamento", membri: [
-          { nome: "Paolo Masala", ruolo: "Istruttore 2° grado" },
-          { nome: "Matteo Capuano", ruolo: "Istruttore 2° grado" },
-          { nome: "Federica Taborra", ruolo: "Istruttrice 2° grado · Laureata in Scienze Motorie" },
-          { nome: "Gabriele Labbadia", ruolo: "Istruttore 1° grado" }
+        { settore: "Perfezionamento · settore B", membri: [
+          { nome: "Matteo Capuano", ruolo: "Istruttore 2° grado", resp: true },
+          { nome: "Gabriele Labbadia", ruolo: "Istruttore 1° grado · a supporto dei settori B e C" }
+        ] },
+        { settore: "Perfezionamento · settore C", membri: [
+          { nome: "Federica Taborra", ruolo: "Istruttrice 2° grado · Laureata in Scienze Motorie", resp: true },
+          { nome: "Paolo Masala", ruolo: "Istruttore 2° grado", resp: true }
         ] },
         { settore: "Settore avviamento", membri: [
           { nome: "Gianmarco Meringolo", ruolo: "Istruttore 1° grado · Preparatore fisico 2° grado FITP · Laureato in Scienze Motorie", resp: true }
@@ -840,11 +842,11 @@ function renderStaff(s) {
   const t = el("div"); t.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo));
   top.append(t);
   const grid = el("div", "staff-grid");
-  grid.style.gridTemplateColumns = s.gruppi.map(g => g.membri.length > 1 ? "1.6fr" : "1fr").join(" ");
+  grid.style.gridTemplateColumns = s.gruppi.length >= 3 ? "1fr 1fr 1fr" : s.gruppi.map(g => g.membri.length > 1 ? "1.6fr" : "1fr").join(" ");
   s.gruppi.forEach(g => {
     const col = el("div", "staff-col");
     col.append(el("div", "staff-settore", g.settore));
-    const list = el("div", "staff-list" + (g.membri.length >= 3 ? " due" : ""));
+    const list = el("div", "staff-list" + (g.membri.length >= 3 && s.gruppi.length < 3 ? " due" : ""));
     g.membri.forEach(m => {
       const c = el("div", "staff-card" + (m.resp ? " resp" : ""));
       if (m.resp) c.append(el("div", "staff-tag", "Responsabile"));
