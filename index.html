@@ -58,7 +58,7 @@ main { position: relative; z-index: 1; }
 .slide {
   position: absolute; inset: 0; padding: 30px 96px 60px;
   opacity: 0; transform: translateX(40px); transition: opacity .9s ease, transform .9s ease;
-  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 80px; align-items: center;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 80px; align-items: center;
 }
 .slide.active { opacity: 1; transform: none; }
 .slide.single { grid-template-columns: 1fr; }
@@ -131,7 +131,65 @@ footer { position: relative; z-index: 2; display: flex; align-items: center; bac
 .dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,.3); }
 .dot.on { background: var(--white); }
 
+
+/* senza avvisi: niente striscia in basso, più spazio ai contenuti */
+#stage.senza-avvisi { grid-template-rows: 130px 1fr; }
+#stage.senza-avvisi footer { display: none; }
+#stage.senza-avvisi .progress { bottom: 0; height: 8px; }
+#stage.senza-avvisi .dots { bottom: 26px; }
+#stage.senza-avvisi::after { bottom: 0; }
+
+/* tipografia più grande e d'impatto */
+.slide { padding: 30px 100px 90px; gap: 80px; }
+h1 { font-size: 172px; margin: 26px 0 34px; }
+h1.lungo { font-size: 138px; }
+.kicker { font-size: 30px; padding: 14px 32px; box-shadow: 0 10px 30px rgba(6,23,122,.35); }
+.lead { font-size: 40px; }
+.lead-row::before { width: 72px; height: 7px; margin-top: 24px; }
+.facts { gap: 22px; }
+.fact { padding: 30px 40px; border-radius: 24px; box-shadow: 0 18px 40px rgba(6,23,122,.30); }
+.fact-label { font-size: 40px; }
+.fact-note { font-size: 23px; margin-top: 8px; }
+.fact-value { font-size: 88px; }
+.facts.compact { gap: 16px; }
+.facts.compact .fact { padding: 22px 36px; }
+.facts.compact .fact-label { font-size: 34px; }
+.chip { font-size: 28px; padding: 14px 28px; }
+.cta { font-size: 32px; padding: 20px 36px; box-shadow: 0 14px 34px rgba(6,23,122,.35); }
+.post-caption { font-size: 40px; }
+.locandina img { height: 860px; width: auto; max-width: 100%; max-height: none; object-fit: contain; }
+.foto-media, .post-media { height: 860px; }
+.post-media { width: 688px; }
+.post { grid-template-columns: 688px 1fr; }
+.post.con-immagine { grid-template-columns: 1fr 688px; }
+
+/* animazioni d'ingresso: ogni schermata "entra" per attirare lo sguardo */
+@keyframes sali { from { opacity: 0; transform: translateY(46px); } to { opacity: 1; transform: none; } }
+@keyframes entra { from { opacity: 0; transform: translateX(90px); } to { opacity: 1; transform: none; } }
+@keyframes pop { 0% { opacity: 0; transform: scale(.6); } 70% { transform: scale(1.06); } 100% { opacity: 1; transform: none; } }
+@keyframes zoom { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: none; } }
+@keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.08); } }
+.slide.active .kicker { animation: pop .7s cubic-bezier(.2,.8,.2,1) both; }
+.slide.active h1 { animation: sali .8s .12s cubic-bezier(.2,.8,.2,1) both; }
+.slide.active .lead-row, .slide.active .post-caption, .slide.active .post-date { animation: sali .8s .3s both; }
+.slide.active .chips, .slide.active .cta, .slide.active .ig-row, .slide.active .ig-handle { animation: sali .8s .45s both; }
+.slide.active .fact { animation: entra .75s cubic-bezier(.2,.8,.2,1) both; }
+.slide.active .fact:nth-child(1) { animation-delay: .35s; }
+.slide.active .fact:nth-child(2) { animation-delay: .5s; }
+.slide.active .fact:nth-child(3) { animation-delay: .65s; }
+.slide.active .fact:nth-child(4) { animation-delay: .8s; }
+.slide.active .fact:nth-child(5) { animation-delay: .95s; }
+.slide.active .post-media, .slide.active .foto-media, .slide.active .locandina img { animation: zoom .9s cubic-bezier(.2,.8,.2,1) both; }
+.slide.active .sponsor-card, .slide.active .ig-tile { animation: pop .7s both; }
+.slide.active .sponsor-card:nth-child(2), .slide.active .ig-tile:nth-child(2) { animation-delay: .12s; }
+.slide.active .sponsor-card:nth-child(3), .slide.active .ig-tile:nth-child(3) { animation-delay: .24s; }
+.slide.active .sponsor-card:nth-child(4), .slide.active .ig-tile:nth-child(4) { animation-delay: .36s; }
+.slide.active .sponsor-card:nth-child(5), .slide.active .ig-tile:nth-child(5) { animation-delay: .48s; }
+.slide.active .ig-tile:nth-child(6) { animation-delay: .6s; }
+.slide.active .foto-media img, .slide.active .post-media img { animation: kenburns 16s ease-out both; }
+
 @media (prefers-reduced-motion: reduce) {
+  .slide.active * { animation: none !important; }
   .slide { transition: none; transform: none; }
   .ticker-track { animation-duration: 120s; }
 }
@@ -177,16 +235,8 @@ const BACHECA = {
   durataLocandina: 12,
   instagram: "tennisclubvialar",
   postInRotazione: 4,       // quanti post recenti mostrare a tutto schermo tra una slide e l'altra
-  avvisi: [
-    "Benvenuti al T.C. Vialar",
-    "Cerca compagno attivo tutti i giorni: chiedi in segreteria",
-    "Corsi adulti con formula trimestrale: lunedì e mercoledì o martedì e giovedì, 19–21",
-    "Allenamento avanzato del lunedì sera, 21–23, con i maestri Matteo e Giordano",
-    "Incordatura pronta in 2–3 giorni lavorativi, grip e overgrip: chiedi in segreteria",
-    "Linea ufficiale Mizuno con il logo Vialar per tutti i soci: ordina online e ricevila al circolo o a casa",
-    "Visita medico-sportiva al centro VESA, convenzionato per i tesserati del circolo",
-    "Festeggia il compleanno al circolo: lezione a tema, giochi e buffet per bambini e adulti"
-  ],
+  /* Striscia avvisi in basso: compare solo se qui c'è almeno un avviso, es. "Circolo chiuso il 25 dicembre" */
+  avvisi: [],
   /* Calendario eventi: aggiungi righe come { data: "2026-11-22", titolo: "Torneo sociale", luogo: "T.C. Vialar" } */
   eventi: [],
   /* Locandine a tutto schermo: metti l'immagine in assets/locandine/ e aggiungi { immagine: "assets/locandine/nome.jpg", titolo: "..." } */
@@ -203,8 +253,8 @@ const BACHECA = {
       titolo: "Prenota il tuo campo",
       testo: "Prenota in segreteria o su WhatsApp. Se ti manca il compagno, ci pensiamo noi.",
       fatti: [
-        { label: "Singolare", note: "campo all'ora · diurno / serale", value: "16 / 19 €" },
-        { label: "Doppio", note: "a persona all'ora · diurno / serale", value: "6 / 7 €" },
+        { label: "Singolare", note: "campo, giorno / sera", value: "16 / 19 €" },
+        { label: "Doppio", note: "a persona, giorno / sera", value: "6 / 7 €" },
         { label: "Lezione individuale", note: "costo del campo +", value: "+20 €" },
         { label: "Lezione in coppia", note: "costo del campo +", value: "+30 €" }
       ]
@@ -327,14 +377,14 @@ const BACHECA = {
       tipo: "testo",
       kicker: "Preparazione Atletica",
       titolo: "Allenati la mattina",
-      testo: "Con preparatori laureati in Scienze Motorie. Test iniziale e report ogni mese.",
+      testo: "Preparatori laureati in Scienze Motorie, test iniziale e report mensile.",
       chips: ["Over 60", "Rinforzo muscolare", "Pilates posturale", "Mobilità", "Agonisti"],
       fatti: [
-        { label: "Trimestrale", note: "La formula più conveniente", value: "150 €" },
+        { label: "Lunedì – venerdì", note: "minimo 2 allenamenti a settimana", value: "9–12" },
+        { label: "Trimestrale", note: "la formula più conveniente", value: "150 €" },
         { label: "Mensile", value: "60 €" },
         { label: "Ingresso singolo", value: "10 €" }
-      ],
-      cta: "Lun–Ven 9–12 · minimo 2 allenamenti a settimana"
+      ]
     },
     {
       tipo: "testo",
@@ -372,7 +422,7 @@ const BACHECA = {
       tipo: "testo",
       kicker: "Visite medico-sportive",
       titolo: "Prenotazioni aperte",
-      testo: "Con il Dott. Luca Mengozzi, medico sportivo, ogni lunedì dalle 14:30 alle 19:30 al centro medico VESA, in via degli Scipioni 252. Il certificato medico valido è necessario per fare attività sportiva.",
+      testo: "Con il Dott. Luca Mengozzi, medico sportivo: ogni lunedì 14:30–19:30 al centro medico VESA, via degli Scipioni 252.",
       immagine: "assets/locandine/visite-mediche.jpg",
       cta: "Prenota allo 06 69302798"
     },
@@ -380,7 +430,7 @@ const BACHECA = {
       tipo: "testo",
       kicker: "Linea ufficiale Mizuno",
       titolo: "Indossa i colori del Vialar",
-      testo: "La stessa linea che vestono i nostri maestri, personalizzata con il logo Vialar e pensata per tutti i soci: in campo e fuori, fatti riconoscere come parte del circolo.",
+      testo: "La linea dei nostri maestri, con il logo Vialar, per tutti i soci: in campo e fuori, fatti riconoscere come parte del circolo.",
       fatti: [
         { label: "Linea ufficiale Mizuno", note: "la stessa dei nostri maestri" },
         { label: "Personalizzata", note: "con il logo Vialar" },
@@ -603,6 +653,7 @@ function build() {
   box.replaceChildren(...nodes);
   dots.replaceChildren(...nodes.map(() => el("div", "dot")));
   document.getElementById("ticker").replaceChildren(...BACHECA.avvisi.map(a => el("span", null, a)));
+  document.getElementById("stage").classList.toggle("senza-avvisi", !BACHECA.avvisi.length);
 }
 
 function show(i) {
