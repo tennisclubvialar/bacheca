@@ -21,7 +21,13 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; background: var(--navy); color: var(--white); overflow: hidden; font-family: var(--body); }
-#viewport { position: fixed; inset: 0; background: var(--navy); overflow: hidden; }
+#viewport {
+  position: fixed; inset: 0; overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(9,62,168,.72) 0%, rgba(10,86,206,.86) 40%, rgba(10,90,212,.95) 65%, #075fd8 100%),
+    url("assets/sfondo.jpg") center top / cover no-repeat,
+    var(--blue);
+}
 #stage {
   width: 1920px; height: 1080px; position: absolute; left: 50%; top: 50%;
   transform-origin: center center; overflow: hidden;
