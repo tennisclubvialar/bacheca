@@ -27,8 +27,9 @@ html, body { height: 100%; background: var(--navy); color: var(--white); overflo
   transform-origin: center center; overflow: hidden;
   display: grid; grid-template-rows: 130px 1fr 110px;
   background:
-    linear-gradient(160deg, rgba(255,255,255,.07) 0 30%, transparent 30%) ,
-    linear-gradient(180deg, #0d4fbf 0%, var(--blue) 55%, #075fd8 100%);
+    linear-gradient(180deg, rgba(9,62,168,.60) 0%, rgba(10,86,206,.80) 38%, rgba(10,90,212,.93) 62%, #075fd8 100%),
+    url("assets/sfondo.jpg") center top / cover no-repeat,
+    var(--blue);
 }
 /* righe del campo, discrete, come nella locandina */
 #stage::before {
