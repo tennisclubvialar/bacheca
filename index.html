@@ -215,6 +215,27 @@ h1.lungo { font-size: 138px; }
 #stage.verticale .sponsor-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 260px; }
 #stage.verticale .ig-grid { max-width: 900px; justify-self: center; width: 100%; }
 
+
+/* Tema rosso (campagna preparazione atletica) */
+#stage::before { z-index: 0; }
+#stage .tema-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .9s ease;
+  background: linear-gradient(180deg, rgba(150,40,52,.62) 0%, rgba(166,48,58,.86) 40%, rgba(168,50,58,.95) 65%, #a8323a 100%), url("assets/sfondo.jpg") center top / cover no-repeat; }
+#stage.rosso .tema-layer { opacity: 1; }
+header, main, footer { position: relative; z-index: 1; }
+.tema-rosso .kicker { color: #a8323a; }
+.tema-rosso .fact { color: #6e1d26; }
+.tema-rosso .fact-value, .tema-rosso .fact-note { color: #a8323a; }
+.tema-rosso .fact:last-child:not(:first-child) { background: #6e1d26; color: #fff; }
+.tema-rosso .fact:last-child:not(:first-child) .fact-value, .tema-rosso .fact:last-child:not(:first-child) .fact-note { color: #f6d2d5; }
+.tema-rosso .cta { background: #fff; color: #a8323a; font-family: var(--display); font-weight: 400; font-size: 56px; text-transform: uppercase; padding: 16px 40px; }
+.facts.griglia { grid-template-columns: 1fr 1fr; }
+#stage::after { transition: opacity .9s ease; }
+#stage.rosso::after { opacity: 0; }
+.slide.single.tema-rosso h1 { font-size: 168px; margin: 20px 0 26px; }
+.slide.single.tema-rosso .lead { font-size: 46px; font-weight: 700; }
+.facts.griglia .fact { padding: 34px 36px; }
+.facts.griglia .fact:last-child:not(:first-child) { background: #fff; color: #6e1d26; }
+
 @media (prefers-reduced-motion: reduce) {
   .slide.active * { animation: none !important; }
   .slide { transition: none; transform: none; }
@@ -225,6 +246,7 @@ h1.lungo { font-size: 138px; }
 <body>
 <div id="viewport">
   <div id="stage">
+    <div class="tema-layer" aria-hidden="true"></div>
     <header>
       <div class="brand">
         <svg class="brand-mark" viewBox="0 0 387 332" aria-hidden="true"><g fill="#fff"><polygon points="0,0 90,0 182,153 136,234"/><polygon points="114,0 272,0 193,136"/><polygon points="294,0 387,0 193,332 148,254"/></g></svg>
@@ -436,15 +458,34 @@ const BACHECA = {
       ]
     },
     {
-      tipo: "testo",
-      kicker: "Preparazione Atletica",
-      titolo: "Allenati la mattina",
-      testo: "Per costi e percorsi chiedi in segreteria: ti mettiamo in contatto con il preparatore di riferimento per scegliere il percorso più adatto a te.",
-      chips: ["Over 60", "Rinforzo muscolare", "Pilates posturale", "Mobilità", "Agonisti"],
+      tipo: "testo", tema: "rosso",
+      kicker: "Preparazione atletica",
+      titolo: "Più forte. Più veloce. Senza dolore.",
+      testo: "Il corpo è il tuo primo colpo.",
+      chips: ["Over 60", "Agonisti", "Fitness", "Riabilitazione"],
+      cta: "Inizia ora →"
+    },
+    {
+      tipo: "testo", tema: "rosso", griglia: true,
+      kicker: "Scegli il tuo obiettivo",
+      titolo: "Un percorso per ognuno.",
+      testo: "Seguiti da uno staff qualificato: laureati in Scienze Motorie, Invictus Trainer, preparatore fisico di 2° livello FITP.",
       fatti: [
-        { label: "Lunedì – venerdì", note: "classi del mattino", value: "9–12" },
-        { label: "Valutazione iniziale", note: "test e report ogni mese" },
-        { label: "Preparatori laureati", note: "in Scienze Motorie" }
+        { label: "Over 60" }, { label: "Agonisti" },
+        { label: "Rinforzo muscolare" }, { label: "Pilates e mobilità" },
+        { label: "Riabilitazione" }, { label: "Nutrizione" }
+      ]
+    },
+    {
+      tipo: "testo", tema: "rosso",
+      kicker: "Inizia ora",
+      titolo: "Inizia dai tuoi numeri.",
+      testo: "Test iniziale, programma su misura e report grafico ogni mese. Per costi e percorsi chiedi in segreteria.",
+      fatti: [
+        { label: "Lunedì – venerdì", note: "fascia mattutina", value: "9–12" },
+        { label: "Sabato e domenica", note: "mattina e anche pomeriggio" },
+        { label: "Percorso individuale", note: "uno a uno con il preparatore", value: "1:1" },
+        { label: "Prenota la valutazione", note: "392 621 8466 · devialar@alice.it" }
       ]
     },
     {
@@ -572,7 +613,7 @@ function renderTesto(s) {
     left.append(Object.assign(el("div", "chips"), {}));
     s.chips.forEach(c => left.lastChild.append(el("span", "chip", c)));
   } else if (s.chips) {
-    const ch = el("div", "chips"); s.chips.forEach(c => ch.append(el("span", "chip", c))); right.append(ch);
+    const ch = el("div", "chips"); s.chips.forEach(c => ch.append(el("span", "chip", c))); left.append(ch);
   }
   if (s.cta) left.append(el("div", "cta", s.cta));
   if (s.qr) {
@@ -705,6 +746,8 @@ function build() {
     s.tipo === "instagram" ? renderInstagram() : s.tipo === "eventi" ? renderEventi() :
     s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : renderTesto(s));
     if (n && s.durata) n.dataset.durata = s.durata;
+    if (n && s.tema) n.classList.add("tema-" + s.tema);
+    if (n && s.griglia) { const f = n.querySelector(".facts"); if (f) f.classList.add("griglia"); }
     return n;
   }).filter(Boolean);
   const recenti = POSTS.slice(0, BACHECA.postInRotazione).map(renderPost);
@@ -727,6 +770,7 @@ function build() {
 function show(i) {
   nodes.forEach((n, k) => n.classList.toggle("active", k === i));
   [...dots.children].forEach((d, k) => d.classList.toggle("on", k === i));
+  document.getElementById("stage").classList.toggle("rosso", nodes[i].classList.contains("tema-rosso"));
   dots.style.visibility = (nodes[i].classList.contains("locandina") || nodes[i].classList.contains("foto")) ? "hidden" : "visible";
   progress.style.transition = "none"; progress.style.width = "0";
   requestAnimationFrame(() => requestAnimationFrame(() => {
