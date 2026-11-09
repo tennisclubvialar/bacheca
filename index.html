@@ -79,6 +79,9 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-heigh
 .fact:last-child:not(:first-child) { background: var(--navy); color: var(--white); }
 .fact:last-child:not(:first-child) .fact-value { color: var(--white); }
 .fact:last-child:not(:first-child) .fact-note { color: var(--mist); }
+.facts.compact { gap: 14px; }
+.facts.compact .fact { padding: 18px 32px; }
+.facts.compact .fact-label { font-size: 30px; }
 .fact-label { font-size: 34px; font-weight: 800; line-height: 1.15; }
 .fact-note { display: block; font-size: 22px; font-weight: 700; color: var(--blue); letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
 .fact-value { font-family: var(--display); font-size: 70px; color: var(--blue); font-variant-numeric: tabular-nums; white-space: nowrap; line-height: 1; }
@@ -100,6 +103,7 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-heigh
 .locandina { grid-template-columns: 1fr; place-items: center; padding: 20px 96px 40px; }
 .locandina img { max-height: 820px; max-width: 100%; border-radius: 20px; border: 10px solid var(--white); box-shadow: 0 30px 70px rgba(11,42,110,.45); }
 .post { grid-template-columns: 640px 1fr; gap: 90px; }
+.post.con-immagine { grid-template-columns: 1fr 640px; }
 .post-media { width: 640px; height: 800px; border-radius: 26px; overflow: hidden; background: var(--white); border: 10px solid var(--white); box-shadow: 0 30px 70px rgba(11,42,110,.45); }
 .post-media img { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 16px; background: var(--white); }
 .post-caption { margin-top: 30px; font-size: 38px; line-height: 1.4; font-weight: 500; max-width: 32ch; display: -webkit-box; -webkit-line-clamp: 9; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-line; }
@@ -114,7 +118,7 @@ footer { position: relative; z-index: 2; display: flex; align-items: center; bac
 @keyframes scroll { to { transform: translateX(-100%); } }
 
 .progress { position: absolute; left: 0; bottom: 110px; height: 6px; background: var(--white); width: 0; z-index: 3; }
-.dots { position: absolute; right: 96px; bottom: 140px; display: flex; gap: 12px; z-index: 3; }
+.dots { position: absolute; left: 50%; transform: translateX(-50%); bottom: 124px; display: flex; gap: 12px; z-index: 3; }
 .dot { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,.3); }
 .dot.on { background: var(--white); }
 
@@ -178,10 +182,10 @@ const BACHECA = {
       titolo: "Prenota il tuo campo",
       testo: "Prenota in segreteria o su WhatsApp. Se ti manca il compagno, ci pensiamo noi.",
       fatti: [
-        { label: "Singolare", note: "a persona, 1 ora", value: "8 €" },
-        { label: "Doppio 1 ora", note: "a persona", value: "6 €" },
-        { label: "Doppio 2 ore", note: "a persona", value: "12 €" },
-        { label: "Luci dalle 18:00", note: "a persona", value: "+1,50 €" }
+        { label: "Singolare", note: "campo all'ora · diurno / serale", value: "16 / 19 €" },
+        { label: "Doppio", note: "a persona all'ora · diurno / serale", value: "6 / 7 €" },
+        { label: "Lezione individuale", note: "costo del campo +", value: "+20 €" },
+        { label: "Lezione in coppia", note: "costo del campo +", value: "+30 €" }
       ]
     },
     {
@@ -206,6 +210,54 @@ const BACHECA = {
         { label: "Dai 5 ai 13 anni", note: "lunedì – venerdì", value: "17–19" },
         { label: "Dai 14 ai 18 anni", note: "lunedì – venerdì", value: "15–17" },
         { label: "Allenamenti", note: "a settimana", value: "2–5" }
+      ]
+    },
+    {
+      tipo: "testo",
+      kicker: "Perfezionamento e agonistica",
+      titolo: "Allenati per competere",
+      testo: "L'obiettivo è formare giocatori capaci di competere a livelli sempre più alti, con un'organizzazione al massimo livello.",
+      fatti: [
+        { label: "Maestri in campo", note: "3 maestri ogni 2 campi", value: "3 : 2" },
+        { label: "Atleti per 2 campi", note: "spesso 5 nel primo turno", value: "max 7" },
+        { label: "Allenamenti", note: "a settimana", value: "5" }
+      ]
+    },
+    {
+      tipo: "testo",
+      kicker: "Perfezionamento e agonistica",
+      titolo: "Lo staff",
+      testo: "Due maestri nazionali guidano il gruppo, affiancati a rotazione da due maestri sparring ex 2.6 e da un preparatore atletico dedicato.",
+      fatti: [
+        { label: "Lorenzo Vincenti", note: "Maestro nazionale" },
+        { label: "Fabio Meringolo", note: "Maestro nazionale" },
+        { label: "Giordano Barozzi", note: "Istruttore 2° grado · sparring · ex 2.6" },
+        { label: "Riccardo Casavola", note: "Istruttore 1° grado · sparring · ex 2.6" },
+        { label: "Mario Paura", note: "Maestro e preparatore atletico" }
+      ]
+    },
+    {
+      tipo: "testo",
+      kicker: "Perfezionamento e agonistica",
+      titolo: "La settimana tipo",
+      testo: "Ogni seduta comincia con il riscaldamento e si chiude con il defaticamento, e comprende un'ora di preparazione atletica.",
+      fatti: [
+        { label: "Sedute di tennis da 2 ore", value: "3" },
+        { label: "Sedute di tennis da 1 ora e mezza", value: "2" },
+        { label: "Preparazione atletica", note: "a ogni seduta", value: "1 h" },
+        { label: "Riscaldamento e defaticamento", note: "a inizio e fine seduta", value: "30' + 30'" }
+      ]
+    },
+    {
+      tipo: "testo",
+      kicker: "Perfezionamento e agonistica",
+      titolo: "Una dashboard per ogni atleta",
+      testo: "Ogni ragazzo ha report personali con le valutazioni di maestri, preparatori atletici e preparatore mentale.",
+      chips: ["Tecnica", "Tattica", "Fisica", "Mentale", "Nutrizione"],
+      fatti: [
+        { label: "Report e valutazioni", note: "aggiornati dallo staff" },
+        { label: "Dieta personalizzata", note: "con il nutrizionista" },
+        { label: "Programma di allenamento", note: "su misura, specifico per il tennis" }
       ]
     },
     {
@@ -269,6 +321,14 @@ const BACHECA = {
     },
     {
       tipo: "testo",
+      kicker: "Il nostro negozio",
+      titolo: "Breakpoint",
+      testo: "Il nostro racket sports partner per tennis e padel. Prova in campo le racchette test Dunlop e Yonex: chiedile in segreteria.",
+      immagine: "assets/locandine/breakpoint.jpg",
+      cta: "Via Trionfale 59 · Roma"
+    },
+    {
+      tipo: "testo",
       kicker: "Il nostro staff",
       titolo: "Oltre il tennis",
       testo: "Preparatori atletici laureati in Scienze Motorie e istruttori di 2° grado FITP. Per i percorsi individuali basta prenotare.",
@@ -278,6 +338,14 @@ const BACHECA = {
         { label: "Preparatore mentale", note: "su prenotazione" },
         { label: "Visita medica", note: "centro convenzionato per i tesserati" }
       ]
+    },
+    {
+      tipo: "testo",
+      kicker: "Visite medico-sportive",
+      titolo: "Prenotazioni aperte",
+      testo: "Con il Dott. Luca Mengozzi, medico sportivo, ogni lunedì dalle 14:30 alle 19:30 da Auramed, in via degli Scipioni 252. Il certificato medico valido è necessario per fare attività sportiva.",
+      immagine: "assets/locandine/visite-mediche.jpg",
+      cta: "Prenota allo 06 69302798"
     },
     {
       tipo: "testo",
@@ -303,7 +371,7 @@ function renderTesto(s) {
   const h = el("h1", null, s.titolo); if (s.titolo.length > 22) h.classList.add("lungo");
   left.append(el("div", "kicker", s.kicker), h, lr);
   slide.append(left);
-  const right = el("div", "facts");
+  const right = el("div", "facts" + ((s.fatti || []).length > 4 ? " compact" : ""));
   (s.fatti || []).forEach(f => {
     const row = el("div", "fact");
     const lab = el("div", "fact-label", f.label);
@@ -319,7 +387,12 @@ function renderTesto(s) {
     const ch = el("div", "chips"); s.chips.forEach(c => ch.append(el("span", "chip", c))); right.append(ch);
   }
   if (s.cta) left.append(el("div", "cta", s.cta));
-  if (!right.children.length) slide.classList.add("single"); else slide.append(right);
+  if (s.immagine) {
+    const media = el("div", "post-media");
+    const img = new Image(); img.src = s.immagine; img.alt = s.titolo; media.append(img);
+    slide.classList.add("post", "con-immagine"); slide.append(left, media);
+    left.remove(); slide.prepend(left);
+  } else if (!right.children.length) slide.classList.add("single"); else slide.append(right);
   return slide;
 }
 
