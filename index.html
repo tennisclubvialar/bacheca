@@ -262,6 +262,21 @@ header, main, footer { position: relative; z-index: 1; }
 @keyframes derive { from { transform: translate(-50%, -46%) rotate(-14deg) scale(.9); } to { transform: translate(-50%, -50%) rotate(-6deg) scale(1); } }
 .kicker-icona { display: inline-flex; align-items: center; gap: 12px; }
 
+
+/* Classifica sociale */
+.classifica { grid-template-columns: 1fr; grid-template-rows: auto 1fr; align-items: stretch; gap: 34px; padding-top: 20px; }
+.classifica .sponsor-top h1 { font-size: 120px; }
+.rank-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, 1fr); grid-auto-flow: column; gap: 16px 30px; }
+.rank { display: grid; grid-template-columns: 80px 1fr auto auto; align-items: center; gap: 22px; background: #fff; color: var(--navy); border-radius: 18px; padding: 0 30px; box-shadow: 0 14px 30px rgba(6,23,122,.28); }
+.rank-pos { font-family: var(--display); font-size: 58px; color: var(--blue); text-align: center; }
+.rank-nome { font-size: 36px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rank-punti { font-family: var(--display); font-size: 44px; color: var(--blue); }
+.rank-var { font-size: 24px; font-weight: 800; padding: 6px 12px; border-radius: 10px; }
+.rank-var.su { background: #dff6e7; color: #12803c; } .rank-var.giu { background: #fde2e2; color: #c0202a; }
+.rank.podio .rank-pos { color: #fff; border-radius: 50%; width: 70px; height: 70px; display: grid; place-items: center; font-size: 46px; justify-self: center; }
+.rank.p1 .rank-pos { background: #e0a91b; } .rank.p2 .rank-pos { background: #9aa5b4; } .rank.p3 .rank-pos { background: #b8743a; }
+.slide.active .rank { animation: entra .6s cubic-bezier(.2,.8,.2,1) both; }
+
 @media (prefers-reduced-motion: reduce) {
   .slide.active * { animation: none !important; }
   .slide { transition: none; transform: none; }
@@ -325,7 +340,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Campi", icona: "campo",
-      titolo: "Prenota il tuo campo",
+      titolo: "Il campo ti aspetta",
       testo: "Prenota in segreteria o su WhatsApp. Se ti manca il compagno, ci pensiamo noi.",
       fatti: [
         { label: "Singolare", note: "campo, giorno / sera", value: "16 / 19 €" },
@@ -337,7 +352,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Diventa socio", icona: "tessera",
-      titolo: "Entra nel Vialar",
+      titolo: "Benvenuto in famiglia",
       testo: "Con l'iscrizione annuale fai parte del circolo e sei tesserato FITP. Chiedi in segreteria.",
       fatti: [
         { label: "Iscrizione al circolo", note: "annuale · tessera FITP inclusa", value: "85 €" },
@@ -347,7 +362,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Area fitness", icona: "fitness",
-      titolo: "Allenati quando vuoi",
+      titolo: "I tuoi orari, il tuo ritmo",
       testo: "Accesso alle zone fitness del circolo con l'abbonamento più adatto a te. Chiedi in segreteria.",
       fatti: [
         { label: "Mensile", value: "50 €" },
@@ -358,7 +373,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Cerca compagno", icona: "compagno",
-      titolo: "Trova con chi giocare",
+      titolo: "Il compagno lo troviamo noi",
       testo: "Il servizio è attivo tutti i giorni: dicci quando vuoi giocare e ti abbiniamo a un socio del tuo livello.",
       fatti: [
         { label: "Lunedì – Giovedì", value: "8–15 · 21–23" },
@@ -370,7 +385,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Classifica sociale", icona: "trofeo",
-      titolo: "Scala la classifica",
+      titolo: "Sfida. Vinci. Sali.",
       testo: "Registrati su vialadder.com, inserisci i risultati dei tuoi match al circolo e scopri dove sei arrivato.",
       fatti: [
         { label: "Registrati", note: "sul portale vialadder.com" },
@@ -384,7 +399,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Scuola Tennis",
-      titolo: "Un percorso per ogni età",
+      titolo: "Crescere giocando",
       testo: "Un'ora di tennis e un'ora di preparazione atletica, con giorni fissi tutta la stagione e partite extra nel weekend.",
       chips: ["Avviamento", "Pre-perfezionamento", "Perfezionamento", "Specializzazione"],
       fatti: [
@@ -397,14 +412,14 @@ const BACHECA = {
     {
       tipo: "foto",
       kicker: "Scuola Tennis",
-      titolo: "La nostra squadra",
+      titolo: "Una grande famiglia",
       testo: "Ragazzi, maestri e preparatori: ogni stagione cresciamo insieme, in campo e fuori.",
       immagine: "assets/foto/scuola-tennis-gruppo.jpg"
     },
     {
       tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
-      titolo: "Allenati per competere",
+      titolo: "Nati per competere",
       testo: "L'obiettivo è formare giocatori capaci di competere a livelli sempre più alti, con un'organizzazione al massimo livello.",
       fatti: [
         { label: "Maestri in campo", note: "3 maestri ogni 2 campi", value: "3 : 2" },
@@ -415,7 +430,7 @@ const BACHECA = {
     {
       tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
-      titolo: "Lo staff",
+      titolo: "Chi ti porta in alto",
       testo: "Due maestri nazionali guidano il gruppo, affiancati a rotazione da due maestri sparring ex 2.6 e da un preparatore atletico dedicato.",
       fatti: [
         { label: "Lorenzo Vincenti", note: "Maestro nazionale" },
@@ -428,7 +443,7 @@ const BACHECA = {
     {
       tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
-      titolo: "La settimana tipo",
+      titolo: "Cinque giorni, zero scorciatoie",
       testo: "Ogni seduta comincia con il riscaldamento e si chiude con il defaticamento, e comprende un'ora di preparazione atletica.",
       fatti: [
         { label: "Sedute di tennis da 2 ore", value: "3" },
@@ -440,7 +455,7 @@ const BACHECA = {
     {
       tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
-      titolo: "Report e videoanalisi", icona: "video",
+      titolo: "Ogni colpo, misurato", icona: "video",
       testo: "Ogni atleta ha la sua dashboard con le valutazioni di tutto lo staff.",
       chips: ["Tecnica", "Tattica", "Fisica", "Mentale", "Nutrizione"],
       fatti: [
@@ -453,7 +468,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Corsi adulti", icona: "gruppo",
-      titolo: "Tennis e preparazione atletica",
+      titolo: "Mai troppo tardi per iniziare",
       testo: "Formula trimestrale: un'ora di tennis e un'ora di preparazione atletica in gruppo, con lavoro di rinforzo mirato al tennis.",
       chips: ["Lunedì e mercoledì", "Martedì e giovedì"],
       fatti: [
@@ -464,9 +479,9 @@ const BACHECA = {
     },
     {
       tipo: "testo",
-      kicker: "Allenamento avanzato",
-      titolo: "Gruppo dal 4.1 FITP in su", icona: "bersaglio",
-      testo: "Allenamento di gruppo per giocatori di livello avanzato, con preparazione atletica facoltativa prima del campo.",
+      kicker: "Allenamento avanzato · dal 4.1 FITP",
+      titolo: "Alza il livello", icona: "bersaglio",
+      testo: "Gruppo per giocatori dal 4.1 FITP in su: ritmo alto, partite vere e preparazione atletica facoltativa prima del campo.",
       fatti: [
         { label: "Lunedì sera", note: "Maestri Matteo e Giordano", value: "21–23" },
         { label: "Preparazione atletica", note: "lunedì, prima del campo", value: "20–21" },
@@ -476,7 +491,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Allenamento avanzato",
-      titolo: "Singolo o a pacchetto",
+      titolo: "Più ti alleni, meno spendi",
       testo: "Il pacchetto comprende 4 allenamenti da fare entro il mese. Stessi prezzi il lunedì e il venerdì.",
       fatti: [
         { label: "Allenamento singolo", value: "25 €" },
@@ -519,7 +534,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Incordatura", icona: "racchetta",
-      titolo: "La tua racchetta, sempre uguale",
+      titolo: "Corde perfette, ogni volta",
       testo: "Salviamo corda e tensione nella tua scheda: la reincordiamo sempre uguale, finché non decidi di cambiare.",
       fatti: [
         { label: "Incordatura", note: "in base alla corda", value: "18–25 €" },
@@ -540,7 +555,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Il nostro staff", icona: "salute",
-      titolo: "Oltre il tennis",
+      titolo: "Un team che pensa a te",
       testo: "Preparatori atletici laureati in Scienze Motorie e istruttori di 2° grado FITP. Per i percorsi individuali basta prenotare.",
       fatti: [
         { label: "Flavio Andreozzi", note: "Nutrizionista · su prenotazione" },
@@ -552,7 +567,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Visite medico-sportive", icona: "stetoscopio",
-      titolo: "Prenotazioni aperte",
+      titolo: "Gioca sereno, gioca in regola",
       testo: "Con il Dott. Luca Mengozzi, medico sportivo: ogni lunedì 14:30–19:30 al centro medico VESA, via degli Scipioni 252.",
       immagine: "assets/locandine/visite-mediche.jpg",
       cta: "Prenota allo 06 69302798"
@@ -570,7 +585,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Feste di compleanno", icona: "festa",
-      titolo: "Festeggia al circolo",
+      titolo: "Una festa da campioni",
       testo: "Maestri e preparatori organizzano una lezione a tema, dinamica e divertente per tutti i festeggiati.",
       chips: ["Mini tennis", "Tennis", "Pickleball", "Ping pong"],
       fatti: [
@@ -653,7 +668,7 @@ function renderTesto(s) {
   const slide = el("section", "slide");
   const left = el("div");
   const lr = el("div", "lead-row"); lr.append(el("p", "lead", s.testo));
-  const h = el("h1", null, s.titolo); if (s.titolo.length > 22) h.classList.add("lungo");
+  const h = el("h1", null, s.titolo); if (s.titolo.length > 18) h.classList.add("lungo");
   left.append(el("div", "kicker", s.kicker), h, lr);
   slide.append(left);
   const right = el("div", "facts" + ((s.fatti || []).length > 4 ? " compact" : ""));
@@ -732,6 +747,24 @@ function renderQrGrande(s) {
   return slide;
 }
 
+function renderClassifica(cat, agg) {
+  const slide = el("section", "slide classifica");
+  const top = el("div", "sponsor-top");
+  const t = el("div"); t.append(el("div", "kicker", "Classifica sociale · vialadder.com"), el("h1", null, cat.titolo || ("Top 10 " + cat.nome)));
+  const lr = el("div", "lead-row"); lr.append(el("p", "lead", cat.sottotitolo || ("I migliori della " + cat.nome + (agg ? " · aggiornata al " + agg : ""))));
+  top.append(t, lr);
+  const grid = el("div", "rank-grid");
+  (cat.giocatori || []).slice(0, 10).forEach((g, k) => {
+    const r = el("div", "rank" + (k < 3 ? " podio p" + (k + 1) : ""));
+    r.append(el("div", "rank-pos", String(g.pos || k + 1)), el("div", "rank-nome", g.nome));
+    r.append(g.var ? el("div", "rank-var " + (g.var > 0 ? "su" : "giu"), (g.var > 0 ? "▲ " : "▼ ") + Math.abs(g.var)) : el("div"));
+    if (g.punti != null) r.append(el("div", "rank-punti", String(g.punti)));
+    grid.append(r);
+  });
+  slide.append(top, grid);
+  return slide;
+}
+
 function renderEventi() {
   const oggi = new Date(); oggi.setHours(0, 0, 0, 0);
   const prossimi = BACHECA.eventi.filter(e => new Date(e.data + "T23:59:00") >= oggi)
@@ -778,6 +811,7 @@ function renderInstagram() {
 }
 
 let POSTS = [];
+let CLASSIFICA = null;   // da classifica/classifica.json (vialadder.com)
 
 function renderPost(p) {
   const slide = el("section", "slide post");
@@ -814,6 +848,11 @@ function build() {
   nodes = [];
   const n = Math.max(servizi.length, recenti.length);
   for (let k = 0; k < n; k++) { if (servizi[k]) nodes.push(servizi[k]); if (recenti[k]) nodes.push(recenti[k]); }
+  if (CLASSIFICA && CLASSIFICA.categorie && CLASSIFICA.categorie.length) {
+    const pos = nodes.findIndex(n => n.textContent.includes("vialadder.com"));
+    const cl = CLASSIFICA.categorie.filter(c => (c.giocatori || []).length).map(c => renderClassifica(c, CLASSIFICA.aggiornata));
+    nodes.splice(pos >= 0 ? pos + 1 : nodes.length, 0, ...cl);
+  }
   // distribuisce le locandine (sponsor) a intervalli regolari nella rotazione
   const loc = BACHECA.locandine.map(renderLocandina);
   if (loc.length) {
@@ -857,6 +896,10 @@ function prossima() {
 
 async function loadPosts() {
   try {
+    const rc = await fetch("classifica/classifica.json?t=" + Date.now(), { cache: "no-store" });
+    if (rc.ok) CLASSIFICA = await rc.json();
+  } catch (e) { CLASSIFICA = null; }
+  try {
     const r = await fetch("instagram/posts.json?t=" + Date.now(), { cache: "no-store" });
     if (r.ok) POSTS = (await r.json()).posts || [];
   } catch (e) { POSTS = []; }
@@ -875,7 +918,7 @@ async function firma(url) {
   catch (e) { return null; }
 }
 async function controllaAggiornamenti() {
-  for (const url of ["index.html", "instagram/posts.json"]) {
+  for (const url of ["index.html", "instagram/posts.json", "classifica/classifica.json"]) {
     const t = await firma(url);
     if (t == null) continue;
     if (firme[url] != null && firme[url] !== t) { location.reload(); return; }
