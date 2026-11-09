@@ -165,7 +165,7 @@ h1.lungo { font-size: 138px; }
 .facts { gap: 22px; }
 .fact { padding: 30px 40px; border-radius: 24px; box-shadow: 0 18px 40px rgba(6,23,122,.30); }
 .fact-label { font-size: 40px; }
-.fact-note { font-size: 23px; margin-top: 8px; }
+.fact-note { font-size: 25px; margin-top: 8px; }
 .fact-value { font-size: 88px; }
 .facts.compact { gap: 16px; }
 .facts.compact .fact { padding: 22px 36px; }
@@ -294,7 +294,7 @@ header, main, footer { position: relative; z-index: 1; }
 .staff-card.resp { background: var(--navy); color: #fff; }
 .staff-tag { display: inline-block; font-size: 20px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #fff; color: var(--navy); padding: 5px 12px; border-radius: 8px; margin-bottom: 12px; }
 .staff-nome { font-family: var(--display); font-size: 66px; line-height: 1; text-transform: uppercase; }
-.staff-ruolo { font-size: 26px; font-weight: 700; line-height: 1.35; margin-top: 10px; color: var(--blue); }
+.staff-ruolo { font-size: 29px; font-weight: 700; line-height: 1.35; margin-top: 10px; color: var(--blue); }
 .staff-card.resp .staff-ruolo { color: var(--mist); }
 .slide.active .staff-card { animation: entra .7s cubic-bezier(.2,.8,.2,1) both; }
 .slide.active .staff-card:nth-child(2) { animation-delay: .15s; } .slide.active .staff-card:nth-child(3) { animation-delay: .3s; } .slide.active .staff-card:nth-child(4) { animation-delay: .45s; }
@@ -336,6 +336,32 @@ header { gap: 40px; }
 .meteo-h svg { width: 34px; height: 34px; }
 .meteo-h b { font-size: 22px; }
 #stage.verticale .meteo-prev { display: none; }
+
+
+.scalata { grid-template-columns: 1fr 620px; }
+.scalata h1 { font-size: 190px; }
+.scalata-card { background: #fff; color: var(--navy); border-radius: 30px; padding: 50px; text-align: center; box-shadow: 0 30px 70px rgba(6,23,122,.4); display: grid; gap: 10px; }
+.scalata-num { font-family: var(--display); font-size: 260px; line-height: .9; color: #12803c; }
+.scalata-lab { font-size: 36px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
+.scalata-pos { font-size: 30px; font-weight: 700; color: var(--blue); margin-top: 14px; }
+.slide.active .scalata-card { animation: pop .9s .3s both; }
+
+
+/* Calendario stagione */
+.calendario { grid-template-columns: 1fr; grid-template-rows: auto 1fr; align-items: stretch; gap: 30px; padding-top: 20px; }
+.calendario .sponsor-top h1 { font-size: 120px; }
+.cal-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, 1fr); grid-auto-flow: column; gap: 14px 30px; }
+.cal-ev { display: grid; grid-template-columns: 190px 1fr auto; align-items: center; gap: 20px; background: #fff; color: var(--navy); border-radius: 18px; padding: 0 26px; box-shadow: 0 14px 30px rgba(6,23,122,.25); }
+.cal-mese { font-family: var(--display); font-size: 40px; color: var(--blue); text-transform: uppercase; }
+.cal-nome { font-size: 30px; font-weight: 800; line-height: 1.15; }
+.cal-nome span { display: block; font-size: 20px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
+.cal-stato { font-size: 20px; font-weight: 800; padding: 8px 14px; border-radius: 10px; white-space: nowrap; background: #eef2ff; color: var(--blue); }
+.cal-ev.fatto { background: rgba(255,255,255,.55); }
+.cal-ev.fatto .cal-stato { background: #dff6e7; color: #12803c; }
+.cal-ev.prossimo { background: var(--navy); color: #fff; outline: 4px solid #fff; }
+.cal-ev.prossimo .cal-mese, .cal-ev.prossimo .cal-nome span { color: var(--mist); }
+.cal-ev.prossimo .cal-stato { background: #fff; color: var(--navy); }
+.slide.active .cal-ev { animation: entra .6s cubic-bezier(.2,.8,.2,1) both; }
 
 @media (prefers-reduced-motion: reduce) {
   .slide.active * { animation: none !important; }
@@ -381,13 +407,40 @@ const BACHECA = {
   secondiPerSlide: 12,      // usato solo se il calcolo automatico non è possibile
   /* Durata automatica: più testo c'è, più a lungo resta la schermata (tra minimo e massimo).
      Per forzare una durata su una singola schermata aggiungi  durata: 15  nella sua configurazione. */
-  durataMinima: 8,
-  durataMassima: 20,
-  durataLocandina: 12,
+  durataMinima: 7,
+  durataMassima: 15,
+  durataLocandina: 10,
   instagram: "tennisclubvialar",
-  postInRotazione: 4,       // quanti post recenti mostrare a tutto schermo tra una slide e l'altra
+  postInRotazione: 3,       // quanti post recenti mostrare a tutto schermo tra una slide e l'altra
   /* Striscia avvisi in basso: compare solo se qui c'è almeno un avviso, es. "Circolo chiuso il 25 dicembre" */
   avvisi: [],
+  /* Calendario della stagione: stato "fatto" oppure "da fare". Solo il mese, perché le date possono cambiare. */
+  calendario: [
+    { titolo: "Scuola tennis", chi: "Per i ragazzi della scuola tennis", eventi: [
+      { mese: "Settembre", nome: "Orange Cup", tipo: "Torneo orange", stato: "fatto" },
+      { mese: "Ottobre", nome: "Green Cup", tipo: "Torneo green", stato: "fatto" },
+      { mese: "Novembre", nome: "Autumn Tennis Party", tipo: "Torneo over 14 M/F", stato: "fatto" },
+      { mese: "Dicembre", nome: "Christmas Party", tipo: "Torneo red + orange", stato: "da fare" },
+      { mese: "Gennaio", nome: "New Year Tennis Trophy", tipo: "Torneo green", stato: "da fare" },
+      { mese: "Febbraio", nome: "Carnival Tennis Cup", tipo: "Torneo over 14 M/F", stato: "da fare" },
+      { mese: "Marzo", nome: "Spring Tennis Cup", tipo: "Torneo red + orange", stato: "da fare" },
+      { mese: "Aprile", nome: "Easter Tennis Open", tipo: "Torneo green", stato: "da fare" },
+      { mese: "Maggio", nome: "Internazionali BNL Open", tipo: "Torneo over 14 M/F", stato: "da fare" },
+      { mese: "Giugno", nome: "Master Finale", tipo: "Festa di fine anno", stato: "da fare" }
+    ] },
+    { titolo: "Adulti", chi: "Rodei per i soci adulti", eventi: [
+      { mese: "Settembre", nome: "Vialar Open", tipo: "Rodeo open", stato: "fatto" },
+      { mese: "Ottobre", nome: "Ladies Cup", tipo: "Rodeo femminile", stato: "fatto" },
+      { mese: "Novembre", nome: "Gentlemen's Cup", tipo: "Rodeo maschile", stato: "da fare" },
+      { mese: "Dicembre", nome: "Silver Cup", tipo: "Rodeo over 45 open", stato: "da fare" },
+      { mese: "Gennaio", nome: "Pickleball Open", tipo: "Rodeo open", stato: "da fare" },
+      { mese: "Febbraio", nome: "Doppio Open", tipo: "Rodeo open", stato: "da fare" },
+      { mese: "Marzo", nome: "Davis Cup Vialar", tipo: "Rodeo a squadre", stato: "da fare" },
+      { mese: "Aprile", nome: "Torneo di Pickleball", tipo: "Rodeo open", stato: "da fare" },
+      { mese: "Maggio", nome: "Internazionali BNL Open", tipo: "Rodeo open", stato: "da fare" },
+      { mese: "Giugno", nome: "Master Finale Top 8", tipo: "Tabellone finale", stato: "da fare" }
+    ] }
+  ],
   /* Calendario eventi: aggiungi righe come { data: "2026-11-22", titolo: "Torneo sociale", luogo: "T.C. Vialar" } */
   eventi: [],
   /* Locandine a tutto schermo: metti l'immagine in assets/locandine/ e aggiungi { immagine: "assets/locandine/nome.jpg", titolo: "..." } */
@@ -430,7 +483,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Area fitness", icona: "fitness",
-      titolo: "I tuoi orari, il tuo ritmo",
+      titolo: "I tuoi orari, il tuo ritmo", fascia: "mattina sera",
       testo: "Accesso alle zone fitness del circolo con l'abbonamento più adatto a te. Chiedi in segreteria.",
       fatti: [
         { label: "Mensile", value: "50 €" },
@@ -453,7 +506,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Classifica sociale", icona: "trofeo",
-      titolo: "Sfida. Vinci. Sali.",
+      titolo: "Sfida. Vinci. Sali.", fascia: "mattina sera",
       testo: "Registrati su vialadder.com, inserisci i risultati dei tuoi match al circolo e scopri dove sei arrivato.",
       fatti: [
         { label: "Registrati", note: "sul portale vialadder.com" },
@@ -467,7 +520,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Scuola Tennis",
-      titolo: "Crescere giocando",
+      titolo: "Crescere giocando", fascia: "pomeriggio",
       testo: "Un'ora di tennis e un'ora di preparazione atletica, con giorni fissi tutta la stagione e partite extra nel weekend.",
       chips: ["Avviamento", "Pre-perfezionamento", "Perfezionamento", "Specializzazione"],
       fatti: [
@@ -480,14 +533,14 @@ const BACHECA = {
     {
       tipo: "video",
       kicker: "Scuola tennis",
-      titolo: "Il dettaglio che fa la differenza",
+      titolo: "Il dettaglio che fa la differenza", fascia: "pomeriggio",
       testo: "Il maestro accanto, il gesto corretto, la ripetizione giusta: così nasce un buon colpo.",
       video: "assets/video/lezione-tecnica.mp4", poster: "assets/video/lezione-tecnica.jpg"
     },
     {
       tipo: "foto",
       kicker: "Scuola Tennis",
-      titolo: "Una grande famiglia",
+      titolo: "Una grande famiglia", fascia: "pomeriggio",
       testo: "Ragazzi, maestri e preparatori: ogni stagione cresciamo insieme, in campo e fuori.",
       immagine: "assets/foto/scuola-tennis-gruppo.jpg"
     },
@@ -508,7 +561,7 @@ const BACHECA = {
     {
       tipo: "staff",
       kicker: "Lo staff tecnico",
-      titolo: "Dove si costruiscono i campioni",
+      titolo: "Dove si costruiscono i campioni", fascia: "pomeriggio",
       gruppi: [
         { settore: "Settore specializzazione", membri: [
           { nome: "Lorenzo Vincenti", ruolo: "Maestro nazionale · Preparatore fisico 2° grado FITP · Laureato in Scienze Motorie", resp: true },
@@ -520,7 +573,7 @@ const BACHECA = {
     {
       tipo: "staff",
       kicker: "Lo staff tecnico",
-      titolo: "In campo con i ragazzi",
+      titolo: "In campo con i ragazzi", fascia: "pomeriggio",
       gruppi: [
         { settore: "Perfezionamento · settore B", membri: [
           { nome: "Matteo Capuano", ruolo: "Istruttore 2° grado", resp: true },
@@ -535,7 +588,7 @@ const BACHECA = {
     {
       tipo: "staff",
       kicker: "Lo staff tecnico",
-      titolo: "I primi passi in campo",
+      titolo: "I primi passi in campo", fascia: "pomeriggio",
       gruppi: [
         { settore: "Settore avviamento · i più piccoli", membri: [
           { nome: "Gianmarco Meringolo", ruolo: "Istruttore 1° grado · Preparatore fisico 2° grado FITP · Laureato in Scienze Motorie", resp: true },
@@ -562,34 +615,34 @@ const BACHECA = {
       titolo: "Campione italiano!",
       testo: "Tommaso Maria Salvatori è campione italiano di doppio Under 11! Complimenti a Tommaso e al suo maestro.",
       immagini: ["assets/foto/campione-italiano-locandina.jpg", "assets/foto/campione-italiano-maestro.jpg"],
-      durata: 14
+      durata: 12
     },
     {
       tipo: "galleria", tema: "rosso",
       kicker: "Settore performance",
-      titolo: "Coppe, podi e sorrisi",
+      titolo: "Coppe, podi e sorrisi", fascia: "pomeriggio",
       testo: "Tornei FITP, trasferte e allenamenti: i ragazzi del Vialar si fanno valere ovunque.",
       immagini: ["assets/foto/podio-ragazza-1.jpg", "assets/foto/podio-ragazza-2.jpg", "assets/foto/allievi-maestro.jpg", "assets/foto/squadra-agonisti.jpg"],
-      durata: 16
+      durata: 13
     },
     {
       tipo: "video", tema: "rosso",
       kicker: "Settore performance",
-      titolo: "Ogni colpo conta",
+      titolo: "Ogni colpo conta", fascia: "pomeriggio",
       testo: "Tecnica, ritmo e intensità, con il maestro sempre a fianco: così si allenano i nostri ragazzi.",
       video: "assets/video/agonista-colpi.mp4", poster: "assets/video/agonista-colpi.jpg"
     },
     {
       tipo: "foto", tema: "rosso",
       kicker: "Settore performance",
-      titolo: "Sempre in campo",
+      titolo: "Sempre in campo", fascia: "pomeriggio",
       testo: "Il gruppo performance in trasferta al Piatti Tennis Center.",
       immagine: "assets/foto/trasferta-piatti.jpg"
     },
     {
       tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
-      titolo: "Nati per competere",
+      titolo: "Nati per competere", fascia: "pomeriggio",
       testo: "L'obiettivo è formare giocatori capaci di competere a livelli sempre più alti, con un'organizzazione al massimo livello.",
       fatti: [
         { label: "Maestri in campo", note: "3 maestri ogni 2 campi", value: "3 : 2" },
@@ -600,20 +653,7 @@ const BACHECA = {
     {
       tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
-      titolo: "Chi ti porta in alto",
-      testo: "Due maestri nazionali guidano il gruppo, affiancati a rotazione da due maestri sparring ex 2.6 e da un preparatore atletico dedicato.",
-      fatti: [
-        { label: "Lorenzo Vincenti", note: "Maestro nazionale" },
-        { label: "Fabio Meringolo", note: "Maestro nazionale" },
-        { label: "Giordano Barozzi", note: "Istruttore 2° grado · sparring · ex 2.6" },
-        { label: "Riccardo Casavola", note: "Istruttore 1° grado · sparring · ex 2.6" },
-        { label: "Mario Paura", note: "Maestro e preparatore atletico" }
-      ]
-    },
-    {
-      tipo: "testo", tema: "rosso",
-      kicker: "Perfezionamento e agonistica",
-      titolo: "Cinque giorni, zero scorciatoie",
+      titolo: "Cinque giorni, zero scorciatoie", fascia: "pomeriggio",
       testo: "Ogni seduta comincia con il riscaldamento e si chiude con il defaticamento, e comprende un'ora di preparazione atletica.",
       fatti: [
         { label: "Sedute di tennis da 2 ore", value: "3" },
@@ -625,7 +665,7 @@ const BACHECA = {
     {
       tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
-      titolo: "Ogni colpo, misurato", icona: "video",
+      titolo: "Ogni colpo, misurato", fascia: "pomeriggio", icona: "video",
       testo: "Ogni atleta ha la sua dashboard con le valutazioni di tutto lo staff.",
       chips: ["Tecnica", "Tattica", "Fisica", "Mentale", "Nutrizione"],
       fatti: [
@@ -638,14 +678,14 @@ const BACHECA = {
     {
       tipo: "video",
       kicker: "Scuola tennis · avviamento",
-      titolo: "Si comincia giocando",
+      titolo: "Si comincia giocando", fascia: "pomeriggio",
       testo: "Coordinazione, equilibrio e i primi colpi: il tennis dei più piccoli è movimento e divertimento.",
       video: "assets/video/minitennis.mp4", poster: "assets/video/minitennis.jpg"
     },
     {
       tipo: "testo",
       kicker: "Corsi adulti", icona: "gruppo",
-      titolo: "Mai troppo tardi per iniziare",
+      titolo: "Mai troppo tardi per iniziare", fascia: "mattina sera",
       testo: "Formula trimestrale: un'ora di tennis e un'ora di preparazione atletica in gruppo, con lavoro di rinforzo mirato al tennis.",
       chips: ["Lunedì e mercoledì", "Martedì e giovedì"],
       fatti: [
@@ -657,7 +697,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Allenamento avanzato · dal 4.1 FITP",
-      titolo: "Alza il livello", icona: "bersaglio",
+      titolo: "Alza il livello", fascia: "mattina sera", icona: "bersaglio",
       testo: "Gruppo per giocatori dal 4.1 FITP in su: ritmo alto, partite vere e preparazione atletica facoltativa prima del campo.",
       fatti: [
         { label: "Lunedì sera", note: "Maestri Matteo e Giordano", value: "21–23" },
@@ -668,15 +708,15 @@ const BACHECA = {
     {
       tipo: "video",
       kicker: "Allenamento avanzato",
-      titolo: "Ritmo da torneo",
+      titolo: "Ritmo da torneo", fascia: "sera",
       testo: "Palleggi intensi, scambi veri e i maestri in campo: la sera, il gruppo avanzato alza il livello.",
       video: "assets/video/allenamento-avanzato.mp4", poster: "assets/video/allenamento-avanzato.jpg",
-      durata: 20
+      durata: 15
     },
     {
       tipo: "testo",
       kicker: "Allenamento avanzato",
-      titolo: "Più ti alleni, meno spendi",
+      titolo: "Più ti alleni, meno spendi", fascia: "sera",
       testo: "Il pacchetto comprende 4 allenamenti da fare entro il mese. Stessi prezzi il lunedì e il venerdì.",
       fatti: [
         { label: "Allenamento singolo", value: "25 €" },
@@ -688,7 +728,7 @@ const BACHECA = {
     {
       tipo: "testo", tema: "rosso",
       kicker: "Preparazione atletica",
-      titolo: "Più forte. Più veloce. Senza dolore.", icona: "fitness",
+      titolo: "Più forte. Più veloce. Senza dolore.", fascia: "mattina sera", icona: "fitness",
       testo: "Il corpo è il tuo primo colpo.",
       chips: ["Over 60", "Agonisti", "Fitness", "Riabilitazione"],
       cta: "Inizia ora →"
@@ -696,7 +736,7 @@ const BACHECA = {
     {
       tipo: "testo", tema: "rosso", griglia: true,
       kicker: "Scegli il tuo obiettivo",
-      titolo: "Un percorso per ognuno.",
+      titolo: "Un percorso per ognuno.", fascia: "mattina",
       testo: "Seguiti da uno staff qualificato: laureati in Scienze Motorie, Invictus Trainer, preparatore fisico di 2° livello FITP.",
       fatti: [
         { label: "Over 60" }, { label: "Agonisti" },
@@ -707,14 +747,14 @@ const BACHECA = {
     {
       tipo: "video", tema: "rosso",
       kicker: "Preparazione atletica",
-      titolo: "Piedi veloci, colpi migliori",
+      titolo: "Piedi veloci, colpi migliori", fascia: "mattina pomeriggio",
       testo: "Rapidità, coordinazione e cambi di direzione: il tennis si gioca prima di tutto con le gambe.",
       video: "assets/video/atletica-rapidita.mp4", poster: "assets/video/atletica-rapidita.jpg"
     },
     {
       tipo: "testo", tema: "rosso",
       kicker: "Inizia ora",
-      titolo: "Inizia dai tuoi numeri.",
+      titolo: "Inizia dai tuoi numeri.", fascia: "mattina sera",
       testo: "Test iniziale, programma su misura e report grafico ogni mese. Per costi e percorsi chiedi in segreteria.",
       fatti: [
         { label: "Lunedì – venerdì", note: "fascia mattutina", value: "9–12" },
@@ -739,11 +779,13 @@ const BACHECA = {
       tipo: "testo",
       kicker: "Il nostro negozio",
       titolo: "Breakpoint",
-      testo: "Il nostro racket sports partner per tennis e padel. Prova in campo le racchette test Dunlop e Yonex: chiedile in segreteria.",
-      immagine: "assets/locandine/breakpoint.jpg",
-      cta: "Via Trionfale 59 · Roma"
+      testo: "Il nostro racket sports partner per tennis e padel, in via Trionfale 59.", icona: "racchetta",
+      fatti: [
+        { label: "Racchette test", note: "Dunlop e Yonex, da provare in campo" },
+        { label: "Tennis e padel", note: "attrezzatura, abbigliamento, accessori" },
+        { label: "Chiedi in segreteria", note: "ti mettiamo in contatto con Breakpoint" }
+      ]
     },
-    { tipo: "instagram" },
     {
       tipo: "testo",
       kicker: "Il nostro staff", icona: "salute",
@@ -760,9 +802,13 @@ const BACHECA = {
       tipo: "testo",
       kicker: "Visite medico-sportive", icona: "stetoscopio",
       titolo: "Gioca sereno, gioca in regola",
-      testo: "Con il Dott. Luca Mengozzi, medico sportivo: ogni lunedì 14:30–19:30 al centro medico VESA, via degli Scipioni 252.",
-      immagine: "assets/locandine/visite-mediche.jpg",
-      cta: "Prenota allo 06 69302798"
+      testo: "Visite medico-sportive convenzionate al centro VESA, in via degli Scipioni 252.",
+      icona: "stetoscopio",
+      fatti: [
+        { label: "Ogni lunedì", note: "centro medico VESA", value: "14:30–19:30" },
+        { label: "Dott. Luca Mengozzi", note: "medico sportivo" },
+        { label: "Prenota", note: "tesserati del circolo", value: "06 69302798" }
+      ]
     },
     {
       tipo: "testo",
@@ -777,7 +823,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Feste di compleanno", icona: "festa",
-      titolo: "Una festa da campioni",
+      titolo: "Una festa da campioni", fascia: "pomeriggio",
       testo: "Maestri e preparatori organizzano una lezione a tema, dinamica e divertente per tutti i festeggiati.",
       chips: ["Mini tennis", "Tennis", "Pickleball", "Ping pong"],
       fatti: [
@@ -804,10 +850,10 @@ const BACHECA = {
     {
       tipo: "galleria",
       kicker: "Tornei del circolo",
-      titolo: "Che emozione, ragazzi!",
+      titolo: "Che emozione, ragazzi!", fascia: "pomeriggio",
       testo: "Tornei, sfide e premiazioni: ogni torneo al Vialar è una festa per tutta la scuola tennis.",
       immagini: ["assets/foto/premiazione-1.jpg", "assets/foto/premiazione-2.jpg", "assets/foto/premiazione-3.jpg", "assets/foto/premiazione-4.jpg", "assets/foto/premiazione-5.jpg"],
-      durata: 20
+      durata: 15
     },
     {
       tipo: "testo",
@@ -832,7 +878,8 @@ const BACHECA = {
         { nome: "Centro medico VESA", logo: "assets/sponsor/vesa.png", sfondo: "#0b2a6e" }
       ]
     },
-    { tipo: "eventi" },
+    { tipo: "calendario", indice: 0 },
+    { tipo: "calendario", indice: 1 },
     {
       tipo: "qrgrande",
       kicker: "Community WhatsApp",
@@ -1043,6 +1090,38 @@ function renderGalleria(s) {
   return slide;
 }
 
+function renderScalata(cat, agg) {
+  const g = (cat.giocatori || []).slice().sort((a, b) => (b.var || 0) - (a.var || 0))[0];
+  if (!g || !(g.var > 0)) return null;
+  const slide = el("section", "slide scalata");
+  const left = el("div");
+  const lr = el("div", "lead-row"); lr.append(el("p", "lead", "La scalata più bella della settimana nella classifica sociale. Complimenti!"));
+  left.append(el("div", "kicker", "Socio della settimana"), el("h1", null, nomeClassifica(g)), lr);
+  const card = el("div", "scalata-card");
+  card.append(el("div", "scalata-num", "+" + g.var), el("div", "scalata-lab", "posizioni guadagnate"), el("div", "scalata-pos", "Ora " + g.pos + "° in classifica · " + g.punti + " punti"));
+  slide.append(left, card);
+  return slide;
+}
+
+function renderCalendario(c) {
+  const slide = el("section", "slide calendario");
+  const top = el("div", "sponsor-top");
+  const t = el("div"); t.append(el("div", "kicker", "Calendario della stagione · " + c.titolo), el("h1", null, "Segna in agenda"));
+  const lr = el("div", "lead-row"); lr.append(el("p", "lead", c.chi + ". Le date esatte le trovi in segreteria."));
+  top.append(t, lr);
+  const grid = el("div", "cal-grid");
+  const prossimo = c.eventi.findIndex(e => e.stato !== "fatto");
+  c.eventi.forEach((e, k) => {
+    const r = el("div", "cal-ev " + (e.stato === "fatto" ? "fatto" : "dafare") + (k === prossimo ? " prossimo" : ""));
+    r.append(el("div", "cal-mese", e.mese));
+    const n = el("div", "cal-nome", e.nome); n.append(el("span", null, e.tipo)); r.append(n);
+    r.append(el("div", "cal-stato", e.stato === "fatto" ? "✓ Completato" : (k === prossimo ? "Prossimo" : "In programma")));
+    grid.append(r);
+  });
+  slide.append(top, grid);
+  return slide;
+}
+
 function renderEventi() {
   const oggi = new Date(); oggi.setHours(0, 0, 0, 0);
   const prossimi = BACHECA.eventi.filter(e => new Date(e.data + "T23:59:00") >= oggi)
@@ -1115,10 +1194,27 @@ const dots = document.getElementById("dots");
 const progress = document.getElementById("progress");
 let nodes = [], idx = 0;
 
+/* Fasce orarie: la bacheca mostra i contenuti adatti a chi è al circolo in quel momento.
+   mattina 7–14 · pomeriggio 14–19 · sera 19–24 · weekend tutto il giorno (niente scuola tennis).
+   Le schermate senza "fascia" girano sempre. */
+function fasciaAttuale() {
+  const forzata = new URLSearchParams(location.search).get("fascia");   // per prova: ?fascia=mattina
+  if (forzata) return forzata;
+  const d = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Rome" }));
+  const g = d.getDay(), h = d.getHours();
+  if (g === 0 || g === 6) return "weekend";
+  if (h < 14) return "mattina";
+  if (h < 19) return "pomeriggio";
+  return "sera";
+}
+let FASCIA = null;
+
 function build() {
-  const servizi = BACHECA.slide.map(s => {
+  FASCIA = fasciaAttuale();
+  const fa = fasciaAttuale();
+  const servizi = BACHECA.slide.filter(s => !s.fascia || s.fascia.split(" ").includes(fa) || (fa === "weekend" && !/^pomeriggio$/.test(s.fascia))).map(s => {
     const n = (
-    s.tipo === "instagram" ? renderInstagram() : s.tipo === "eventi" ? renderEventi() :
+    s.tipo === "instagram" ? renderInstagram() : s.tipo === "eventi" ? renderEventi() : s.tipo === "calendario" ? renderCalendario(BACHECA.calendario[s.indice]) :
     s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : s.tipo === "qrgrande" ? renderQrGrande(s) : s.tipo === "staff" ? renderStaff(s) : s.tipo === "video" ? renderVideo(s) : s.tipo === "videopieno" ? renderVideoPieno(s) : s.tipo === "galleria" ? renderGalleria(s) : renderTesto(s));
     if (n && s.durata) n.dataset.durata = s.durata;
     if (n && s.sfondo) n.dataset.sfondo = s.sfondo;
@@ -1135,7 +1231,10 @@ function build() {
   if (CLASSIFICA && CLASSIFICA.categorie && CLASSIFICA.categorie.length) {
     const pos = nodes.findIndex(n => n.textContent.includes("vialadder.com"));
     const cl = CLASSIFICA.categorie.filter(c => (c.giocatori || []).length).map(c => renderClassifica(c, CLASSIFICA.aggiornata));
-    nodes.splice(pos >= 0 ? pos + 1 : nodes.length, 0, ...cl);
+    const sal = CLASSIFICA.categorie.find(c => c.nome === "in salita");
+    const sc = sal && renderScalata(sal, CLASSIFICA.aggiornata);
+    if (sc) cl.unshift(sc);
+    if (pos >= 0) nodes.splice(pos + 1, 0, ...cl);
   }
   // distribuisce le locandine (sponsor) a intervalli regolari nella rotazione
   const loc = BACHECA.locandine.map(renderLocandina);
@@ -1179,17 +1278,21 @@ function show(i) {
 function durata(n) {
   if (n.dataset.durata) return +n.dataset.durata;
   if (n.classList.contains("locandina")) return BACHECA.durataLocandina;
-  if (n.classList.contains("video-slide")) return 13;
+  if (n.classList.contains("video-slide")) return 11;
   if (n.classList.contains("videopieno")) return 18;
-  if (n.classList.contains("post") && !n.classList.contains("con-immagine")) return 14; // post Instagram: il testo lungo viene tagliato a schermo
+  if (n.classList.contains("post") && !n.classList.contains("con-immagine")) return 11; // post Instagram: il testo lungo viene tagliato a schermo
   const parole = (n.textContent || "").trim().split(/\s+/).filter(Boolean).length;
   // circa 4 parole al secondo per chi legge da qualche metro, più qualche secondo per guardare
-  const sec = Math.round(5 + parole / 4);
+  const sec = Math.round(4 + parole / 4.5);
   return Math.min(BACHECA.durataMassima, Math.max(BACHECA.durataMinima, sec));
 }
 
 function prossima() {
-  setTimeout(() => { idx = (idx + 1) % nodes.length; show(idx); prossima(); }, durata(nodes[idx]) * 1000);
+  setTimeout(() => {
+    idx = (idx + 1) % nodes.length;
+    if (idx === 0 && fasciaAttuale() !== FASCIA) build();
+    show(idx); prossima();
+  }, durata(nodes[idx]) * 1000);
 }
 
 async function loadPosts() {
@@ -1226,7 +1329,9 @@ async function controllaAggiornamenti() {
 controllaAggiornamenti();
 setInterval(controllaAggiornamenti, 5 * 60 * 1000);
 /* ricarica comunque una volta a notte, per sicurezza */
-setTimeout(() => location.reload(), 6 * 60 * 60 * 1000);
+setInterval(async () => {   // ricarica di sicurezza ogni 6 ore, solo se internet c'è
+  try { const r = await fetch("index.html?t=" + Date.now(), { cache: "no-store" }); if (r.ok) location.reload(); } catch (e) {}
+}, 6 * 60 * 60 * 1000);
 
 
 /* ===== Meteo: Open-Meteo, gratuito e senza chiave. Coordinate del circolo. ===== */
