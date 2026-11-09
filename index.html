@@ -313,6 +313,9 @@ header, main, footer { position: relative; z-index: 1; }
 .slide.videopieno { padding: 0; display: block; position: fixed; inset: 0; z-index: 5; }
 .videopieno video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .videopieno::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(6,23,122,.85) 0%, rgba(10,90,212,.35) 35%, rgba(0,0,0,0) 60%); }
+.videopieno-logo { position: absolute; top: 50px; left: 80px; z-index: 1; display: flex; align-items: center; gap: 18px; font-weight: 800; font-size: 40px; letter-spacing: 1px; filter: drop-shadow(0 4px 14px rgba(0,0,0,.45)); }
+.videopieno-logo svg { width: 82px; height: 70px; }
+.videopieno::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 240px; z-index: 1; background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0)); }
 .videopieno-testo { position: absolute; left: 100px; bottom: 80px; right: 100px; z-index: 1; }
 .videopieno-testo h1 { font-size: 150px; margin: 18px 0 0; }
 .slide.active.videopieno video { animation: zoom 1.2s ease-out both; }
@@ -994,7 +997,9 @@ function renderVideoPieno(s) {
   v.setAttribute("muted", ""); v.setAttribute("playsinline", "");
   const txt = el("div", "videopieno-testo");
   txt.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo));
-  slide.append(v, txt);
+  const logo = el("div", "videopieno-logo");
+  logo.innerHTML = '<svg viewBox="0 0 387 332" aria-hidden="true"><g fill="#fff"><polygon points="0,0 90,0 182,153 136,234"/><polygon points="114,0 272,0 193,136"/><polygon points="294,0 387,0 193,332 148,254"/></g></svg><span>T.C. VIALAR</span>';
+  slide.append(v, logo, txt);
   return slide;
 }
 
@@ -1140,7 +1145,7 @@ function durata(n) {
   if (n.dataset.durata) return +n.dataset.durata;
   if (n.classList.contains("locandina")) return BACHECA.durataLocandina;
   if (n.classList.contains("video-slide")) return 12;
-  if (n.classList.contains("videopieno")) return 17;
+  if (n.classList.contains("videopieno")) return 18;
   if (n.classList.contains("post") && !n.classList.contains("con-immagine")) return 14; // post Instagram: il testo lungo viene tagliato a schermo
   const parole = (n.textContent || "").trim().split(/\s+/).filter(Boolean).length;
   // circa 4 parole al secondo per chi legge da qualche metro, più qualche secondo per guardare
