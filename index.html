@@ -2,7 +2,13 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bacheca Vialar">
+<meta name="theme-color" content="#0a5ad4">
+<link rel="apple-touch-icon" href="assets/icona.png">
 <title>Bacheca TC Vialar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -192,6 +198,22 @@ h1.lungo { font-size: 138px; }
 .slide.active .sponsor-card:nth-child(5), .slide.active .ig-tile:nth-child(5) { animation-delay: .48s; }
 .slide.active .ig-tile:nth-child(6) { animation-delay: .6s; }
 .slide.active .foto-media img, .slide.active .post-media img { animation: kenburns 16s ease-out both; }
+
+
+/* ===== Schermi verticali (iPad, telefono): una colonna, tutto impilato ===== */
+#stage.verticale header { padding: 0 60px; }
+#stage.verticale .brand-sub { display: none; }
+#stage.verticale .slide { grid-template-columns: 1fr !important; grid-template-rows: auto auto; align-content: center; gap: 50px; padding: 20px 70px 110px; }
+#stage.verticale h1 { font-size: 150px; }
+#stage.verticale h1.lungo { font-size: 124px; }
+#stage.verticale .lead { max-width: none; }
+#stage.verticale .post-media { width: 720px; height: 900px; justify-self: center; }
+#stage.verticale .post.con-immagine .post-media { order: 2; }
+#stage.verticale .foto-media { height: 640px; }
+#stage.verticale .locandina img { width: 100%; height: auto; max-height: 1500px; }
+#stage.verticale .sponsor-top { grid-template-columns: 1fr; gap: 20px; }
+#stage.verticale .sponsor-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 260px; }
+#stage.verticale .ig-grid { max-width: 900px; justify-self: center; width: 100%; }
 
 @media (prefers-reduced-motion: reduce) {
   .slide.active * { animation: none !important; }
@@ -748,8 +770,10 @@ tick(); setInterval(tick, 10000);
    alle proporzioni dello schermo, senza bande ai lati */
 function fit() {
   const w = window.innerWidth, h = window.innerHeight;
-  const s = Math.min(w / 1920, h / 1080);
+  const verticale = h > w * 1.05;           // iPad o telefono in verticale
+  const s = verticale ? Math.min(w / 1080, h / 1920) : Math.min(w / 1920, h / 1080);
   const st = document.getElementById("stage");
+  st.classList.toggle("verticale", verticale);
   st.style.width = (w / s) + "px";
   st.style.height = (h / s) + "px";
   st.style.transform = `translate(-50%, -50%) scale(${s})`;
