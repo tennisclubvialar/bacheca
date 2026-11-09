@@ -277,6 +277,26 @@ header, main, footer { position: relative; z-index: 1; }
 .rank.p1 .rank-pos { background: #e0a91b; } .rank.p2 .rank-pos { background: #9aa5b4; } .rank.p3 .rank-pos { background: #b8743a; }
 .slide.active .rank { animation: entra .6s cubic-bezier(.2,.8,.2,1) both; }
 
+
+/* Staff tecnico */
+.staff-slide { grid-template-columns: 1fr; grid-template-rows: auto 1fr; align-items: stretch; gap: 36px; padding-top: 20px; }
+.staff-slide .sponsor-top { grid-template-columns: 1fr; }
+.staff-slide .sponsor-top h1 { font-size: 130px; margin: 18px 0 0; }
+.staff-grid { display: grid; gap: 40px; align-items: start; align-self: center; }
+.staff-col { display: grid; gap: 18px; align-content: start; }
+.staff-settore { font-size: 28px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--mist); padding-bottom: 10px; border-bottom: 3px solid rgba(255,255,255,.4); }
+.staff-list { display: grid; gap: 20px; }
+.staff-list.due { grid-template-columns: 1fr 1fr; }
+.staff-list.due .staff-card.resp { grid-column: 1 / -1; }
+.staff-card { background: #fff; color: var(--navy); border-radius: 22px; padding: 30px 36px; box-shadow: 0 16px 36px rgba(6,23,122,.28); }
+.staff-card.resp { background: var(--navy); color: #fff; }
+.staff-tag { display: inline-block; font-size: 20px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #fff; color: var(--navy); padding: 5px 12px; border-radius: 8px; margin-bottom: 12px; }
+.staff-nome { font-family: var(--display); font-size: 66px; line-height: 1; text-transform: uppercase; }
+.staff-ruolo { font-size: 26px; font-weight: 700; line-height: 1.35; margin-top: 10px; color: var(--blue); }
+.staff-card.resp .staff-ruolo { color: var(--mist); }
+.slide.active .staff-card { animation: entra .7s cubic-bezier(.2,.8,.2,1) both; }
+.slide.active .staff-card:nth-child(2) { animation-delay: .15s; } .slide.active .staff-card:nth-child(3) { animation-delay: .3s; } .slide.active .staff-card:nth-child(4) { animation-delay: .45s; }
+
 @media (prefers-reduced-motion: reduce) {
   .slide.active * { animation: none !important; }
   .slide { transition: none; transform: none; }
@@ -415,6 +435,49 @@ const BACHECA = {
       titolo: "Una grande famiglia",
       testo: "Ragazzi, maestri e preparatori: ogni stagione cresciamo insieme, in campo e fuori.",
       immagine: "assets/foto/scuola-tennis-gruppo.jpg"
+    },
+    {
+      tipo: "staff",
+      kicker: "Lo staff tecnico",
+      titolo: "Chi guida il Vialar",
+      gruppi: [
+        { settore: "Direzione", membri: [
+          { nome: "Fabio Meringolo", ruolo: "Presidente · Maestro nazionale · Direttore tecnico della scuola tennis", resp: true }
+        ] },
+        { settore: "Settore specializzazione", membri: [
+          { nome: "Lorenzo Vincenti", ruolo: "Maestro nazionale · Preparatore fisico 2° grado FITP · Laureato in Scienze Motorie", resp: true },
+          { nome: "Giordano Barozzi", ruolo: "Istruttore 2° grado" },
+          { nome: "Riccardo Casavola", ruolo: "Istruttore 1° grado" }
+        ] }
+      ]
+    },
+    {
+      tipo: "staff",
+      kicker: "Lo staff tecnico",
+      titolo: "In campo con i ragazzi",
+      gruppi: [
+        { settore: "Perfezionamento e pre-perfezionamento", membri: [
+          { nome: "Paolo Masala", ruolo: "Istruttore 2° grado" },
+          { nome: "Matteo Capuano", ruolo: "Istruttore 2° grado" },
+          { nome: "Federica Taborra", ruolo: "Istruttrice 2° grado · Laureata in Scienze Motorie" },
+          { nome: "Gabriele Labbadia", ruolo: "Istruttore 1° grado" }
+        ] },
+        { settore: "Settore avviamento", membri: [
+          { nome: "Gianmarco Meringolo", ruolo: "Istruttore 1° grado · Preparatore fisico 2° grado FITP · Laureato in Scienze Motorie", resp: true }
+        ] }
+      ]
+    },
+    {
+      tipo: "staff",
+      kicker: "Lo staff tecnico",
+      titolo: "La forza dietro ogni colpo",
+      gruppi: [
+        { settore: "Preparazione atletica", membri: [
+          { nome: "Mario Paura", ruolo: "Preparatore atletico di riferimento · Laurea triennale e magistrale in Scienze Motorie", resp: true },
+          { nome: "Emanuele Greco", ruolo: "Preparatore fisico 1° grado FITP · Laureato in Scienze Motorie" },
+          { nome: "Carlo Acerno", ruolo: "Preparatore fisico 1° grado FITP · Laureato in Scienze Motorie" }
+        ] }
+      ]
     },
     {
       tipo: "testo", tema: "rosso",
@@ -771,6 +834,29 @@ function renderClassifica(cat, agg) {
   return slide;
 }
 
+function renderStaff(s) {
+  const slide = el("section", "slide staff-slide");
+  const top = el("div", "sponsor-top");
+  const t = el("div"); t.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo));
+  top.append(t);
+  const grid = el("div", "staff-grid");
+  grid.style.gridTemplateColumns = s.gruppi.map(g => g.membri.length > 1 ? "1.6fr" : "1fr").join(" ");
+  s.gruppi.forEach(g => {
+    const col = el("div", "staff-col");
+    col.append(el("div", "staff-settore", g.settore));
+    const list = el("div", "staff-list" + (g.membri.length >= 3 ? " due" : ""));
+    g.membri.forEach(m => {
+      const c = el("div", "staff-card" + (m.resp ? " resp" : ""));
+      if (m.resp) c.append(el("div", "staff-tag", "Responsabile"));
+      c.append(el("div", "staff-nome", m.nome), el("div", "staff-ruolo", m.ruolo));
+      list.append(c);
+    });
+    col.append(list); grid.append(col);
+  });
+  slide.append(top, grid);
+  return slide;
+}
+
 function renderEventi() {
   const oggi = new Date(); oggi.setHours(0, 0, 0, 0);
   const prossimi = BACHECA.eventi.filter(e => new Date(e.data + "T23:59:00") >= oggi)
@@ -841,7 +927,7 @@ function build() {
   const servizi = BACHECA.slide.map(s => {
     const n = (
     s.tipo === "instagram" ? renderInstagram() : s.tipo === "eventi" ? renderEventi() :
-    s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : s.tipo === "qrgrande" ? renderQrGrande(s) : renderTesto(s));
+    s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : s.tipo === "qrgrande" ? renderQrGrande(s) : s.tipo === "staff" ? renderStaff(s) : renderTesto(s));
     if (n && s.durata) n.dataset.durata = s.durata;
     if (n && s.sfondo) n.dataset.sfondo = s.sfondo;
     if (n && s.tema) n.classList.add("tema-" + s.tema);
