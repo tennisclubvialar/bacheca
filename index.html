@@ -23,9 +23,9 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; background: var(--bg); color: var(--line); overflow: hidden; font-family: var(--body); }
-#viewport { position: fixed; inset: 0; display: grid; place-items: center; background: var(--deep); }
+#viewport { position: fixed; inset: 0; background: var(--deep); overflow: hidden; }
 #stage {
-  width: 1920px; height: 1080px; position: relative; flex: none;
+  width: 1920px; height: 1080px; position: absolute; left: 50%; top: 50%;
   background: var(--bg); transform-origin: center center; overflow: hidden;
   display: grid; grid-template-rows: 120px 1fr 84px;
 }
@@ -356,7 +356,7 @@ tick(); setInterval(tick, 10000);
 
 function fit() {
   const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
-  document.getElementById("stage").style.transform = `scale(${s})`;
+  document.getElementById("stage").style.transform = `translate(-50%, -50%) scale(${s})`;
 }
 fit(); window.addEventListener("resize", fit);
 </script>
