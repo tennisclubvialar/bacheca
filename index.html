@@ -104,7 +104,10 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-heigh
 .ig-row { display: flex; align-items: center; gap: 32px; margin-top: 36px; }
 .ig-qr { flex: none; background: #fff; padding: 14px; border-radius: 18px; width: 228px; height: 228px; }
 .ig-qr img { display: block; width: 200px; height: 200px; image-rendering: pixelated; }
-.qr-testo { font-size: 30px; font-weight: 700; max-width: 12ch; line-height: 1.25; }
+.qr-password { margin-top: 18px; display: grid; gap: 6px; }
+.qr-password span { font-size: 22px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--mist); }
+.qr-password strong { font-family: var(--display); font-weight: 400; font-size: 64px; line-height: 1; background: #fff; color: var(--navy); padding: 10px 22px; border-radius: 14px; }
+.qr-testo { font-size: 30px; font-weight: 700; max-width: 16ch; line-height: 1.3; }
 .ig-handle { font-family: var(--display); font-size: 66px; margin-top: 6px; }
 
 .sponsor-slide { grid-template-columns: 1fr; grid-template-rows: auto 1fr; align-items: stretch; gap: 40px; padding-top: 20px; }
@@ -221,6 +224,11 @@ h1.lungo { font-size: 138px; }
 #stage .tema-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .9s ease;
   background: linear-gradient(180deg, rgba(168,10,24,.72) 0%, rgba(206,20,34,.86) 40%, rgba(212,22,36,.95) 65%, #d8172a 100%), url("assets/sfondo.jpg") center top / cover no-repeat; }
 #stage.rosso .tema-layer { opacity: 1; }
+/* foto di sfondo per una singola schermata (campo "sfondo"), velata di blu come la foto del circolo */
+.foto-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .9s ease; background-size: cover; background-position: center; }
+.foto-layer::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(9,62,168,.94) 0%, rgba(10,86,206,.82) 45%, rgba(10,90,212,.55) 100%); }
+#stage.rosso .foto-layer::after { background: linear-gradient(90deg, rgba(168,10,24,.94) 0%, rgba(206,20,34,.82) 45%, rgba(212,22,36,.55) 100%); }
+.foto-layer.on { opacity: 1; }
 header, main, footer { position: relative; z-index: 1; }
 .tema-rosso .kicker { color: #d4162a; }
 .tema-rosso .fact { color: #6e0a14; }
@@ -245,6 +253,15 @@ header, main, footer { position: relative; z-index: 1; }
 .facts.griglia .fact { padding: 34px 36px; }
 .facts.griglia .fact:last-child:not(:first-child) { background: #fff; color: #6e0a14; }
 
+
+.illustrazione { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-8deg); width: 820px; height: 820px; color: #fff; opacity: .16; pointer-events: none; z-index: 0; }
+.illustrazione svg { width: 100%; height: 100%; }
+.con-icona > *:not(.illustrazione) { position: relative; z-index: 1; }
+.slide.single.con-icona .illustrazione { left: 74%; opacity: .2; }
+.slide.active .illustrazione { animation: derive 18s ease-out both; }
+@keyframes derive { from { transform: translate(-50%, -46%) rotate(-14deg) scale(.9); } to { transform: translate(-50%, -50%) rotate(-6deg) scale(1); } }
+.kicker-icona { display: inline-flex; align-items: center; gap: 12px; }
+
 @media (prefers-reduced-motion: reduce) {
   .slide.active * { animation: none !important; }
   .slide { transition: none; transform: none; }
@@ -256,6 +273,7 @@ header, main, footer { position: relative; z-index: 1; }
 <div id="viewport">
   <div id="stage">
     <div class="tema-layer" aria-hidden="true"></div>
+    <div class="foto-layer" aria-hidden="true"></div>
     <header>
       <div class="brand">
         <svg class="brand-mark" viewBox="0 0 387 332" aria-hidden="true"><g fill="#fff"><polygon points="0,0 90,0 182,153 136,234"/><polygon points="114,0 272,0 193,136"/><polygon points="294,0 387,0 193,332 148,254"/></g></svg>
@@ -306,7 +324,7 @@ const BACHECA = {
   slide: [
     {
       tipo: "testo",
-      kicker: "Campi",
+      kicker: "Campi", icona: "campo",
       titolo: "Prenota il tuo campo",
       testo: "Prenota in segreteria o su WhatsApp. Se ti manca il compagno, ci pensiamo noi.",
       fatti: [
@@ -318,7 +336,7 @@ const BACHECA = {
     },
     {
       tipo: "testo",
-      kicker: "Diventa socio",
+      kicker: "Diventa socio", icona: "tessera",
       titolo: "Entra nel Vialar",
       testo: "Con l'iscrizione annuale fai parte del circolo e sei tesserato FITP. Chiedi in segreteria.",
       fatti: [
@@ -328,7 +346,7 @@ const BACHECA = {
     },
     {
       tipo: "testo",
-      kicker: "Area fitness",
+      kicker: "Area fitness", icona: "fitness",
       titolo: "Allenati quando vuoi",
       testo: "Accesso alle zone fitness del circolo con l'abbonamento più adatto a te. Chiedi in segreteria.",
       fatti: [
@@ -339,7 +357,7 @@ const BACHECA = {
     },
     {
       tipo: "testo",
-      kicker: "Cerca compagno",
+      kicker: "Cerca compagno", icona: "compagno",
       titolo: "Trova con chi giocare",
       testo: "Il servizio è attivo tutti i giorni: dicci quando vuoi giocare e ti abbiniamo a un socio del tuo livello.",
       fatti: [
@@ -351,7 +369,7 @@ const BACHECA = {
     },
     {
       tipo: "testo",
-      kicker: "Classifica sociale",
+      kicker: "Classifica sociale", icona: "trofeo",
       titolo: "Scala la classifica",
       testo: "Registrati su vialadder.com, inserisci i risultati dei tuoi match al circolo e scopri dove sei arrivato.",
       fatti: [
@@ -422,7 +440,7 @@ const BACHECA = {
     {
       tipo: "testo", tema: "rosso",
       kicker: "Perfezionamento e agonistica",
-      titolo: "Report e videoanalisi",
+      titolo: "Report e videoanalisi", icona: "video",
       testo: "Ogni atleta ha la sua dashboard con le valutazioni di tutto lo staff.",
       chips: ["Tecnica", "Tattica", "Fisica", "Mentale", "Nutrizione"],
       fatti: [
@@ -434,7 +452,7 @@ const BACHECA = {
     },
     {
       tipo: "testo",
-      kicker: "Corsi adulti",
+      kicker: "Corsi adulti", icona: "gruppo",
       titolo: "Tennis e preparazione atletica",
       testo: "Formula trimestrale: un'ora di tennis e un'ora di preparazione atletica in gruppo, con lavoro di rinforzo mirato al tennis.",
       chips: ["Lunedì e mercoledì", "Martedì e giovedì"],
@@ -447,7 +465,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Allenamento avanzato",
-      titolo: "Gruppo dal 4.1 FITP in su",
+      titolo: "Gruppo dal 4.1 FITP in su", icona: "bersaglio",
       testo: "Allenamento di gruppo per giocatori di livello avanzato, con preparazione atletica facoltativa prima del campo.",
       fatti: [
         { label: "Lunedì sera", note: "Maestri Matteo e Giordano", value: "21–23" },
@@ -470,7 +488,7 @@ const BACHECA = {
     {
       tipo: "testo", tema: "rosso",
       kicker: "Preparazione atletica",
-      titolo: "Più forte. Più veloce. Senza dolore.",
+      titolo: "Più forte. Più veloce. Senza dolore.", icona: "fitness",
       testo: "Il corpo è il tuo primo colpo.",
       chips: ["Over 60", "Agonisti", "Fitness", "Riabilitazione"],
       cta: "Inizia ora →"
@@ -500,7 +518,7 @@ const BACHECA = {
     },
     {
       tipo: "testo",
-      kicker: "Incordatura",
+      kicker: "Incordatura", icona: "racchetta",
       titolo: "La tua racchetta, sempre uguale",
       testo: "Salviamo corda e tensione nella tua scheda: la reincordiamo sempre uguale, finché non decidi di cambiare.",
       fatti: [
@@ -521,7 +539,7 @@ const BACHECA = {
     { tipo: "instagram" },
     {
       tipo: "testo",
-      kicker: "Il nostro staff",
+      kicker: "Il nostro staff", icona: "salute",
       titolo: "Oltre il tennis",
       testo: "Preparatori atletici laureati in Scienze Motorie e istruttori di 2° grado FITP. Per i percorsi individuali basta prenotare.",
       fatti: [
@@ -533,7 +551,7 @@ const BACHECA = {
     },
     {
       tipo: "testo",
-      kicker: "Visite medico-sportive",
+      kicker: "Visite medico-sportive", icona: "stetoscopio",
       titolo: "Prenotazioni aperte",
       testo: "Con il Dott. Luca Mengozzi, medico sportivo: ogni lunedì 14:30–19:30 al centro medico VESA, via degli Scipioni 252.",
       immagine: "assets/locandine/visite-mediche.jpg",
@@ -543,14 +561,15 @@ const BACHECA = {
       tipo: "testo",
       kicker: "Shop ufficiale · ora online",
       titolo: "Indossa i colori del Vialar",
-      testo: "La linea dei nostri maestri, con il logo Vialar, per soci, atleti e famiglie della scuola tennis. Ordina online e ricevila al circolo o a casa.",
+      testo: "La linea dei nostri maestri, con il logo Vialar, per soci, atleti e famiglie. Ordina online e ricevila al circolo o a casa.",
       immagine: "assets/locandine/shop-ufficiale.jpg",
-      qr: "",          // immagine del QR dello shop online (assets/qr/...): quando c'è, compare da inquadrare
-      cta: "Chiedi il link in segreteria"
+      qr: "assets/qr/shop.png",   // https://shop.teamsport-id.com/store-tennis-club-vialar-roma
+      qrTesto: "Inquadra e acquista",
+      password: "Tcvialar2026!"
     },
     {
       tipo: "testo",
-      kicker: "Feste di compleanno",
+      kicker: "Feste di compleanno", icona: "festa",
       titolo: "Festeggia al circolo",
       testo: "Maestri e preparatori organizzano una lezione a tema, dinamica e divertente per tutti i festeggiati.",
       chips: ["Mini tennis", "Tennis", "Pickleball", "Ping pong"],
@@ -565,7 +584,7 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Partner",
-      titolo: "Nidea Web Marketing Agency",
+      titolo: "Nidea Web Marketing Agency", icona: "megafono",
       testo: "Non ti rendiamo virale, ti rendiamo riconoscibile: presenza, identità, coerenza e fiducia per il tuo brand.",
       fatti: [
         { label: "Strategia e posizionamento", note: "identità, tono di voce, obiettivi" },
@@ -607,6 +626,29 @@ const BACHECA = {
    ============================================================ */
 const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; };
 
+
+/* Illustrazioni a tema (linee bianche), mostrate in grande sullo sfondo delle schermate */
+const ICONE = {
+  fitness: '<path d="M30 100h140M50 70v60M70 60v80M130 60v80M150 70v60"/><rect x="40" y="70" width="20" height="60" rx="6"/><rect x="140" y="70" width="20" height="60" rx="6"/>',
+  racchetta: '<ellipse cx="85" cy="75" rx="52" ry="62" transform="rotate(-35 85 75)"/><path d="M118 120l50 50M60 40l60 70M45 70l55 60M80 30l55 55M40 100l40 30M100 25l40 45"/><circle cx="165" cy="45" r="14"/>',
+  festa: '<rect x="40" y="105" width="120" height="60" rx="8"/><path d="M40 130c20 12 40-12 60 0s40-12 60 0M70 105V82M100 105V76M130 105V82"/><path d="M70 72c-6-8 0-16 0-16s6 8 0 16zM100 66c-6-8 0-16 0-16s6 8 0 16zM130 72c-6-8 0-16 0-16s6 8 0 16z"/><path d="M28 40l10 14M172 40l-10 14M100 18v14"/>',
+  salute: '<path d="M100 165s-62-38-62-88c0-24 18-40 38-40 12 0 20 6 24 14 4-8 12-14 24-14 20 0 38 16 38 40 0 50-62 88-62 88z"/><path d="M60 95h24l10-20 14 40 10-20h22"/>',
+  stetoscopio: '<path d="M55 30v45a35 35 0 0 0 70 0V30"/><path d="M90 110v20a30 30 0 0 0 60 0v-15"/><circle cx="150" cy="100" r="15"/><path d="M45 30h20M115 30h20"/>',
+  megafono: '<path d="M40 85v30h25l70 40V45L65 85z"/><path d="M65 115l10 40h18l-8-38"/><path d="M155 80c10 6 10 34 0 40M168 66c20 14 20 54 0 68"/>',
+  tessera: '<rect x="25" y="50" width="150" height="100" rx="12"/><circle cx="70" cy="95" r="18"/><path d="M45 132c6-14 44-14 50 0M110 85h45M110 105h35M110 125h25"/>',
+  trofeo: '<path d="M65 35h70v40a35 35 0 0 1-70 0z"/><path d="M65 50H40c0 25 15 35 28 35M135 50h25c0 25-15 35-28 35M100 110v25M75 165h50M85 135h30v30H85z"/>',
+  compagno: '<ellipse cx="65" cy="70" rx="28" ry="36" transform="rotate(-30 65 70)"/><ellipse cx="135" cy="70" rx="28" ry="36" transform="rotate(30 135 70)"/><path d="M80 100l-30 60M120 100l30 60"/><circle cx="100" cy="150" r="12"/>',
+  campo: '<rect x="25" y="30" width="150" height="140" rx="4"/><path d="M25 100h150M45 30v140M155 30v140M45 65h110M45 135h110M100 65v70"/>',
+  bersaglio: '<circle cx="100" cy="100" r="70"/><circle cx="100" cy="100" r="45"/><circle cx="100" cy="100" r="18"/><path d="M100 100l60-60M140 40h20v20"/>',
+  video: '<rect x="25" y="55" width="110" height="90" rx="12"/><path d="M135 85l40-22v74l-40-22z"/><path d="M65 80v40l32-20z"/>',
+  gruppo: '<circle cx="100" cy="65" r="22"/><circle cx="50" cy="85" r="16"/><circle cx="150" cy="85" r="16"/><path d="M60 160c0-30 18-50 40-50s40 20 40 50M20 160c0-22 12-38 30-38M180 160c0-22-12-38-30-38"/>'
+};
+function illustrazione(nome) {
+  const w = document.createElement("div"); w.className = "illustrazione";
+  w.innerHTML = '<svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">' + ICONE[nome] + '</svg>';
+  return w;
+}
+
 function renderTesto(s) {
   const slide = el("section", "slide");
   const left = el("div");
@@ -635,6 +677,7 @@ function renderTesto(s) {
     const qr = el("div", "ig-qr");
     const qi = new Image(); qi.src = s.qr; qi.alt = "QR code"; qr.append(qi);
     const info = el("div"); info.append(el("div", "qr-testo", s.qrTesto || "Inquadra con il telefono"));
+    if (s.password) { const pw = el("div", "qr-password"); pw.append(el("span", null, "Password catalogo"), el("strong", null, s.password)); info.append(pw); }
     row.append(qr, info); left.append(row);
   }
   if (s.immagine) {
@@ -760,7 +803,9 @@ function build() {
     s.tipo === "instagram" ? renderInstagram() : s.tipo === "eventi" ? renderEventi() :
     s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : s.tipo === "qrgrande" ? renderQrGrande(s) : renderTesto(s));
     if (n && s.durata) n.dataset.durata = s.durata;
+    if (n && s.sfondo) n.dataset.sfondo = s.sfondo;
     if (n && s.tema) n.classList.add("tema-" + s.tema);
+    if (n && s.icona && ICONE[s.icona]) { n.prepend(illustrazione(s.icona)); n.classList.add("con-icona"); }
     if (n && s.griglia) { const f = n.querySelector(".facts"); if (f) f.classList.add("griglia"); }
     return n;
   }).filter(Boolean);
@@ -785,6 +830,9 @@ function show(i) {
   nodes.forEach((n, k) => n.classList.toggle("active", k === i));
   [...dots.children].forEach((d, k) => d.classList.toggle("on", k === i));
   document.getElementById("stage").classList.toggle("rosso", nodes[i].classList.contains("tema-rosso"));
+  const fl = document.querySelector(".foto-layer");
+  if (nodes[i].dataset.sfondo) { fl.style.backgroundImage = `url("${nodes[i].dataset.sfondo}")`; fl.classList.add("on"); }
+  else fl.classList.remove("on");
   dots.style.visibility = (nodes[i].classList.contains("locandina") || nodes[i].classList.contains("foto")) ? "hidden" : "visible";
   progress.style.transition = "none"; progress.style.width = "0";
   requestAnimationFrame(() => requestAnimationFrame(() => {
