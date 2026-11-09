@@ -106,6 +106,9 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-heigh
 .sponsor-grid.tre .sponsor-card { height: 200px; padding: 26px; }
 .sponsor-card { height: 220px; border-radius: 22px; display: grid; place-items: center; padding: 30px 50px; box-shadow: 0 20px 50px rgba(11,42,110,.3); }
 .sponsor-card img { max-width: 100%; max-height: 160px; object-fit: contain; }
+.foto { grid-template-columns: 560px 1fr; gap: 60px; }
+.foto-media { height: 790px; border-radius: 26px; overflow: hidden; border: 10px solid var(--white); box-shadow: 0 30px 70px rgba(11,42,110,.45); }
+.foto-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .locandina { grid-template-columns: 1fr; place-items: center; padding: 20px 96px 40px; }
 .locandina img { max-height: 830px; max-width: 100%; border-radius: 20px; border: 10px solid var(--white); box-shadow: 0 30px 70px rgba(11,42,110,.45); }
 .post { grid-template-columns: 640px 1fr; gap: 90px; }
@@ -224,6 +227,13 @@ const BACHECA = {
         { label: "Dai 14 ai 18 anni", note: "lunedì – venerdì", value: "15–17" },
         { label: "Allenamenti", note: "a settimana", value: "2–5" }
       ]
+    },
+    {
+      tipo: "foto",
+      kicker: "Scuola Tennis",
+      titolo: "La nostra squadra",
+      testo: "Ragazzi, maestri e preparatori: ogni stagione cresciamo insieme, in campo e fuori.",
+      immagine: "assets/foto/scuola-tennis-gruppo.jpg"
     },
     {
       tipo: "testo",
@@ -479,6 +489,17 @@ function renderSponsor(s) {
   return slide;
 }
 
+function renderFoto(s) {
+  const slide = el("section", "slide foto");
+  const left = el("div");
+  const lr = el("div", "lead-row"); lr.append(el("p", "lead", s.testo));
+  left.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo), lr);
+  const media = el("div", "foto-media");
+  const img = new Image(); img.src = s.immagine; img.alt = s.titolo; media.append(img);
+  slide.append(left, media);
+  return slide;
+}
+
 function renderEventi() {
   const oggi = new Date(); oggi.setHours(0, 0, 0, 0);
   const prossimi = BACHECA.eventi.filter(e => new Date(e.data + "T23:59:00") >= oggi)
@@ -558,7 +579,7 @@ let nodes = [], idx = 0;
 function build() {
   const servizi = BACHECA.slide.map(s =>
     s.tipo === "instagram" ? renderInstagram() : s.tipo === "eventi" ? renderEventi() :
-    s.tipo === "sponsor" ? renderSponsor(s) : renderTesto(s)
+    s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : renderTesto(s)
   ).filter(Boolean);
   const recenti = POSTS.slice(0, BACHECA.postInRotazione).map(renderPost);
   // alterna: servizio, post, servizio, post...
@@ -579,7 +600,7 @@ function build() {
 function show(i) {
   nodes.forEach((n, k) => n.classList.toggle("active", k === i));
   [...dots.children].forEach((d, k) => d.classList.toggle("on", k === i));
-  dots.style.visibility = nodes[i].classList.contains("locandina") ? "hidden" : "visible";
+  dots.style.visibility = (nodes[i].classList.contains("locandina") || nodes[i].classList.contains("foto")) ? "hidden" : "visible";
   progress.style.transition = "none"; progress.style.width = "0";
   requestAnimationFrame(() => requestAnimationFrame(() => {
     progress.style.transition = `width ${BACHECA.secondiPerSlide}s linear`;
