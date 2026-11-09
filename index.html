@@ -654,6 +654,14 @@ const BACHECA = {
       ]
     },
     {
+      tipo: "video",
+      kicker: "Allenamento avanzato",
+      titolo: "Ritmo da torneo",
+      testo: "Palleggi intensi, scambi veri e i maestri in campo: la sera, il gruppo avanzato alza il livello.",
+      video: "assets/video/allenamento-avanzato.mp4", poster: "assets/video/allenamento-avanzato.jpg",
+      durata: 20
+    },
+    {
       tipo: "testo",
       kicker: "Allenamento avanzato",
       titolo: "Più ti alleni, meno spendi",
@@ -1144,7 +1152,7 @@ function show(i) {
 function durata(n) {
   if (n.dataset.durata) return +n.dataset.durata;
   if (n.classList.contains("locandina")) return BACHECA.durataLocandina;
-  if (n.classList.contains("video-slide")) return 12;
+  if (n.classList.contains("video-slide")) return 13;
   if (n.classList.contains("videopieno")) return 18;
   if (n.classList.contains("post") && !n.classList.contains("con-immagine")) return 14; // post Instagram: il testo lungo viene tagliato a schermo
   const parole = (n.textContent || "").trim().split(/\s+/).filter(Boolean).length;
