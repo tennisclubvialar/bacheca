@@ -308,6 +308,15 @@ header, main, footer { position: relative; z-index: 1; }
 .slide.active .video-media, .slide.active .galleria-media { animation: zoom .9s cubic-bezier(.2,.8,.2,1) both; }
 #stage.verticale .video-media, #stage.verticale .galleria-media { height: 1000px; justify-self: center; }
 
+
+/* Video a tutto schermo */
+.slide.videopieno { padding: 0; display: block; position: fixed; inset: 0; z-index: 5; }
+.videopieno video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.videopieno::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(6,23,122,.85) 0%, rgba(10,90,212,.35) 35%, rgba(0,0,0,0) 60%); }
+.videopieno-testo { position: absolute; left: 100px; bottom: 80px; right: 100px; z-index: 1; }
+.videopieno-testo h1 { font-size: 150px; margin: 18px 0 0; }
+.slide.active.videopieno video { animation: zoom 1.2s ease-out both; }
+
 @media (prefers-reduced-motion: reduce) {
   .slide.active * { animation: none !important; }
   .slide { transition: none; transform: none; }
@@ -381,6 +390,13 @@ const BACHECA = {
       ]
     },
     {
+      tipo: "videopieno",
+      kicker: "Questo è il Vialar",
+      titolo: "Si gioca, si cresce, ci si diverte",
+      video: "assets/video/vialar-in-campo.mp4", poster: "assets/video/vialar-in-campo.jpg",
+      durata: 17
+    },
+    {
       tipo: "testo",
       kicker: "Diventa socio", icona: "tessera",
       titolo: "Benvenuto in famiglia",
@@ -441,6 +457,13 @@ const BACHECA = {
       ]
     },
     {
+      tipo: "video",
+      kicker: "Scuola tennis",
+      titolo: "Il dettaglio che fa la differenza",
+      testo: "Il maestro accanto, il gesto corretto, la ripetizione giusta: così nasce un buon colpo.",
+      video: "assets/video/lezione-tecnica.mp4", poster: "assets/video/lezione-tecnica.jpg"
+    },
+    {
       tipo: "foto",
       kicker: "Scuola Tennis",
       titolo: "Una grande famiglia",
@@ -474,9 +497,18 @@ const BACHECA = {
         { settore: "Perfezionamento · settore C", membri: [
           { nome: "Federica Taborra", ruolo: "Istruttrice 2° grado · Laureata in Scienze Motorie", resp: true },
           { nome: "Paolo Masala", ruolo: "Istruttore 2° grado", resp: true }
-        ] },
-        { settore: "Settore avviamento", membri: [
-          { nome: "Gianmarco Meringolo", ruolo: "Istruttore 1° grado · Preparatore fisico 2° grado FITP · Laureato in Scienze Motorie", resp: true }
+        ] }
+      ]
+    },
+    {
+      tipo: "staff",
+      kicker: "Lo staff tecnico",
+      titolo: "I primi passi in campo",
+      gruppi: [
+        { settore: "Settore avviamento · i più piccoli", membri: [
+          { nome: "Gianmarco Meringolo", ruolo: "Istruttore 1° grado · Preparatore fisico 2° grado FITP · Laureato in Scienze Motorie", resp: true },
+          { nome: "Giordano Barozzi", ruolo: "Istruttore 2° grado" },
+          { nome: "Valentina Conia", ruolo: "Istruttrice 1° grado · a supporto" }
         ] }
       ]
     },
@@ -486,17 +518,33 @@ const BACHECA = {
       titolo: "La forza dietro ogni colpo",
       gruppi: [
         { settore: "Preparazione atletica", membri: [
-          { nome: "Mario Paura", ruolo: "Preparatore atletico di riferimento · Laurea triennale e magistrale in Scienze Motorie", resp: true },
+          { nome: "Mario Paura", ruolo: "Preparatore atletico di riferimento · Istruttore 1° grado · Preparatore fisico 1° grado FITP · Laurea triennale e magistrale in Scienze Motorie", resp: true },
           { nome: "Emanuele Greco", ruolo: "Preparatore fisico 1° grado FITP · Laureato in Scienze Motorie" },
           { nome: "Carlo Acerno", ruolo: "Preparatore fisico 1° grado FITP · Laureato in Scienze Motorie" }
         ] }
       ]
     },
     {
+      tipo: "galleria", tema: "rosso",
+      kicker: "Under 11 · doppio",
+      titolo: "Campione italiano!",
+      testo: "Il titolo italiano di doppio Under 11 parla Vialar. Complimenti al nostro campione e al suo maestro!",
+      immagini: ["assets/foto/campione-italiano-locandina.jpg", "assets/foto/campione-italiano-maestro.jpg"],
+      durata: 14
+    },
+    {
+      tipo: "galleria", tema: "rosso",
+      kicker: "Settore performance",
+      titolo: "Coppe, podi e sorrisi",
+      testo: "Tornei FITP, trasferte e allenamenti: i ragazzi del Vialar si fanno valere ovunque.",
+      immagini: ["assets/foto/podio-ragazza-1.jpg", "assets/foto/podio-ragazza-2.jpg", "assets/foto/allievi-maestro.jpg", "assets/foto/squadra-agonisti.jpg"],
+      durata: 16
+    },
+    {
       tipo: "video", tema: "rosso",
       kicker: "Settore performance",
       titolo: "Ogni colpo conta",
-      testo: "Tecnica, ritmo e intensità: così si allenano i nostri ragazzi.",
+      testo: "Tecnica, ritmo e intensità, con il maestro sempre a fianco: così si allenano i nostri ragazzi.",
       video: "assets/video/agonista-colpi.mp4", poster: "assets/video/agonista-colpi.jpg"
     },
     {
@@ -615,6 +663,13 @@ const BACHECA = {
         { label: "Rinforzo muscolare" }, { label: "Pilates e mobilità" },
         { label: "Riabilitazione" }, { label: "Nutrizione" }
       ]
+    },
+    {
+      tipo: "video", tema: "rosso",
+      kicker: "Preparazione atletica",
+      titolo: "Piedi veloci, colpi migliori",
+      testo: "Rapidità, coordinazione e cambi di direzione: il tennis si gioca prima di tutto con le gambe.",
+      video: "assets/video/atletica-rapidita.mp4", poster: "assets/video/atletica-rapidita.jpg"
     },
     {
       tipo: "testo", tema: "rosso",
@@ -914,6 +969,18 @@ function renderVideo(s) {
   return slide;
 }
 
+function renderVideoPieno(s) {
+  const slide = el("section", "slide videopieno");
+  const v = document.createElement("video");
+  v.src = s.video; if (s.poster) v.poster = s.poster;
+  v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto";
+  v.setAttribute("muted", ""); v.setAttribute("playsinline", "");
+  const txt = el("div", "videopieno-testo");
+  txt.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo));
+  slide.append(v, txt);
+  return slide;
+}
+
 function renderGalleria(s) {
   const slide = el("section", "slide galleria");
   const left = el("div");
@@ -995,7 +1062,7 @@ function build() {
   const servizi = BACHECA.slide.map(s => {
     const n = (
     s.tipo === "instagram" ? renderInstagram() : s.tipo === "eventi" ? renderEventi() :
-    s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : s.tipo === "qrgrande" ? renderQrGrande(s) : s.tipo === "staff" ? renderStaff(s) : s.tipo === "video" ? renderVideo(s) : s.tipo === "galleria" ? renderGalleria(s) : renderTesto(s));
+    s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : s.tipo === "qrgrande" ? renderQrGrande(s) : s.tipo === "staff" ? renderStaff(s) : s.tipo === "video" ? renderVideo(s) : s.tipo === "videopieno" ? renderVideoPieno(s) : s.tipo === "galleria" ? renderGalleria(s) : renderTesto(s));
     if (n && s.durata) n.dataset.durata = s.durata;
     if (n && s.sfondo) n.dataset.sfondo = s.sfondo;
     if (n && s.tema) n.classList.add("tema-" + s.tema);
@@ -1044,7 +1111,7 @@ function show(i) {
   const fl = document.querySelector(".foto-layer");
   if (nodes[i].dataset.sfondo) { fl.style.backgroundImage = `url("${nodes[i].dataset.sfondo}")`; fl.classList.add("on"); }
   else fl.classList.remove("on");
-  dots.style.visibility = (nodes[i].classList.contains("locandina") || nodes[i].classList.contains("foto") || nodes[i].classList.contains("galleria") || nodes[i].classList.contains("video-slide")) ? "hidden" : "visible";
+  dots.style.visibility = (nodes[i].classList.contains("locandina") || nodes[i].classList.contains("foto") || nodes[i].classList.contains("galleria") || nodes[i].classList.contains("video-slide") || nodes[i].classList.contains("videopieno")) ? "hidden" : "visible";
   progress.style.transition = "none"; progress.style.width = "0";
   requestAnimationFrame(() => requestAnimationFrame(() => {
     progress.style.transition = `width ${durata(nodes[i])}s linear`;
@@ -1056,6 +1123,7 @@ function durata(n) {
   if (n.dataset.durata) return +n.dataset.durata;
   if (n.classList.contains("locandina")) return BACHECA.durataLocandina;
   if (n.classList.contains("video-slide")) return 12;
+  if (n.classList.contains("videopieno")) return 17;
   if (n.classList.contains("post") && !n.classList.contains("con-immagine")) return 14; // post Instagram: il testo lungo viene tagliato a schermo
   const parole = (n.textContent || "").trim().split(/\s+/).filter(Boolean).length;
   // circa 4 parole al secondo per chi legge da qualche metro, più qualche secondo per guardare
