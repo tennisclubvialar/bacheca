@@ -107,6 +107,8 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-heigh
 .qr-password { margin-top: 18px; display: grid; gap: 6px; }
 .qr-password span { font-size: 22px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--mist); }
 .qr-password strong { font-family: var(--display); font-weight: 400; font-size: 64px; line-height: 1; background: #fff; color: var(--navy); padding: 10px 22px; border-radius: 14px; }
+.post-qr { margin-top: 30px; }
+.post .post-caption { -webkit-line-clamp: 6; }
 .qr-testo { font-size: 30px; font-weight: 700; max-width: 16ch; line-height: 1.3; }
 .ig-handle { font-family: var(--display); font-size: 66px; margin-top: 6px; }
 
@@ -1078,7 +1080,13 @@ function renderPost(p) {
   right.append(el("div", "kicker", "Dal nostro Instagram"));
   right.append(el("p", "post-caption", (p.caption || "").trim()));
   if (p.timestamp) right.append(el("div", "post-date", new Date(p.timestamp).toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "Europe/Rome" })));
-  if (BACHECA.instagram) right.append(el("div", "ig-handle", "@" + BACHECA.instagram));
+  if (BACHECA.instagram) {
+    const row = el("div", "ig-row post-qr");
+    const qr = el("div", "ig-qr");
+    const qi = new Image(); qi.src = "assets/qr/instagram.png"; qi.alt = "QR code Instagram"; qr.append(qi);
+    const info = el("div"); info.append(el("div", "qr-testo", "Inquadra e seguici"), el("div", "ig-handle", "@" + BACHECA.instagram));
+    row.append(qr, info); right.append(row);
+  }
   slide.append(media, right);
   return slide;
 }
