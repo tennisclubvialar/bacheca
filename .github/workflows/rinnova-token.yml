@@ -1,0 +1,22 @@
+name: Rinnova accesso Instagram
+
+# Il token di Instagram scade dopo 60 giorni: ogni settimana lo rinnoviamo
+# e salviamo quello nuovo nei segreti del repository.
+on:
+  schedule:
+    - cron: "40 3 * * 1"   # lunedì notte
+  workflow_dispatch:
+
+jobs:
+  rinnova:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rinnova e salva il token
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          nuovo=$(curl -sf "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${IG_TOKEN}" | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
+          echo "::add-mask::$nuovo"
+          gh secret set IG_TOKEN --repo "$GITHUB_REPOSITORY" --body "$nuovo"
+          echo "Token rinnovato"

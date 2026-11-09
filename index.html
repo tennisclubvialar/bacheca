@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bacheca TC Vialar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Schermo TV 16:9 nei colori del circolo: fondo blu elettrico, testi e righe del campo in bianco, pannelli in blu profondo */
+  --bg: #1238f0;
+  --panel: #0a24b0;
+  --deep: #06177a;
+  --clay: #ffffff;
+  --ball: #ffffff;
+  --line: #ffffff;
+  --muted: #c3d0ff;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --body: "Figtree", "Segoe UI", Arial, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: var(--bg); color: var(--line); overflow: hidden; font-family: var(--body); }
+#viewport { position: fixed; inset: 0; display: grid; place-items: center; background: var(--deep); }
+#stage {
+  width: 1920px; height: 1080px; position: relative; flex: none;
+  background: var(--bg); transform-origin: center center; overflow: hidden;
+  display: grid; grid-template-rows: 120px 1fr 84px;
+}
+/* righe del campo come sfondo discreto */
+#stage::before {
+  content: ""; position: absolute; inset: 70px 90px; pointer-events: none;
+  border: 3px solid rgba(255,255,255,.09);
+  background:
+    linear-gradient(rgba(255,255,255,.09),rgba(255,255,255,.09)) center/3px 100% no-repeat,
+    linear-gradient(rgba(255,255,255,.09),rgba(255,255,255,.09)) center/100% 3px no-repeat;
+}
+header {
+  position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 72px; border-bottom: 3px solid var(--clay);
+}
+.brand { display: flex; align-items: center; gap: 22px; }
+.brand-mark { width: 64px; height: 64px; border-radius: 50%; background: var(--ball); position: relative; overflow: hidden; }
+.brand-mark::before, .brand-mark::after {
+  content: ""; position: absolute; width: 64px; height: 64px; border-radius: 50%;
+  border: 4px solid var(--bg); top: 0;
+}
+.brand-mark::before { left: -40px; } .brand-mark::after { right: -40px; }
+.brand-name { font-family: var(--display); font-weight: 800; font-size: 54px; letter-spacing: .5px; line-height: 1; }
+.brand-sub { font-size: 20px; color: var(--muted); letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
+.clock { text-align: right; }
+.clock-time { font-family: var(--display); font-weight: 700; font-size: 64px; line-height: 1; font-variant-numeric: tabular-nums; }
+.clock-date { font-size: 22px; color: var(--muted); text-transform: capitalize; }
+
+main { position: relative; z-index: 1; }
+.slide {
+  position: absolute; inset: 0; padding: 64px 96px 40px;
+  opacity: 0; transform: translateX(40px); transition: opacity .9s ease, transform .9s ease;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
+}
+.slide.active { opacity: 1; transform: none; }
+.slide.single { grid-template-columns: 1fr; }
+.kicker { font-family: var(--display); font-weight: 600; font-size: 34px; letter-spacing: 6px; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--display); font-weight: 800; font-size: 132px; line-height: .92; text-transform: uppercase; margin: 14px 0 28px; text-wrap: balance; }
+.lead { font-size: 38px; line-height: 1.35; color: #eef2ff; max-width: 30ch; }
+.facts { display: grid; gap: 22px; }
+.fact {
+  display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 24px;
+  padding: 26px 34px; background: var(--panel); border-left: 8px solid var(--clay); border-radius: 6px;
+}
+.fact-label { font-size: 34px; font-weight: 600; }
+.fact-note { display: block; font-size: 24px; font-weight: 400; color: var(--muted); margin-top: 4px; }
+.fact-value { font-family: var(--display); font-weight: 700; font-size: 58px; color: var(--ball); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.chips { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 28px; }
+.chip { font-size: 28px; font-weight: 600; padding: 12px 26px; border: 3px solid var(--line); border-radius: 999px; }
+.cta { margin-top: 32px; display: inline-block; font-size: 32px; font-weight: 700; background: var(--line); color: var(--bg); padding: 18px 34px; border-radius: 6px; }
+
+/* slide Instagram */
+.ig-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.ig-tile {
+  aspect-ratio: 1; border-radius: 8px; background: var(--panel); overflow: hidden; position: relative;
+  display: grid; place-items: center; color: var(--muted); font-size: 22px; text-align: center; padding: 16px;
+  border: 2px dashed rgba(195,208,255,.45);
+}
+.ig-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ig-row { display: flex; align-items: center; gap: 32px; margin-top: 36px; }
+.ig-qr { flex: none; background: #fff; padding: 14px; border-radius: 8px; width: 228px; height: 228px; }
+.ig-qr img, .ig-qr canvas { display: block; width: 200px; height: 200px; }
+.ig-handle { font-family: var(--display); font-weight: 700; font-size: 64px; color: var(--ball); margin-top: 10px; }
+
+.post { grid-template-columns: 760px 1fr; gap: 80px; }
+.post-media { width: 760px; height: 760px; border-radius: 10px; overflow: hidden; background: var(--panel); box-shadow: 0 30px 60px rgba(6,23,122,.45); }
+.post-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.post-caption { font-size: 40px; line-height: 1.35; color: #eef2ff; max-width: 32ch; display: -webkit-box; -webkit-line-clamp: 9; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-line; }
+.post-date { font-size: 28px; color: var(--muted); margin-top: 28px; text-transform: capitalize; }
+footer { position: relative; z-index: 2; display: flex; align-items: center; background: var(--line); color: var(--bg); overflow: hidden; }
+.footer-label { flex: none; height: 100%; display: flex; align-items: center; padding: 0 36px; background: var(--deep); color: var(--line); font-family: var(--display); font-weight: 800; font-size: 34px; letter-spacing: 3px; text-transform: uppercase; }
+.ticker { flex: 1; overflow: hidden; white-space: nowrap; }
+.ticker-track { display: inline-block; padding-left: 100%; font-size: 32px; font-weight: 600; animation: scroll 60s linear infinite; }
+.ticker-track span { margin-right: 90px; }
+.ticker-track span::before { content: "●"; color: var(--bg); margin-right: 22px; font-size: 22px; vertical-align: middle; }
+@keyframes scroll { to { transform: translateX(-100%); } }
+
+.progress { position: absolute; left: 0; bottom: 84px; height: 6px; background: var(--ball); width: 0; z-index: 3; }
+.dots { position: absolute; right: 96px; bottom: 112px; display: flex; gap: 12px; z-index: 3; }
+.dot { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,.3); }
+.dot.on { background: var(--line); }
+
+@media (prefers-reduced-motion: reduce) {
+  .slide { transition: none; transform: none; }
+  .ticker-track { animation-duration: 120s; }
+}
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="stage">
+    <header>
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div>
+          <div class="brand-name">T.C. VIALAR</div>
+          <div class="brand-sub">Circolo Sportivo Tennis Emilia De Vialar</div>
+        </div>
+      </div>
+      <div class="clock">
+        <div class="clock-time" id="time">--:--</div>
+        <div class="clock-date" id="date"></div>
+      </div>
+    </header>
+    <main id="slides"></main>
+    <div class="progress" id="progress"></div>
+    <div class="dots" id="dots"></div>
+    <footer>
+      <div class="footer-label">Avvisi</div>
+      <div class="ticker"><div class="ticker-track" id="ticker"></div></div>
+    </footer>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* ============================================================
+   CONTENUTI DELLA BACHECA — si modificano solo qui
+   ============================================================ */
+const BACHECA = {
+  secondiPerSlide: 12,
+  instagram: "tennisclubvialar",
+  postInRotazione: 4,       // quanti post recenti mostrare a tutto schermo tra una slide e l'altra
+  avvisi: [
+    "Benvenuti al T.C. Vialar",
+    "Preparazione atletica: classi dal lunedì al venerdì, 9–12",
+    "Scuola tennis dal lunedì al venerdì, 15–19",
+    "Linea ufficiale Mizuno per i ragazzi dell'agonistica: chiedi in segreteria",
+    "Illuminazione campi dalle 18:00"
+  ],
+  slide: [
+    {
+      tipo: "testo",
+      kicker: "Scuola Tennis",
+      titolo: "In campo dal lunedì al venerdì",
+      testo: "Gruppi per età e livello sui 5 campi, con la preparazione atletica integrata nel programma settimanale.",
+      fatti: [
+        { label: "Lunedì – Venerdì", value: "15–19" },
+        { label: "Campi dedicati", value: "5" },
+        { label: "Minitennis", note: "Bambini 4–10 anni", value: "4–10" }
+      ]
+    },
+    {
+      tipo: "testo",
+      kicker: "Minitennis",
+      titolo: "I primi colpi, nel modo giusto",
+      testo: "Per i bambini dai 4 ai 10 anni lavoriamo prima di tutto su due cose: il movimento a rimbalzo e l'impugnatura corretta.",
+      chips: ["Movimento a rimbalzo", "Impugnatura", "Equilibrio", "Coordinazione"]
+    },
+    {
+      tipo: "testo",
+      kicker: "Preparazione Atletica",
+      titolo: "Allenati la mattina",
+      testo: "Con preparatori laureati in Scienze Motorie. Test iniziale e report ogni mese.",
+      chips: ["Over 60", "Rinforzo muscolare", "Pilates posturale", "Mobilità", "Agonisti"],
+      fatti: [
+        { label: "Trimestrale", note: "La formula più conveniente", value: "150 €" },
+        { label: "Mensile", value: "60 €" },
+        { label: "Ingresso singolo", value: "10 €" }
+      ],
+      cta: "Lun–Ven 9–12 · minimo 2 allenamenti a settimana"
+    },
+    {
+      tipo: "testo",
+      kicker: "Campi",
+      titolo: "Prenota il tuo campo",
+      testo: "Chiedi in segreteria o scrivici su WhatsApp. Se ti manca il compagno, ti aiutiamo a trovarlo.",
+      fatti: [
+        { label: "Singolare", note: "a persona, 1 ora", value: "8 €" },
+        { label: "Doppio 1 ora", note: "a persona", value: "6 €" },
+        { label: "Doppio 2 ore", note: "a persona", value: "12 €" },
+        { label: "Luci dalle 18:00", note: "a persona", value: "+1,50 €" }
+      ]
+    },
+    {
+      tipo: "testo",
+      kicker: "Corsi e lezioni",
+      titolo: "Corsi adulti e lezioni individuali",
+      testo: "Impara o torna a giocare con i maestri del circolo, in gruppo o uno a uno. Orari e disponibilità in segreteria.",
+      chips: ["Corsi adulti", "Lezioni individuali", "Lezioni di coppia"]
+    },
+    {
+      tipo: "testo",
+      kicker: "Agonistica",
+      titolo: "Linea ufficiale Mizuno",
+      testo: "L'abbigliamento del circolo a prezzo agevolato per i ragazzi dell'agonistica. Scegli i capi e ordina in segreteria.",
+      cta: "Riservato ai ragazzi dell'agonistica"
+    },
+    { tipo: "instagram" }
+  ]
+};
+
+/* ============================================================
+   MOTORE DELLA BACHECA — non serve toccarlo
+   ============================================================ */
+const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; };
+
+function renderTesto(s) {
+  const slide = el("section", "slide");
+  const left = el("div");
+  left.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo), el("p", "lead", s.testo));
+  slide.append(left);
+  const right = el("div", "facts");
+  (s.fatti || []).forEach(f => {
+    const row = el("div", "fact");
+    const lab = el("div", "fact-label", f.label);
+    if (f.note) lab.append(el("span", "fact-note", f.note));
+    row.append(lab, el("div", "fact-value", f.value));
+    right.append(row);
+  });
+  if (s.chips && s.fatti) {
+    left.append(Object.assign(el("div", "chips"), {}));
+    s.chips.forEach(c => left.lastChild.append(el("span", "chip", c)));
+  } else if (s.chips) {
+    const ch = el("div", "chips"); s.chips.forEach(c => ch.append(el("span", "chip", c))); right.append(ch);
+  }
+  if (s.cta) left.append(el("div", "cta", s.cta));
+  if (!right.children.length) slide.classList.add("single"); else slide.append(right);
+  return slide;
+}
+
+function renderInstagram() {
+  const slide = el("section", "slide");
+  const left = el("div");
+  left.append(el("div", "kicker", "Instagram"), el("h1", null, "Seguici su Instagram"),
+    el("p", "lead", "Tornei, risultati, foto dei corsi e novità del circolo."));
+  if (BACHECA.instagram) {
+    const row = el("div", "ig-row");
+    const qr = el("div", "ig-qr");
+    try { new QRCode(qr, { text: "https://www.instagram.com/" + BACHECA.instagram + "/", width: 200, height: 200, colorDark: "#06177a", colorLight: "#ffffff" }); } catch (e) {}
+    const info = el("div");
+    info.append(el("div", "fact-note", "Inquadra il codice"), el("div", "ig-handle", "@" + BACHECA.instagram));
+    row.append(qr, info);
+    left.append(row);
+  }
+  const grid = el("div", "ig-grid");
+  const posts = POSTS.slice(0, 6).map(p => p.image);
+  for (let i = 0; i < 6; i++) {
+    const t = el("div", "ig-tile");
+    if (posts[i]) { const img = new Image(); img.src = posts[i]; img.alt = "Post Instagram del circolo"; t.append(img); }
+    else t.textContent = "Ultimi post del circolo";
+    grid.append(t);
+  }
+  slide.append(left, grid);
+  return slide;
+}
+
+let POSTS = [];
+
+function renderPost(p) {
+  const slide = el("section", "slide post");
+  const media = el("div", "post-media");
+  const img = new Image(); img.src = p.image; img.alt = "Post Instagram del circolo"; media.append(img);
+  const right = el("div");
+  right.append(el("div", "kicker", "Dal nostro Instagram"));
+  right.append(el("p", "post-caption", (p.caption || "").trim()));
+  if (p.timestamp) right.append(el("div", "post-date", new Date(p.timestamp).toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "Europe/Rome" })));
+  if (BACHECA.instagram) right.append(el("div", "ig-handle", "@" + BACHECA.instagram));
+  slide.append(media, right);
+  return slide;
+}
+
+const box = document.getElementById("slides");
+const dots = document.getElementById("dots");
+const progress = document.getElementById("progress");
+let nodes = [], idx = 0;
+
+function build() {
+  const servizi = BACHECA.slide.map(s => s.tipo === "instagram" ? renderInstagram() : renderTesto(s));
+  const recenti = POSTS.slice(0, BACHECA.postInRotazione).map(renderPost);
+  // alterna: servizio, post, servizio, post...
+  nodes = [];
+  const n = Math.max(servizi.length, recenti.length);
+  for (let k = 0; k < n; k++) { if (servizi[k]) nodes.push(servizi[k]); if (recenti[k]) nodes.push(recenti[k]); }
+  box.replaceChildren(...nodes);
+  dots.replaceChildren(...nodes.map(() => el("div", "dot")));
+  document.getElementById("ticker").replaceChildren(...BACHECA.avvisi.map(a => el("span", null, a)));
+}
+
+function show(i) {
+  nodes.forEach((n, k) => n.classList.toggle("active", k === i));
+  [...dots.children].forEach((d, k) => d.classList.toggle("on", k === i));
+  progress.style.transition = "none"; progress.style.width = "0";
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    progress.style.transition = `width ${BACHECA.secondiPerSlide}s linear`;
+    progress.style.width = "100%";
+  }));
+}
+
+async function loadPosts() {
+  try {
+    const r = await fetch("instagram/posts.json?t=" + Date.now(), { cache: "no-store" });
+    if (r.ok) POSTS = (await r.json()).posts || [];
+  } catch (e) { POSTS = []; }
+}
+
+(async () => {
+  await loadPosts();
+  build(); show(0);
+  setInterval(() => { idx = (idx + 1) % nodes.length; show(idx); }, BACHECA.secondiPerSlide * 1000);
+})();
+
+/* Aggiornamento automatico: ogni 5 minuti controlla se la bacheca o i post sono cambiati e si ricarica */
+const firme = {};
+async function firma(url) {
+  try { const r = await fetch(url + "?t=" + Date.now(), { cache: "no-store" }); return r.ok ? (await r.text()) : null; }
+  catch (e) { return null; }
+}
+async function controllaAggiornamenti() {
+  for (const url of ["index.html", "instagram/posts.json"]) {
+    const t = await firma(url);
+    if (t == null) continue;
+    if (firme[url] != null && firme[url] !== t) { location.reload(); return; }
+    firme[url] = t;
+  }
+}
+controllaAggiornamenti();
+setInterval(controllaAggiornamenti, 5 * 60 * 1000);
+/* ricarica comunque una volta a notte, per sicurezza */
+setTimeout(() => location.reload(), 6 * 60 * 60 * 1000);
+
+function tick() {
+  const d = new Date();
+  document.getElementById("time").textContent = d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" });
+  document.getElementById("date").textContent = d.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Rome" });
+}
+tick(); setInterval(tick, 10000);
+
+function fit() {
+  const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  document.getElementById("stage").style.transform = `scale(${s})`;
+}
+fit(); window.addEventListener("resize", fit);
+</script>
+</body>
+</html>

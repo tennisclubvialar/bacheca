@@ -1,0 +1,34 @@
+name: Aggiorna post Instagram
+
+on:
+  schedule:
+    - cron: "17 * * * *"   # ogni ora
+  workflow_dispatch:        # avvio manuale da GitHub
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram
+  cancel-in-progress: false
+
+jobs:
+  aggiorna:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scarica gli ultimi post
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+        run: python3 scripts/aggiorna_instagram.py
+      - name: Salva se ci sono novità
+        run: |
+          git config user.name "bacheca-bot"
+          git config user.email "bacheca-bot@users.noreply.github.com"
+          git add instagram
+          if git diff --cached --quiet; then
+            echo "Niente da salvare"
+          else
+            git commit -m "Aggiorna post Instagram"
+            git push
+          fi
