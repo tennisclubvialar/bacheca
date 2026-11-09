@@ -97,7 +97,8 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-heigh
 .ig-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .ig-row { display: flex; align-items: center; gap: 32px; margin-top: 36px; }
 .ig-qr { flex: none; background: #fff; padding: 14px; border-radius: 18px; width: 228px; height: 228px; }
-.ig-qr img, .ig-qr canvas { display: block; width: 200px; height: 200px; }
+.ig-qr img { display: block; width: 200px; height: 200px; image-rendering: pixelated; }
+.qr-testo { font-size: 30px; font-weight: 700; max-width: 12ch; line-height: 1.25; }
 .ig-handle { font-family: var(--display); font-size: 66px; margin-top: 6px; }
 
 .sponsor-slide { grid-template-columns: 1fr; grid-template-rows: auto 1fr; align-items: stretch; gap: 40px; padding-top: 20px; }
@@ -225,7 +226,6 @@ h1.lungo { font-size: 138px; }
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 /* ============================================================
    CONTENUTI DELLA BACHECA — si modificano solo qui
@@ -274,6 +274,20 @@ const BACHECA = {
         { label: "Sabato", value: "8–21" },
         { label: "Domenica", value: "8–23" }
       ]
+    },
+    {
+      tipo: "testo",
+      kicker: "Classifica sociale",
+      titolo: "Scala la classifica",
+      testo: "Registrati su vialadder.com, inserisci i risultati dei tuoi match al circolo e scopri dove sei arrivato.",
+      fatti: [
+        { label: "Registrati", note: "sul portale vialadder.com" },
+        { label: "Inserisci i risultati", note: "vittorie e sconfitte dei match al circolo" },
+        { label: "Report personale", note: "posizione in classifica e statistiche" },
+        { label: "Aggiornamento", note: "ogni settimana", value: "lunedì" }
+      ],
+      qr: "assets/qr/vialadder.png",   // QR verso https://vialadder.com
+      qrTesto: "Inquadra e registrati"
     },
     {
       tipo: "testo",
@@ -440,7 +454,7 @@ const BACHECA = {
         { label: "Ordini online", note: "comodamente da casa" },
         { label: "Consegna", note: "al circolo o direttamente a casa tua" }
       ],
-      qr: "",          // link dello shop online: quando c'è, compare il QR code da inquadrare
+      qr: "",          // immagine del QR dello shop online (assets/qr/...): quando c'è, compare da inquadrare
       cta: "Per tutti i soci del T.C. Vialar"
     },
     {
@@ -520,8 +534,8 @@ function renderTesto(s) {
   if (s.qr) {
     const row = el("div", "ig-row");
     const qr = el("div", "ig-qr");
-    try { new QRCode(qr, { text: s.qr, width: 200, height: 200, colorDark: "#0b2a6e", colorLight: "#ffffff" }); } catch (e) {}
-    const info = el("div"); info.append(el("div", "fact-note", "Inquadra e acquista"));
+    const qi = new Image(); qi.src = s.qr; qi.alt = "QR code"; qr.append(qi);
+    const info = el("div"); info.append(el("div", "qr-testo", s.qrTesto || "Inquadra con il telefono"));
     row.append(qr, info); left.append(row);
   }
   if (s.immagine) {
@@ -603,9 +617,9 @@ function renderInstagram() {
   if (BACHECA.instagram) {
     const row = el("div", "ig-row");
     const qr = el("div", "ig-qr");
-    try { new QRCode(qr, { text: "https://www.instagram.com/" + BACHECA.instagram + "/", width: 200, height: 200, colorDark: "#06177a", colorLight: "#ffffff" }); } catch (e) {}
+    const qi = new Image(); qi.src = "assets/qr/instagram.png"; qi.alt = "QR code Instagram"; qr.append(qi);
     const info = el("div");
-    info.append(el("div", "fact-note", "Inquadra il codice"), el("div", "ig-handle", "@" + BACHECA.instagram));
+    info.append(el("div", "qr-testo", "Inquadra e seguici"), el("div", "ig-handle", "@" + BACHECA.instagram));
     row.append(qr, info);
     left.append(row);
   }
