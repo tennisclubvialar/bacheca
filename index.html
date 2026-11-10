@@ -168,7 +168,9 @@ h1.lungo { font-size: 138px; }
 .fact-note { font-size: 25px; margin-top: 8px; }
 .fact-value { font-size: 88px; }
 .fact-logo { background: #d9dee4; border-radius: 24px; display: grid; place-items: center; padding: 26px; box-shadow: 0 18px 40px rgba(6,23,122,.3); }
-.fact-logo img { max-width: 100%; max-height: 220px; object-fit: contain; }
+.fact-logo img { max-width: 100%; max-height: 200px; object-fit: contain; }
+.facts.compact .fact-logo { padding: 18px; }
+.facts.compact .fact-logo img { max-height: 150px; }
 .facts.compact { gap: 16px; }
 .facts.compact .fact { padding: 22px 36px; }
 .facts.compact .fact-label { font-size: 34px; }
@@ -840,7 +842,8 @@ const BACHECA = {
     {
       tipo: "testo",
       kicker: "Partner",
-      titolo: "Nidea Web Marketing Agency", icona: "megafono",
+      titolo: "Nidea",
+      logo: "assets/sponsor/nidea.png", logoSfondo: "#202020",
       testo: "Non ti rendiamo virale, ti rendiamo riconoscibile: presenza, identità, coerenza e fiducia per il tuo brand.",
       fatti: [
         { label: "Strategia e posizionamento", note: "identità, tono di voce, obiettivi" },
@@ -930,8 +933,8 @@ function renderTesto(s) {
   const h = el("h1", null, s.titolo); if (s.titolo.length > 18) h.classList.add("lungo");
   left.append(el("div", "kicker", s.kicker), h, lr);
   slide.append(left);
-  const right = el("div", "facts" + ((s.fatti || []).length > 4 ? " compact" : ""));
-  if (s.logo) { const lg = el("div", "fact-logo"); const li = new Image(); li.src = s.logo; li.alt = s.titolo; lg.append(li); right.append(lg); }
+  const right = el("div", "facts" + (((s.fatti || []).length + (s.logo ? 1 : 0)) > 4 ? " compact" : ""));
+  if (s.logo) { const lg = el("div", "fact-logo"); if (s.logoSfondo) lg.style.background = s.logoSfondo; const li = new Image(); li.src = s.logo; li.alt = s.titolo; lg.append(li); right.append(lg); }
   (s.fatti || []).forEach(f => {
     const row = el("div", "fact");
     const lab = el("div", "fact-label", f.label);
