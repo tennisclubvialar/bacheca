@@ -329,6 +329,9 @@ header, main, footer { position: relative; z-index: 1; }
 .videopieno-testo { position: absolute; left: 100px; bottom: 80px; right: 100px; z-index: 1; }
 .videopieno-testo h1 { font-size: 150px; margin: 18px 0 0; }
 .slide.active.videopieno video { animation: zoom 1.2s ease-out both; }
+.videopieno.pulito::before, .videopieno.pulito::after { display: none; }
+.slide.active.videopieno.pulito video { animation: none; }
+.videopieno.pulito video { object-fit: contain; background: #0631d6; }
 
 
 /* Meteo nell'intestazione (Open-Meteo, Roma - Via Paolo III) */
@@ -466,6 +469,10 @@ const BACHECA = {
       testo: "Il rodeo maschile: 4 gironi da 4, poi semifinale e finale. I primi giocano per il titolo, i secondi per la consolazione. Ogni partita vale punti per la Race to Finals 2027. Iscrizioni in segreteria.",
       chips: ["1 set · killer point", "5 test + report PDF", "Quota 30 €"],
       immagine: "assets/locandine/gentlemens-cup.jpg"
+    },
+    {
+      tipo: "videopieno", pulito: true, finoAl: "2026-11-15", durata: 18,
+      video: "assets/video/gentlemens-cup-bacheca.mp4", poster: "assets/video/gentlemens-cup-bacheca.jpg"
     },
     {
       tipo: "testo",
@@ -1102,6 +1109,7 @@ function renderVideoPieno(s) {
   txt.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo));
   const logo = el("div", "videopieno-logo");
   logo.innerHTML = '<svg viewBox="0 0 387 332" aria-hidden="true"><g fill="#fff"><polygon points="0,0 90,0 182,153 136,234"/><polygon points="114,0 272,0 193,136"/><polygon points="294,0 387,0 193,332 148,254"/></g></svg><span>T.C. VIALAR</span>';
+  if (s.pulito) { slide.classList.add("pulito"); slide.append(v); return slide; }   // video con grafica già montata: niente scritte sopra
   slide.append(v, logo, txt);
   return slide;
 }
