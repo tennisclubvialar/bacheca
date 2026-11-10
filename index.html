@@ -332,6 +332,7 @@ header, main, footer { position: relative; z-index: 1; }
 .videopieno.pulito::before, .videopieno.pulito::after { display: none; }
 .slide.active.videopieno.pulito video { animation: none; }
 .videopieno.pulito video { object-fit: contain; background: #0631d6; }
+#stage.verticale .videopieno.pulito video { background: #061f9e; }
 
 
 /* Meteo nell'intestazione (Open-Meteo, Roma - Via Paolo III) */
@@ -472,7 +473,8 @@ const BACHECA = {
     },
     {
       tipo: "videopieno", pulito: true, finoAl: "2026-11-15", durata: 18,
-      video: "assets/video/gentlemens-cup-bacheca.mp4", poster: "assets/video/gentlemens-cup-bacheca.jpg"
+      video: "assets/video/gentlemens-cup-bacheca.mp4", poster: "assets/video/gentlemens-cup-bacheca.jpg",
+      videoVerticale: "assets/video/gentlemens-cup-verticale.mp4"
     },
     {
       tipo: "testo",
@@ -1109,6 +1111,7 @@ function renderVideoPieno(s) {
   txt.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo));
   const logo = el("div", "videopieno-logo");
   logo.innerHTML = '<svg viewBox="0 0 387 332" aria-hidden="true"><g fill="#fff"><polygon points="0,0 90,0 182,153 136,234"/><polygon points="114,0 272,0 193,136"/><polygon points="294,0 387,0 193,332 148,254"/></g></svg><span>T.C. VIALAR</span>';
+  if (s.videoVerticale) { v.dataset.oriz = s.video; v.dataset.vert = s.videoVerticale; }   // su iPad in verticale usa la versione 9:16
   if (s.pulito) { slide.classList.add("pulito"); slide.append(v); return slide; }   // video con grafica già montata: niente scritte sopra
   slide.append(v, logo, txt);
   return slide;
@@ -1288,7 +1291,7 @@ function show(i) {
   nodes.forEach((n, k) => n.classList.toggle("active", k === i));
   [...dots.children].forEach((d, k) => d.classList.toggle("on", k === i));
   nodes.forEach((n, k) => n.querySelectorAll("video").forEach(v => {
-    if (k === i) { try { v.currentTime = 0; const p = v.play(); if (p) p.catch(() => {}); } catch (e) {} }
+    if (k === i) { try { if (v.dataset.vert) { const want = document.getElementById("stage").classList.contains("verticale") ? v.dataset.vert : v.dataset.oriz; if (v.getAttribute("src") !== want) v.src = want; } v.currentTime = 0; const p = v.play(); if (p) p.catch(() => {}); } catch (e) {} }
     else { try { v.pause(); } catch (e) {} }
   }));
   clearInterval(window._gal);
