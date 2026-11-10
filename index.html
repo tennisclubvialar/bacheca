@@ -439,7 +439,7 @@ const BACHECA = {
     { titolo: "Adulti", chi: "Rodei per i soci adulti", eventi: [
       { mese: "Settembre", nome: "Vialar Open", tipo: "Rodeo open", stato: "fatto" },
       { mese: "Ottobre", nome: "Ladies Cup", tipo: "Rodeo femminile", stato: "fatto" },
-      { mese: "Novembre", nome: "Gentlemen's Cup", tipo: "Rodeo maschile", stato: "da fare" },
+      { mese: "Novembre", nome: "Gentlemen's Cup", tipo: "Rodeo maschile · domenica 15", stato: "da fare" },
       { mese: "Dicembre", nome: "Silver Cup", tipo: "Rodeo over 45 open", stato: "da fare" },
       { mese: "Gennaio", nome: "Pickleball Open", tipo: "Rodeo open", stato: "da fare" },
       { mese: "Febbraio", nome: "Doppio Open", tipo: "Rodeo open", stato: "da fare" },
@@ -459,6 +459,18 @@ const BACHECA = {
     { immagine: "assets/locandine/fisioterapista-luca-merli.jpg", titolo: "Fisioterapista Luca Merli, OMPT" }
   ],
   slide: [
+    {
+      tipo: "testo", tema: "rosso", finoAl: "2026-11-15",
+      kicker: "Domenica 15 novembre · ore 11:00",
+      titolo: "Gentlemen's Cup",
+      testo: "Il rodeo maschile del circolo: 16 iscritti, gironi all'italiana e due tabelloni finali. Iscriviti in segreteria.",
+      fatti: [
+        { label: "4 gironi da 4", note: "3 partite a testa", value: "16" },
+        { label: "Tabellone principale", note: "i primi di ogni girone · semifinale e finale" },
+        { label: "Consolazione", note: "i secondi di ogni girone · semifinale e finale" },
+        { label: "5 test atletici tra un match e l'altro", note: "con il preparatore · report personale" }
+      ]
+    },
     {
       tipo: "testo",
       kicker: "Campi", icona: "campo",
@@ -1223,7 +1235,8 @@ let FASCIA = null;
 function build() {
   FASCIA = fasciaAttuale();
   const fa = fasciaAttuale();
-  const servizi = BACHECA.slide.filter(s => !s.fascia || s.fascia.split(" ").includes(fa) || (fa === "weekend" && !/^pomeriggio$/.test(s.fascia))).map(s => {
+  const oggiISO = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Rome" });
+  const servizi = BACHECA.slide.filter(s => !s.finoAl || oggiISO <= s.finoAl).filter(s => !s.fascia || s.fascia.split(" ").includes(fa) || (fa === "weekend" && !/^pomeriggio$/.test(s.fascia))).map(s => {
     const n = (
     s.tipo === "instagram" ? renderInstagram() : s.tipo === "eventi" ? renderEventi() : s.tipo === "calendario" ? renderCalendario(BACHECA.calendario[s.indice]) :
     s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : s.tipo === "qrgrande" ? renderQrGrande(s) : s.tipo === "staff" ? renderStaff(s) : s.tipo === "video" ? renderVideo(s) : s.tipo === "videopieno" ? renderVideoPieno(s) : s.tipo === "galleria" ? renderGalleria(s) : renderTesto(s));
