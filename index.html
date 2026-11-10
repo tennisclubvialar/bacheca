@@ -246,6 +246,10 @@ header, main, footer { position: relative; z-index: 1; }
 .qrgrande { grid-template-columns: 1fr 620px; }
 .qr-card { background: #fff; border-radius: 30px; padding: 40px; display: grid; gap: 22px; justify-items: center; box-shadow: 0 30px 70px rgba(6,23,122,.4); }
 .qr-card img { width: 520px; height: 520px; image-rendering: pixelated; }
+/* etichette social: colori delle piattaforme (per i loghi ufficiali usare le icone del brand kit di Meta) */
+.kicker.social { color: #fff; }
+.kicker.ig { background: linear-gradient(90deg, #f58529, #dd2a7b 45%, #8134af 75%, #515bd4); }
+.kicker.wa { background: #25d366; color: #073b1d; }
 .qr-card-testo.ig { color: #c13584; font-size: 54px; text-transform: none; }
 .ig-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 40px; }
 .ig-strip .ig-tile { padding: 0; }
@@ -1003,7 +1007,7 @@ function renderQrGrande(s) {
   const slide = el("section", "slide qrgrande");
   const left = el("div");
   const lr = el("div", "lead-row"); lr.append(el("p", "lead", s.testo));
-  left.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo), lr);
+  left.append(el("div", "kicker" + (/whatsapp/i.test(s.kicker) ? " social wa" : ""), s.kicker), el("h1", null, s.titolo), lr);
   const card = el("div", "qr-card");
   const img = new Image(); img.src = s.qr; img.alt = "QR code"; card.append(img, el("div", "qr-card-testo", s.qrTesto));
   slide.append(left, card);
@@ -1163,7 +1167,7 @@ function renderInstagram() {
   const slide = el("section", "slide qrgrande instagram");
   const left = el("div");
   const lr = el("div", "lead-row"); lr.append(el("p", "lead", "Tornei, risultati, foto e novità del circolo: seguici e non perderti nulla."));
-  left.append(el("div", "kicker", "Instagram"), el("h1", null, "Seguici su Instagram"), lr);
+  left.append(el("div", "kicker social ig", "Instagram"), el("h1", null, "Seguici su Instagram"), lr);
   const strip = el("div", "ig-strip");
   POSTS.slice(0, 5).forEach(p => { const t = el("div", "ig-tile"); const im = new Image(); im.src = p.image; im.alt = ""; t.append(im); strip.append(t); });
   if (strip.children.length) left.append(strip);
@@ -1182,7 +1186,7 @@ function renderPost(p) {
   const media = el("div", "post-media");
   const img = new Image(); img.src = p.image; img.alt = "Post Instagram del circolo"; media.append(img);
   const right = el("div");
-  right.append(el("div", "kicker", "Dal nostro Instagram"));
+  right.append(el("div", "kicker social ig", "Dal nostro Instagram"));
   right.append(el("p", "post-caption", (p.caption || "").trim()));
   if (p.timestamp) right.append(el("div", "post-date", new Date(p.timestamp).toLocaleDateString("it-IT", { day: "numeric", month: "long", timeZone: "Europe/Rome" })));
   if (BACHECA.instagram) {
