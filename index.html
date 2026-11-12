@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
+html, body { cursor: none; }
 :root {
   /* Stile della locandina del circolo: fondo blu in sfumatura, titoli condensati bianchi, etichette a pillola, schede bianche con testo blu e fascia bianca in basso */
   --blue: #0a5ad4;
@@ -1555,6 +1556,13 @@ async function tieniAcceso() {
   try { if ("wakeLock" in navigator && document.visibilityState === "visible") wakeLockBacheca = await navigator.wakeLock.request("screen"); } catch (e) {}
 }
 document.addEventListener("visibilitychange", tieniAcceso);
+// Tutto schermo: basta premere OK sul telecomando (o toccare lo schermo) una volta
+function tuttoSchermo() {
+  const d = document.documentElement;
+  if (document.fullscreenElement || document.webkitFullscreenElement) return;
+  try { (d.requestFullscreen || d.webkitRequestFullscreen).call(d); } catch (e) {}
+}
+["keydown", "click", "touchend"].forEach(ev => document.addEventListener(ev, tuttoSchermo));
 // Un video minuscolo e invisibile sempre in riproduzione: su Fire TV e Silk evita modalità ambiente e standby
 (function videoSveglia() {
   const v = document.createElement("video");
