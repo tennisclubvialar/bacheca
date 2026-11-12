@@ -327,6 +327,20 @@ header, main, footer { position: relative; z-index: 1; }
 .video-slide, .galleria { grid-template-columns: 1fr auto; gap: 90px; }
 .video-media { height: 860px; aspect-ratio: 9 / 16; border-radius: 28px; overflow: hidden; border: 10px solid #fff; box-shadow: 0 30px 70px rgba(6,23,122,.45); background: #000; }
 .video-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.viaggi h1 { font-size: 118px; }
+#stage.verticale .viaggi h1 { font-size: 112px; }
+.viaggi-grid { display: grid; grid-template-columns: repeat(3, 300px); gap: 22px; justify-content: end; }
+.viaggi-grid.n4 { grid-template-columns: repeat(2, 330px); }
+.viaggio { position: relative; aspect-ratio: 4 / 5; border-radius: 22px; overflow: hidden; border: 6px solid #fff; box-shadow: 0 20px 50px rgba(6,23,122,.45); background: #fff; animation: viaggio-spot var(--ciclo, 12s) ease-in-out infinite; animation-delay: var(--d, 0s); }
+.viaggio img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.slide.active .viaggio { animation-play-state: running; }
+@keyframes viaggio-spot { 0%, 14%, 100% { transform: scale(1); box-shadow: 0 20px 50px rgba(6,23,122,.45); border-color: #fff; } 5%, 10% { transform: scale(1.07); box-shadow: 0 0 0 6px #f07b3f, 0 30px 70px rgba(240,123,63,.45); border-color: #f07b3f; z-index: 2; } }
+.viaggi-codice { display: inline-flex; align-items: center; gap: 18px; margin-top: 34px; background: #fff; color: var(--blue-deep, #06177a); border-radius: 22px; padding: 18px 26px; box-shadow: 0 20px 50px rgba(6,23,122,.35); }
+.viaggi-codice .lab { font-size: 22px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #5b6478; }
+.viaggi-codice .cod { font-family: var(--display); font-size: 58px; line-height: 1; color: #f07b3f; letter-spacing: 1px; }
+.viaggi-codice .wa { font-size: 26px; font-weight: 800; color: #06177a; }
+#stage.verticale .viaggi-grid { grid-template-columns: repeat(3, 1fr); justify-content: stretch; gap: 18px; }
+#stage.verticale .viaggi-codice .cod { font-size: 46px; }
 .galleria-media { position: relative; height: 860px; aspect-ratio: 3 / 4; border-radius: 28px; overflow: hidden; border: 10px solid #fff; box-shadow: 0 30px 70px rgba(6,23,122,.45); background: #fff; }
 .galleria-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity 1s ease, transform 6s ease-out; }
 .galleria-media img.on { opacity: 1; transform: scale(1); }
@@ -917,6 +931,22 @@ const BACHECA = {
       qrTesto: "Inquadra e leggi la newsletter di novembre"
     },
     {
+      tipo: "viaggi", durata: 16, finoAl: "2027-01-02",
+      kicker: "Tennis & Padel in vacanza",
+      titolo: "Si gioca anche in viaggio",
+      testo: "Clinic di tennis e padel in Italia e all'estero: prenota con il codice partner del T.C. Vialar.",
+      codice: "TPV-VIALAR27",
+      contatto: "WhatsApp 338 214 2074",
+      viaggi: [
+        { immagine: "assets/viaggi/verona-5-8-dic.jpg", titolo: "Padel Clinic & Terme a Verona, 5-8 dicembre", finoAl: "2026-12-04" },
+        { immagine: "assets/viaggi/abano-5-8-dic.jpg", titolo: "Tennis, Padel e Relax ad Abano, 5-8 dicembre", finoAl: "2026-12-04" },
+        { immagine: "assets/viaggi/grosseto-5-8-dic.jpg", titolo: "Tennis & Padel Clinic in Maremma, 5-8 dicembre", finoAl: "2026-12-04" },
+        { immagine: "assets/viaggi/mauritius-9-17-dic.jpg", titolo: "Tennis, Padel & Golf alle Mauritius, 9-17 dicembre", finoAl: "2026-12-08" },
+        { immagine: "assets/viaggi/sotogrande-capodanno.jpg", titolo: "Capodanno a Sotogrande, 29 dicembre - 4 gennaio", finoAl: "2026-12-28" },
+        { immagine: "assets/viaggi/marbella-3-7-gen.jpg", titolo: "Padel & Tennis Clinic a Marbella, 3-7 gennaio", finoAl: "2027-01-02" }
+      ]
+    },
+    {
       tipo: "sponsor",
       kicker: "Partner",
       titolo: "Sponsor e partner",
@@ -1159,6 +1189,24 @@ function renderVideoPieno(s) {
   return slide;
 }
 
+function renderViaggi(s) {
+  const oggi = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Rome" });
+  const lista = s.viaggi.filter(v => !v.finoAl || oggi <= v.finoAl);   // i viaggi già partiti spariscono da soli
+  if (!lista.length) return null;
+  const slide = el("section", "slide viaggi");
+  const left = el("div");
+  const lr = el("div", "lead-row"); lr.append(el("p", "lead", s.testo));
+  left.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo), lr);
+  const box = el("div", "viaggi-codice");
+  const t = el("div"); t.append(el("div", "lab", "Codice partner"), el("div", "cod", s.codice));
+  box.append(t, el("div", "wa", s.contatto)); left.append(box);
+  const grid = el("div", "viaggi-grid" + (lista.length === 4 ? " n4" : ""));
+  const shown = lista.slice(0, 6), ciclo = shown.length * 2;
+  shown.forEach((v, k) => { const c = el("div", "viaggio"); c.style.setProperty("--d", (k * 2) + "s"); c.style.setProperty("--ciclo", ciclo + "s"); const im = new Image(); im.src = v.immagine; im.alt = v.titolo; c.append(im); grid.append(c); });
+  slide.append(left, grid);
+  return slide;
+}
+
 function renderGalleria(s) {
   const slide = el("section", "slide galleria");
   const left = el("div");
@@ -1301,7 +1349,7 @@ function build() {
   const servizi = BACHECA.slide.filter(s => !s.finoAl || oggiISO <= s.finoAl).filter(s => !s.fascia || s.fascia.split(" ").includes(fa) || (fa === "weekend" && !/^pomeriggio$/.test(s.fascia))).map(s => {
     const n = (
     s.tipo === "instagram" ? renderInstagram() : s.tipo === "eventi" ? renderEventi() : s.tipo === "calendario" ? renderCalendario(BACHECA.calendario[s.indice]) :
-    s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : s.tipo === "qrgrande" ? renderQrGrande(s) : s.tipo === "staff" ? renderStaff(s) : s.tipo === "video" ? renderVideo(s) : s.tipo === "videopieno" ? renderVideoPieno(s) : s.tipo === "galleria" ? renderGalleria(s) : renderTesto(s));
+    s.tipo === "sponsor" ? renderSponsor(s) : s.tipo === "foto" ? renderFoto(s) : s.tipo === "qrgrande" ? renderQrGrande(s) : s.tipo === "staff" ? renderStaff(s) : s.tipo === "video" ? renderVideo(s) : s.tipo === "videopieno" ? renderVideoPieno(s) : s.tipo === "galleria" ? renderGalleria(s) : s.tipo === "viaggi" ? renderViaggi(s) : renderTesto(s));
     if (n && s.durata) n.dataset.durata = s.durata;
     if (n && s.sfondo) n.dataset.sfondo = s.sfondo;
     if (n && s.tema) n.classList.add("tema-" + s.tema);
