@@ -120,6 +120,7 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-heigh
 .sponsor-card { border-radius: 26px; display: grid; place-items: center; padding: 34px 56px; box-shadow: 0 22px 50px rgba(6,23,122,.35); min-height: 0; }
 .sponsor-card img { max-width: 100%; max-height: 190px; object-fit: contain; }
 .sponsor-card.invito { background: transparent !important; border: 4px dashed rgba(255,255,255,.7); box-shadow: none; text-align: center; align-content: center; gap: 14px; }
+.sponsor-card.invito:nth-child(3n+2) { grid-column: span 2; }
 .invito-titolo { font-family: var(--display); font-size: 64px; line-height: 1; text-transform: uppercase; }
 .invito-testo { font-size: 28px; font-weight: 600; color: var(--mist); }
 .foto { grid-template-columns: minmax(0, 1fr) 1000px; gap: 70px; }
@@ -918,7 +919,6 @@ const BACHECA = {
       testo: "Grazie alle aziende che sostengono il T.C. Vialar e le sue attività.",
       invito: { titolo: "Diventa partner", testo: "Porta il tuo marchio al T.C. Vialar: chiedi in segreteria" },
       sponsor: [
-        { nome: "BPER Banca", logo: "assets/sponsor/bper.png", sfondo: "#ffffff" },
         { nome: "Professionisti Immobiliari", logo: "assets/sponsor/professionisti-immobiliari.png", sfondo: "#3d485a" },
         { nome: "Breakpoint", logo: "assets/sponsor/breakpoint.png", sfondo: "#d9dee4" },
         { nome: "Nidea Web Marketing Agency", logo: "assets/sponsor/nidea.png", sfondo: "#202020" },
