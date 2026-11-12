@@ -1563,6 +1563,21 @@ function tuttoSchermo() {
   try { (d.requestFullscreen || d.webkitRequestFullscreen).call(d); } catch (e) {}
 }
 ["keydown", "click", "touchend"].forEach(ev => document.addEventListener(ev, tuttoSchermo));
+// Musica di sottofondo: brani originali che si alternano. Parte alla prima pressione di OK (i browser bloccano l'audio automatico).
+// Per spegnerla: aggiungi ?musica=0 all'indirizzo.
+const MUSICA = ["assets/musica/brano-1.m4a", "assets/musica/brano-2.m4a", "assets/musica/brano-3.m4a"];
+const musica = (() => {
+  if (new URLSearchParams(location.search).get("musica") === "0") return null;
+  const a = new Audio(); a.volume = 0.35; a.preload = "auto";
+  let i = Math.floor(Math.random() * MUSICA.length);
+  const carica = () => { a.src = MUSICA[i]; };
+  a.addEventListener("ended", () => { i = (i + 1) % MUSICA.length; carica(); a.play().catch(() => {}); });
+  carica();
+  return a;
+})();
+function avviaMusica() { if (musica && musica.paused) musica.play().catch(() => {}); }
+["keydown", "click", "touchend"].forEach(ev => document.addEventListener(ev, avviaMusica));
+avviaMusica();
 // Un video minuscolo e invisibile sempre in riproduzione: su Fire TV e Silk evita modalità ambiente e standby
 (function videoSveglia() {
   const v = document.createElement("video");
