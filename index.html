@@ -225,6 +225,17 @@ h1.lungo { font-size: 138px; }
 #stage.verticale .ig-grid { max-width: 900px; justify-self: center; width: 100%; }
 
 
+/* Tema notte (campagna partnership): blu notte, vicino al blu del circolo ma diverso */
+#stage .notte-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .9s ease;
+  background: radial-gradient(60% 50% at 100% 80%, rgba(29,77,255,.35) 0%, rgba(29,77,255,0) 100%), linear-gradient(180deg, rgba(7,13,40,.78) 0%, rgba(10,20,64,.9) 40%, rgba(11,22,64,.97) 65%, #0b1640 100%), url("assets/sfondo.jpg") center top / cover no-repeat; }
+#stage.notte .notte-layer { opacity: 1; }
+#stage.notte::after { opacity: 0; }
+.tema-notte .kicker { color: #0b1640; }
+.tema-notte .fact { color: #0b1640; }
+.tema-notte .fact-value, .tema-notte .fact-note { color: #1d4dff; }
+.tema-notte .fact:last-child:not(:first-child) { background: #1d4dff; color: #fff; }
+.tema-notte .fact:last-child:not(:first-child) .fact-value, .tema-notte .fact:last-child:not(:first-child) .fact-note { color: #dbe4ff; }
+.tema-notte .cta { background: #1d4dff; color: #fff; }
 /* Tema rosso (campagna preparazione atletica) */
 #stage::before { z-index: 0; }
 #stage .tema-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .9s ease;
@@ -386,6 +397,7 @@ header { gap: 40px; }
 <div id="viewport">
   <div id="stage">
     <div class="tema-layer" aria-hidden="true"></div>
+    <div class="notte-layer" aria-hidden="true"></div>
     <div class="foto-layer" aria-hidden="true"></div>
     <header>
       <div class="brand">
@@ -914,7 +926,7 @@ const BACHECA = {
       ]
     },
     {
-      tipo: "testo", icona: "megafono",
+      tipo: "testo", tema: "notte", icona: "megafono",
       kicker: "Partnership",
       titolo: "Diventa partner del T.C. Vialar",
       testo: "Porta il tuo marchio nella community del circolo, a 200 metri dal Vaticano. Quattro livelli di partnership, anche su misura.",
@@ -927,7 +939,7 @@ const BACHECA = {
       cta: "Scopri i livelli di partnership in segreteria"
     },
     {
-      tipo: "testo", icona: "trofeo",
+      tipo: "testo", tema: "notte", icona: "trofeo",
       kicker: "Partnership · i livelli",
       titolo: "Scegli il tuo livello",
       testo: "Dal grande marchio all'attività di quartiere: c'è un pacchetto per ogni realtà che vuole crescere con il T.C. Vialar.",
@@ -1329,6 +1341,7 @@ function show(i) {
     window._gal = setInterval(() => { ims[j].classList.remove("on"); j = (j + 1) % ims.length; ims[j].classList.add("on"); }, passo * 1000);
   }
   document.getElementById("stage").classList.toggle("rosso", nodes[i].classList.contains("tema-rosso"));
+  document.getElementById("stage").classList.toggle("notte", nodes[i].classList.contains("tema-notte"));
   const fl = document.querySelector(".foto-layer");
   if (nodes[i].dataset.sfondo) { fl.style.backgroundImage = `url("${nodes[i].dataset.sfondo}")`; fl.classList.add("on"); }
   else fl.classList.remove("on");
