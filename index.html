@@ -127,6 +127,9 @@ h1 { font-family: var(--display); font-weight: 400; font-size: 150px; line-heigh
 .foto-media { height: 790px; border-radius: 26px; overflow: hidden; border: 10px solid var(--white); box-shadow: 0 30px 70px rgba(11,42,110,.45); }
 .foto-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .locandina { grid-template-columns: 1fr; place-items: center; padding: 20px 96px 40px; }
+.locandina picture { display: contents; }
+.locandina.alta img { height: 780px; }
+#stage.verticale .locandina.alta img { height: auto; width: auto; max-width: 100%; max-height: 1480px; }
 .locandina img { max-height: 830px; max-width: 100%; border-radius: 20px; border: 10px solid var(--white); box-shadow: 0 30px 70px rgba(11,42,110,.45); }
 .post { grid-template-columns: 640px 1fr; gap: 90px; }
 .post.con-immagine { grid-template-columns: 1fr 640px; }
@@ -473,7 +476,8 @@ const BACHECA = {
     { immagine: "assets/locandine/sponsor-pi-servizi.jpg", titolo: "Professionisti Immobiliari: servizi gratuiti per i soci" },
     { immagine: "assets/locandine/sponsor-pi-valutazione.jpg", titolo: "Professionisti Immobiliari: valuta la tua casa" },
     { immagine: "assets/locandine/sponsor-pi-stranieri.jpg", titolo: "Professionisti Immobiliari: vendi casa agli stranieri" },
-    { immagine: "assets/locandine/fisioterapista-luca-merli.jpg", titolo: "Fisioterapista Luca Merli, OMPT" }
+    { immagine: "assets/locandine/fisioterapista-luca-merli.jpg", titolo: "Fisioterapista Luca Merli, OMPT" },
+    { immagine: "assets/locandine/diventa-partner-post.jpg", verticale: "assets/locandine/diventa-partner-storia.jpg", titolo: "Diventa partner del T.C. Vialar" }
   ],
   slide: [
     {
@@ -1224,7 +1228,12 @@ function renderEventi() {
 function renderLocandina(l) {
   const slide = el("section", "slide locandina");
   const img = new Image(); img.src = l.immagine; img.alt = l.titolo || "Locandina";
-  slide.append(img);
+  if (l.verticale) {   // versione 9:16 per l'iPad in verticale
+    slide.classList.add("alta");
+    const pic = document.createElement("picture"), src = document.createElement("source");
+    src.media = "(orientation: portrait)"; src.srcset = l.verticale;
+    pic.append(src, img); slide.append(pic);
+  } else slide.append(img);
   return slide;
 }
 
