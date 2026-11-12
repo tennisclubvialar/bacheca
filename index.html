@@ -1548,6 +1548,15 @@ function schermoIntero() {
 document.addEventListener("click", schermoIntero);
 document.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === "f") schermoIntero(); });
 fit(); window.addEventListener("resize", fit);
+
+// Tiene acceso lo schermo (Fire TV con Silk, tablet): chiede al browser di non andare in sospensione
+let wakeLockBacheca = null;
+async function tieniAcceso() {
+  try { if ("wakeLock" in navigator && document.visibilityState === "visible") wakeLockBacheca = await navigator.wakeLock.request("screen"); } catch (e) {}
+}
+document.addEventListener("visibilitychange", tieniAcceso);
+tieniAcceso();
+setInterval(() => { if (!wakeLockBacheca || wakeLockBacheca.released) tieniAcceso(); }, 60000);
 </script>
 </body>
 </html>
