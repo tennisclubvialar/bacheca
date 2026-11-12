@@ -1560,9 +1560,9 @@ document.addEventListener("visibilitychange", tieniAcceso);
 function tuttoSchermo() {
   const d = document.documentElement;
   if (document.fullscreenElement || document.webkitFullscreenElement) return;
-  try { (d.requestFullscreen || d.webkitRequestFullscreen).call(d); } catch (e) {}
+  try { const r = (d.requestFullscreen || d.webkitRequestFullscreen).call(d, { navigationUI: "hide" }); if (r && r.catch) r.catch(() => {}); } catch (e) {}
 }
-["keydown", "click", "touchend"].forEach(ev => document.addEventListener(ev, tuttoSchermo));
+["keydown", "keyup", "click", "pointerdown", "touchend"].forEach(ev => document.addEventListener(ev, tuttoSchermo, true));
 // Musica di sottofondo: brani originali che si alternano. Parte alla prima pressione di OK (i browser bloccano l'audio automatico).
 // Per spegnerla: aggiungi ?musica=0 all'indirizzo.
 const MUSICA = ["assets/musica/brano-1.m4a", "assets/musica/brano-2.m4a", "assets/musica/brano-3.m4a"];
@@ -1575,8 +1575,23 @@ const musica = (() => {
   carica();
   return a;
 })();
-function avviaMusica() { if (musica && musica.paused) musica.play().catch(() => {}); }
-["keydown", "click", "touchend"].forEach(ev => document.addEventListener(ev, avviaMusica));
+// Avviso discreto in basso finché la musica non parte (il browser la blocca fino al primo tasto premuto)
+const avvisoMusica = (() => {
+  if (!musica) return null;
+  const d = document.createElement("div");
+  d.textContent = "♪ Premi OK sul telecomando per la musica";
+  d.style.cssText = "position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:50;background:rgba(255,255,255,.92);color:#06177a;font:800 20px Inter,Arial,sans-serif;letter-spacing:.5px;padding:10px 22px;border-radius:999px;box-shadow:0 10px 30px rgba(0,10,80,.35);transition:opacity .6s";
+  document.body.appendChild(d);
+  musica.addEventListener("playing", () => { d.style.opacity = "0"; });
+  musica.addEventListener("pause", () => { if (!musica.ended) d.style.opacity = "1"; });
+  return d;
+})();
+function avviaMusica() {
+  if (!musica || !musica.paused) return;
+  const p = musica.play();
+  if (p && p.catch) p.catch(() => { if (avvisoMusica) avvisoMusica.style.opacity = "1"; });
+}
+["keydown", "keyup", "click", "pointerdown", "touchend"].forEach(ev => document.addEventListener(ev, avviaMusica, true));
 avviaMusica();
 // Un video minuscolo e invisibile sempre in riproduzione: su Fire TV e Silk evita modalità ambiente e standby
 (function videoSveglia() {
