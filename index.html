@@ -1555,6 +1555,15 @@ async function tieniAcceso() {
   try { if ("wakeLock" in navigator && document.visibilityState === "visible") wakeLockBacheca = await navigator.wakeLock.request("screen"); } catch (e) {}
 }
 document.addEventListener("visibilitychange", tieniAcceso);
+// Un video minuscolo e invisibile sempre in riproduzione: su Fire TV e Silk evita modalità ambiente e standby
+(function videoSveglia() {
+  const v = document.createElement("video");
+  v.src = "assets/video/sveglia.mp4"; v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute("aria-hidden", "true");
+  v.style.cssText = "position:fixed;right:0;bottom:0;width:2px;height:2px;opacity:0.01;pointer-events:none;z-index:-1";
+  document.body.appendChild(v);
+  const play = () => v.play().catch(() => {});
+  play(); setInterval(() => { if (v.paused) play(); }, 30000);
+})();
 tieniAcceso();
 setInterval(() => { if (!wakeLockBacheca || wakeLockBacheca.released) tieniAcceso(); }, 60000);
 </script>
