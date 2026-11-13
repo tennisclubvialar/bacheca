@@ -535,18 +535,10 @@ const BACHECA = {
     { immagine: "assets/locandine/sponsor-pi-valutazione.jpg", titolo: "Professionisti Immobiliari: valuta la tua casa" },
     { immagine: "assets/locandine/sponsor-pi-stranieri.jpg", titolo: "Professionisti Immobiliari: vendi casa agli stranieri" },
     { immagine: "assets/locandine/fisioterapista-luca-merli.jpg", titolo: "Fisioterapista Luca Merli, OMPT" },
-    { immagine: "assets/locandine/diventa-partner-bacheca.jpg", verticale: "assets/locandine/diventa-partner-storia.jpg", pieno: true, titolo: "Diventa partner del T.C. Vialar" }
+    { immagine: "assets/locandine/diventa-partner-bacheca.jpg", verticale: "assets/locandine/diventa-partner-storia.jpg", pieno: true, titolo: "Diventa partner del T.C. Vialar" },
+    { immagine: "assets/locandine/move-better-bacheca.jpg", verticale: "assets/locandine/move-better-storia.jpg", pieno: true, sfondo: "#070707", finoAl: "2026-11-21", titolo: "Move better, play better" }
   ],
   slide: [
-    {
-      tipo: "testo", finoAl: "2026-11-21", durata: 15,
-      kicker: "Sabato 21 novembre · 8:00–14:00",
-      titolo: "Move better, play better",
-      testo: "Giornata di valutazione fisioterapica gratuita con Giuseppe Guastella, fisioterapista: analisi dei movimenti del tennis, mobilità, controllo motorio ed esercizi personalizzati.",
-      chips: ["Gratuita", "Individuale · 30 min", "Max 10 posti"],
-      cta: "Prenota scrivendo in DM",
-      immagine: "assets/locandine/move-better-play-better.jpg"
-    },
     {
       tipo: "testo", finoAl: "2026-11-15", durata: 15,
       kicker: "Domenica 15 novembre · ore 11:00",
@@ -1331,6 +1323,7 @@ function renderLocandina(l) {
   const slide = el("section", "slide locandina");
   const img = new Image(); img.src = l.immagine; img.alt = l.titolo || "Locandina";
   if (l.pieno) slide.classList.add("pieno");   // grafica 16:9 a tutto schermo
+  if (l.sfondo) slide.style.background = l.sfondo;
   if (l.verticale) {   // versione 9:16 per l'iPad in verticale
     const pic = document.createElement("picture"), src = document.createElement("source");
     src.media = "(orientation: portrait)"; src.srcset = l.verticale;
@@ -1459,7 +1452,7 @@ function build() {
     (extra.length ? extra : [null]).forEach(e => { nodes.push(...renderLiveSlides()); if (e) nodes.push(e); });
   } else if (live.length) { nodes.splice(1, 0, ...live); const meta = Math.floor(nodes.length / 2); nodes.splice(meta, 0, ...renderLiveSlides()); }
   // distribuisce le locandine (sponsor) a intervalli regolari nella rotazione
-  const loc = MODO_TORNEO ? [] : BACHECA.locandine.map(renderLocandina);
+  const loc = MODO_TORNEO ? [] : BACHECA.locandine.filter(l => !l.finoAl || oggiISO <= l.finoAl).map(renderLocandina);
   if (loc.length) {
     const passo = Math.max(2, Math.floor(nodes.length / loc.length));
     loc.forEach((l, k) => nodes.splice(Math.min(nodes.length, (k + 1) * passo + k), 0, l));
