@@ -498,6 +498,8 @@ const BACHECA = {
   postInRotazione: 3,       // quanti post recenti mostrare a tutto schermo tra una slide e l'altra
   /* Striscia avvisi in basso: compare solo se qui c'è almeno un avviso, es. "Circolo chiuso il 25 dicembre" */
   avvisi: [],
+  // Domenica del torneo: dalle 10:45 alle 15:30 la bacheca mostra soprattutto le info live per i partecipanti
+  modalitaTorneo: { data: "2026-11-15", dalle: "10:45", alle: "15:30" },
   /* Calendario della stagione: stato "fatto" oppure "da fare". Solo il mese, perché le date possono cambiare. */
   calendario: [
     { titolo: "Scuola tennis", chi: "Per i ragazzi della scuola tennis", eventi: [
@@ -1385,6 +1387,31 @@ function fasciaAttuale() {
 }
 let FASCIA = null;
 
+
+function inModalitaTorneo() {
+  const m = BACHECA.modalitaTorneo; if (!m) return false;
+  const now = new Date();
+  const d = now.toLocaleDateString("sv-SE", { timeZone: "Europe/Rome" });
+  const hm = now.toLocaleTimeString("it-IT", { timeZone: "Europe/Rome", hour: "2-digit", minute: "2-digit", hour12: false });
+  return d === m.data && hm >= m.dalle && hm <= m.alle;
+}
+function tickerTorneo() {
+  if (!LIVE) return [];
+  const t = [];
+  (LIVE.news || []).slice(-2).reverse().forEach(n => t.push("NEWS: " + n));
+  (LIVE.risultati || []).slice(0, 4).forEach(m => t.push(m.fase + ": " + (m.vince === "b" ? m.b + " b. " + m.a : m.a + " b. " + m.b) + " " + m.score));
+  (LIVE.prossime || []).slice(0, 4).forEach(m => t.push("A seguire" + (m.campo ? " · campo " + m.campo : "") + ": " + m.a + " – " + m.b));
+  if (!t.length && LIVE.stato === "iscrizioni") t.push("Gentlemen's Cup: si parte alle 11:00 · official sponsor Breakpoint");
+  return t;
+}
+let MODO_TORNEO = false;
+function aggiornaTicker() {
+  const voci = MODO_TORNEO ? tickerTorneo() : BACHECA.avvisi;
+  document.querySelector(".footer-label").textContent = MODO_TORNEO ? "Live" : "Avvisi";
+  document.getElementById("ticker").replaceChildren(...voci.map(a => el("span", null, a)));
+  document.getElementById("stage").classList.toggle("senza-avvisi", !voci.length);
+}
+
 function build() {
   FASCIA = fasciaAttuale();
   const fa = fasciaAttuale();
@@ -1415,17 +1442,22 @@ function build() {
   }
   // slide LIVE del torneo: subito all'inizio della rotazione e ripetute a metà giro
   const live = renderLiveSlides();
-  if (live.length) { nodes.splice(1, 0, ...live); const meta = Math.floor(nodes.length / 2); nodes.splice(meta, 0, ...renderLiveSlides()); }
+  MODO_TORNEO = inModalitaTorneo() && live.length > 0;
+  if (MODO_TORNEO) {
+    // giorno del torneo: quasi solo info per i partecipanti, alternate a locandina, video e sponsor
+    const extra = servizi.filter(n => /Gentlemen/i.test((n.querySelector("h1") || {}).textContent || "") || n.classList.contains("sponsor-slide") || n.querySelector("video[src*='gentlemens']"));
+    nodes = [];
+    (extra.length ? extra : [null]).forEach(e => { nodes.push(...renderLiveSlides()); if (e) nodes.push(e); });
+  } else if (live.length) { nodes.splice(1, 0, ...live); const meta = Math.floor(nodes.length / 2); nodes.splice(meta, 0, ...renderLiveSlides()); }
   // distribuisce le locandine (sponsor) a intervalli regolari nella rotazione
-  const loc = BACHECA.locandine.map(renderLocandina);
+  const loc = MODO_TORNEO ? [] : BACHECA.locandine.map(renderLocandina);
   if (loc.length) {
     const passo = Math.max(2, Math.floor(nodes.length / loc.length));
     loc.forEach((l, k) => nodes.splice(Math.min(nodes.length, (k + 1) * passo + k), 0, l));
   }
   box.replaceChildren(...nodes);
   dots.replaceChildren(...nodes.map(() => el("div", "dot")));
-  document.getElementById("ticker").replaceChildren(...BACHECA.avvisi.map(a => el("span", null, a)));
-  document.getElementById("stage").classList.toggle("senza-avvisi", !BACHECA.avvisi.length);
+  aggiornaTicker();
 }
 
 function show(i) {
@@ -1471,7 +1503,7 @@ function durata(n) {
 function prossima() {
   setTimeout(() => {
     idx = (idx + 1) % nodes.length;
-    if (idx === 0 && fasciaAttuale() !== FASCIA) build();
+    if (idx === 0 && (fasciaAttuale() !== FASCIA || inModalitaTorneo() !== MODO_TORNEO)) build();
     show(idx); prossima();
   }, durata(nodes[idx]) * 1000);
 }
@@ -1549,8 +1581,8 @@ function renderLiveSlides() {
     const s = el("section", "slide live-slide"); s.dataset.live = "1"; s.dataset.durata = 16;
     liveTesta(s, "Risultati in diretta", agg);
     const cols = el("div", "live-cols");
-    const a = el("div", "live-col"); a.append(el("h3", null, "Ultimi risultati")); (LIVE.risultati || []).slice(0, 5).forEach(m => a.append(riga(m, false)));
-    const b = el("div", "live-col"); b.append(el("h3", null, "Prossime partite")); (LIVE.prossime || []).slice(0, 5).forEach(m => b.append(riga(m, true)));
+    const a = el("div", "live-col"); a.append(el("h3", null, "Ultimi risultati")); (LIVE.risultati || []).slice(0, inModalitaTorneo() ? 4 : 5).forEach(m => a.append(riga(m, false)));
+    const b = el("div", "live-col"); b.append(el("h3", null, "Prossime partite")); (LIVE.prossime || []).slice(0, inModalitaTorneo() ? 4 : 5).forEach(m => b.append(riga(m, true)));
     cols.append(a, b); s.append(cols); liveNews(s); out.push(s);
   }
   const fp = (LIVE.finali && LIVE.finali.principale) || [], fc = (LIVE.finali && LIVE.finali.consolazione) || [];
@@ -1566,6 +1598,7 @@ function renderLiveSlides() {
 }
 setInterval(async () => {   // ogni minuto: nuovi dati live, sostituiti al volo nelle slide già presenti
   await loadLive();
+  if (MODO_TORNEO) aggiornaTicker();
   const vecchie = nodes.filter(n => n.dataset.live === "1");
   const nuove = renderLiveSlides();
   if (!nuove.length || !vecchie.length || vecchie.length % nuove.length !== 0) {
