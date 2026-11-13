@@ -1605,7 +1605,13 @@ async function controllaAggiornamenti() {
   for (const url of ["index.html", "instagram/posts.json", "classifica/classifica.json"]) {
     const t = await firma(url);
     if (t == null) continue;
-    if (firme[url] != null && firme[url] !== t) { location.reload(); return; }
+    if (firme[url] != null && firme[url] !== t) {
+      firme[url] = t;
+      if (url === "index.html") { location.reload(); return; }
+      // post o classifica nuovi: aggiorna le slide senza ricaricare (così la musica non si ferma)
+      await loadPosts(); const att = nodes[idx]; build(); idx = Math.max(0, nodes.indexOf(att)); if (idx >= nodes.length) idx = 0; show(idx);
+      continue;
+    }
     firme[url] = t;
   }
 }
@@ -1720,8 +1726,17 @@ const musica = (() => {
   const a = new Audio(); a.volume = 0.4; a.preload = "none";
   let i = Math.floor(Math.random() * MUSICA.length), radio = q !== "brani";
   const carica = () => { a.src = radio ? RADIO : MUSICA[i]; };
-  const aiBrani = () => { if (!radio) return; radio = false; const suonava = !a.paused || a.dataset.voluto === "1"; carica(); if (suonava) a.play().catch(() => {}); };
+  let tentativi = 0;
+  const aiBrani = () => {
+    if (!radio) return;
+    const suonava = !a.paused || a.dataset.voluto === "1";
+    if (tentativi < 3) { tentativi++; setTimeout(() => { a.src = RADIO + "?r=" + Date.now(); if (suonava) a.play().catch(() => {}); }, 4000); return; }   // la radio si è interrotta: riprova
+    radio = false; carica(); if (suonava) a.play().catch(() => {});
+    setTimeout(() => { radio = true; tentativi = 0; }, 20 * 60 * 1000);   // dopo 20 minuti, al cambio brano, ritenta la radio
+  };
   a.addEventListener("error", aiBrani);
+  a.addEventListener("stalled", () => { if (radio) setTimeout(() => { if (radio && a.readyState < 3) aiBrani(); }, 8000); });
+  a.addEventListener("playing", () => { if (radio) tentativi = 0; });
   a.addEventListener("ended", () => { if (radio) { aiBrani(); return; } i = (i + 1) % MUSICA.length; carica(); a.play().catch(() => {}); });
   a.addEventListener("play", () => { a.dataset.voluto = "1"; if (radio) setTimeout(() => { if (radio && (a.readyState < 3 || a.currentTime === 0)) aiBrani(); }, 15000); });
   carica();
