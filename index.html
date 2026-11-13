@@ -328,6 +328,47 @@ header, main, footer { position: relative; z-index: 1; }
 .video-slide, .galleria { grid-template-columns: 1fr auto; gap: 90px; }
 .video-media { height: 860px; aspect-ratio: 9 / 16; border-radius: 28px; overflow: hidden; border: 10px solid #fff; box-shadow: 0 30px 70px rgba(6,23,122,.45); background: #000; }
 .video-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* ===== LIVE torneo (dati dall'app Rodeo Circolo) ===== */
+.live-slide { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; align-items: start; align-content: start; gap: 0; padding-top: 20px; }
+.live-slide .sponsor-top h1 { font-size: 104px; white-space: nowrap; }
+.live-slide .live-gironi, .live-slide .live-cols, .live-slide .live-iscritti, .live-slide .live-campioni { margin-top: 22px; }
+#stage.verticale .live-slide .sponsor-top h1 { font-size: 92px; white-space: normal; }
+
+.live-kicker { display: inline-flex; align-items: center; gap: 12px; }
+.live-dot { width: 16px; height: 16px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 0 0 rgba(255,59,48,.7); animation: live-pulse 1.6s infinite; }
+@keyframes live-pulse { 0% { box-shadow: 0 0 0 0 rgba(255,59,48,.7); } 70% { box-shadow: 0 0 0 16px rgba(255,59,48,0); } 100% { box-shadow: 0 0 0 0 rgba(255,59,48,0); } }
+.live-agg { font-size: 22px; font-weight: 700; opacity: .85; }
+.live-gironi { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 26px; }
+.live-card { background: #fff; color: #06177a; border-radius: 22px; padding: 18px 22px; box-shadow: 0 18px 40px rgba(0,10,80,.3); }
+.live-card h3 { font-family: var(--display); font-size: 36px; text-transform: uppercase; color: #0a3cff; margin: 0 0 8px; display: flex; justify-content: space-between; align-items: baseline; }
+.live-card h3 small { font-family: inherit; font-size: 18px; color: #5b6478; letter-spacing: 1px; }
+.live-tab { width: 100%; border-collapse: collapse; font-size: 27px; }
+.live-tab th { font-size: 15px; letter-spacing: 1.5px; color: #5b6478; text-align: right; padding: 2px 8px; font-weight: 800; }
+.live-tab th:first-child, .live-tab td:first-child { text-align: left; }
+.live-tab td { padding: 7px 8px; border-top: 1.5px solid #e3e7f1; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.live-tab td.n { font-weight: 800; }
+.live-tab tr.q td { color: #0a3cff; }
+.live-tab tr.q td.n::after { content: " ●"; color: #ffd23f; font-size: 18px; }
+.live-cols { display: grid; grid-template-columns: 1.15fr 1fr; gap: 26px; margin-top: 26px; }
+.live-col h3 { font-family: var(--display); font-size: 34px; text-transform: uppercase; margin: 0 0 12px; }
+.live-match { display: grid; grid-template-columns: 1fr auto; gap: 4px 14px; align-items: center; background: #fff; color: #06177a; border-radius: 16px; padding: 12px 18px; margin-bottom: 10px; box-shadow: 0 10px 26px rgba(0,10,80,.25); }
+.live-match .f { grid-column: 1 / -1; font-size: 15px; font-weight: 800; letter-spacing: 1.5px; color: #5b6478; text-transform: uppercase; }
+.live-match .v { font-size: 26px; font-weight: 700; }
+.live-match .v b { color: #0a3cff; font-weight: 900; }
+.live-match .s { font-family: var(--display); font-size: 32px; background: #0a3cff; color: #fff; border-radius: 12px; padding: 2px 14px; }
+.live-match.next .s { background: #ffd23f; color: #06177a; font-size: 22px; padding: 6px 12px; }
+.live-news { margin-top: 18px; background: rgba(255,255,255,.14); border: 1.5px solid rgba(255,255,255,.35); border-radius: 16px; padding: 12px 20px; font-size: 26px; font-weight: 700; }
+.live-news b { color: #ffd23f; margin-right: 10px; }
+.live-iscritti { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 26px; }
+.live-iscritti div { background: #fff; color: #06177a; border-radius: 14px; padding: 14px 16px; font-size: 26px; font-weight: 800; text-align: center; }
+.live-iscritti div.libero { background: transparent; color: #ffd23f; border: 2.5px dashed #ffd23f; }
+.live-campioni { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 34px; }
+.live-campioni .c { background: #fff; color: #06177a; border-radius: 26px; padding: 30px; text-align: center; box-shadow: 0 20px 50px rgba(0,10,80,.35); }
+.live-campioni .c .t { font-size: 22px; font-weight: 800; letter-spacing: 3px; color: #5b6478; }
+.live-campioni .c .w { font-family: var(--display); font-size: 84px; line-height: 1; color: #0a3cff; margin-top: 12px; text-transform: uppercase; }
+.live-campioni .c.oro { box-shadow: 0 0 0 6px #ffd23f, 0 20px 50px rgba(0,10,80,.35); }
+#stage.verticale .live-gironi, #stage.verticale .live-cols, #stage.verticale .live-campioni { grid-template-columns: 1fr; }
+#stage.verticale .live-iscritti { grid-template-columns: repeat(2, 1fr); }
 .viaggi h1 { font-size: 118px; }
 #stage.verticale .viaggi h1 { font-size: 112px; }
 .viaggi-grid { display: grid; grid-template-columns: repeat(3, 300px); gap: 22px; justify-content: end; }
@@ -1372,6 +1413,9 @@ function build() {
     if (sc) cl.unshift(sc);
     if (pos >= 0) nodes.splice(pos + 1, 0, ...cl);
   }
+  // slide LIVE del torneo: subito all'inizio della rotazione e ripetute a metà giro
+  const live = renderLiveSlides();
+  if (live.length) { nodes.splice(1, 0, ...live); const meta = Math.floor(nodes.length / 2); nodes.splice(meta, 0, ...renderLiveSlides()); }
   // distribuisce le locandine (sponsor) a intervalli regolari nella rotazione
   const loc = BACHECA.locandine.map(renderLocandina);
   if (loc.length) {
@@ -1432,6 +1476,107 @@ function prossima() {
   }, durata(nodes[idx]) * 1000);
 }
 
+
+/* ===== LIVE torneo: legge live/torneo.json (aggiornato dai dati dell'app Rodeo Circolo) e aggiorna le slide senza ricaricare la pagina ===== */
+let LIVE = null;
+async function loadLive() {
+  try { const r = await fetch("live/torneo.json?t=" + Date.now(), { cache: "no-store" }); LIVE = r.ok ? await r.json() : null; } catch (e) { /* tiene i dati precedenti */ }
+}
+function liveAttivo() {
+  if (!LIVE || !LIVE.attivo) return false;
+  const oggi = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Rome" });
+  return !LIVE.data || oggi <= LIVE.data;
+}
+function liveTesta(slide, titolo, sotto) {
+  const top = el("div", "sponsor-top");
+  const t = el("div");
+  const k = el("div", "kicker live-kicker"); k.append(el("span", "live-dot"), document.createTextNode((LIVE.stato === "iscrizioni" ? "" : "Live · ") + (LIVE.nome || "Torneo")));
+  t.append(k, el("h1", null, titolo));
+  const lr = el("div", "lead-row"); lr.append(el("p", "lead", sotto));
+  top.append(t, lr); slide.append(top);
+}
+function liveNews(slide) {
+  const n = (LIVE.news || []).slice(-1)[0];
+  if (n) { const d = el("div", "live-news"); d.append(el("b", null, "NEWS"), document.createTextNode(n)); slide.append(d); }
+}
+function riga(m, next) {
+  const d = el("div", "live-match" + (next ? " next" : ""));
+  d.append(el("div", "f", m.fase + (next && m.campo ? " · campo " + m.campo : "")));
+  const v = el("div", "v");
+  const A = m.vince === "a" ? el("b", null, m.a) : document.createTextNode(m.a);
+  const B = m.vince === "b" ? el("b", null, m.b) : document.createTextNode(m.b);
+  v.append(A, document.createTextNode("  –  "), B);
+  d.append(v, el("div", "s", next ? "A seguire" : m.score));
+  return d;
+}
+function renderLiveSlides() {
+  if (!liveAttivo()) return [];
+  const agg = LIVE.aggiornato ? "aggiornato alle " + LIVE.aggiornato : "";
+  const out = [];
+  if (LIVE.stato === "iscrizioni" || (!LIVE.gironi || !LIVE.gironi.length)) {
+    const s = el("section", "slide live-slide"); s.dataset.live = "1"; s.dataset.durata = 14;
+    const lib = Math.max(0, (LIVE.posti.max || 0) - (LIVE.posti.iscritti || 0));
+    liveTesta(s, "Gli iscritti", lib ? "Ultimi " + lib + " posti: iscriviti in segreteria!" : "Tabellone al completo!");
+    const g = el("div", "live-iscritti");
+    (LIVE.iscritti || []).forEach(n => g.append(el("div", null, n)));
+    for (let k = 0; k < lib; k++) g.append(el("div", "libero", "Posto libero"));
+    s.append(g); liveNews(s); out.push(s);
+    return out;
+  }
+  if (LIVE.campioni && LIVE.campioni.principale) {
+    const s = el("section", "slide live-slide"); s.dataset.live = "1"; s.dataset.durata = 14;
+    liveTesta(s, "I vincitori", "Complimenti a tutti i partecipanti!");
+    const c = el("div", "live-campioni");
+    const a = el("div", "c oro"); a.append(el("div", "t", "CAMPIONE · TABELLONE PRINCIPALE"), el("div", "w", LIVE.campioni.principale)); c.append(a);
+    if (LIVE.campioni.consolazione) { const b = el("div", "c"); b.append(el("div", "t", "VINCITORE · CONSOLAZIONE"), el("div", "w", LIVE.campioni.consolazione)); c.append(b); }
+    s.append(c); out.push(s);
+  }
+  { // gironi
+    const s = el("section", "slide live-slide"); s.dataset.live = "1"; s.dataset.durata = 16;
+    liveTesta(s, "Classifica gironi", agg);
+    const g = el("div", "live-gironi");
+    LIVE.gironi.forEach(gi => {
+      const c = el("div", "live-card");
+      const h = el("h3", null, gi.nome); h.append(el("small", null, gi.completo ? "CONCLUSO" : "IN CORSO")); c.append(h);
+      const t = el("table", "live-tab");
+      t.innerHTML = "<tr><th>Giocatore</th><th>G</th><th>V</th><th>+/-</th></tr>";
+      gi.righe.forEach((r, k) => { const tr = el("tr", k < 2 ? "q" : ""); [r.n, r.g, r.v, (r.diff > 0 ? "+" : "") + r.diff].forEach((x, j) => tr.append(el("td", j === 0 ? "n" : null, String(x)))); t.append(tr); });
+      c.append(t); g.append(c);
+    });
+    s.append(g); out.push(s);
+  }
+  if ((LIVE.risultati || []).length || (LIVE.prossime || []).length) {
+    const s = el("section", "slide live-slide"); s.dataset.live = "1"; s.dataset.durata = 16;
+    liveTesta(s, "Risultati in diretta", agg);
+    const cols = el("div", "live-cols");
+    const a = el("div", "live-col"); a.append(el("h3", null, "Ultimi risultati")); (LIVE.risultati || []).slice(0, 5).forEach(m => a.append(riga(m, false)));
+    const b = el("div", "live-col"); b.append(el("h3", null, "Prossime partite")); (LIVE.prossime || []).slice(0, 5).forEach(m => b.append(riga(m, true)));
+    cols.append(a, b); s.append(cols); liveNews(s); out.push(s);
+  }
+  const fp = (LIVE.finali && LIVE.finali.principale) || [], fc = (LIVE.finali && LIVE.finali.consolazione) || [];
+  if (fp.length || fc.length) {
+    const s = el("section", "slide live-slide"); s.dataset.live = "1"; s.dataset.durata = 14;
+    liveTesta(s, "Fase finale", "Primi per il titolo · secondi per la consolazione");
+    const cols = el("div", "live-cols");
+    const a = el("div", "live-col"); a.append(el("h3", null, "Tabellone principale")); fp.forEach(m => a.append(riga(m, !m.score)));
+    const b = el("div", "live-col"); b.append(el("h3", null, "Consolazione")); fc.forEach(m => b.append(riga(m, !m.score)));
+    cols.append(a, b); s.append(cols); out.push(s);
+  }
+  return out;
+}
+setInterval(async () => {   // ogni minuto: nuovi dati live, sostituiti al volo nelle slide già presenti
+  await loadLive();
+  const vecchie = nodes.filter(n => n.dataset.live === "1");
+  const nuove = renderLiveSlides();
+  if (!nuove.length || !vecchie.length || vecchie.length % nuove.length !== 0) {
+    if (nuove.length || vecchie.length) { const att = nodes[idx]; build(); idx = Math.max(0, nodes.indexOf(att)); if (idx >= nodes.length) idx = 0; show(idx); }
+    return;
+  }
+  let pool = [];
+  while (pool.length < vecchie.length) pool = pool.concat(renderLiveSlides());
+  vecchie.forEach((v, k) => { v.replaceChildren(...pool[k].childNodes); v.dataset.durata = pool[k].dataset.durata; });
+}, 60000);
+
 async function loadPosts() {
   try {
     const rc = await fetch("classifica/classifica.json?t=" + Date.now(), { cache: "no-store" });
@@ -1441,6 +1586,7 @@ async function loadPosts() {
     const r = await fetch("instagram/posts.json?t=" + Date.now(), { cache: "no-store" });
     if (r.ok) POSTS = (await r.json()).posts || [];
   } catch (e) { POSTS = []; }
+  await loadLive();
 }
 
 (async () => {
