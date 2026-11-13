@@ -1566,12 +1566,18 @@ function tuttoSchermo() {
 // Musica di sottofondo: brani originali che si alternano. Parte alla prima pressione di OK (i browser bloccano l'audio automatico).
 // Per spegnerla: aggiungi ?musica=0 all'indirizzo.
 const MUSICA = ["assets/musica/reception-1.m4a", "assets/musica/reception-2.m4a", "assets/musica/reception-3.m4a"];
+// Radio in diretta (RTL 102.5). Se lo streaming non risponde, si passa da soli ai brani di sottofondo.
+const RADIO = "https://streamingv2.shoutcast.com/rtl-1025";
 const musica = (() => {
-  if (new URLSearchParams(location.search).get("musica") === "0") return null;
-  const a = new Audio(); a.volume = 0.35; a.preload = "auto";
-  let i = Math.floor(Math.random() * MUSICA.length);
-  const carica = () => { a.src = MUSICA[i]; };
-  a.addEventListener("ended", () => { i = (i + 1) % MUSICA.length; carica(); a.play().catch(() => {}); });
+  const q = new URLSearchParams(location.search).get("musica");
+  if (q === "0") return null;
+  const a = new Audio(); a.volume = 0.4; a.preload = "none";
+  let i = Math.floor(Math.random() * MUSICA.length), radio = q !== "brani";
+  const carica = () => { a.src = radio ? RADIO : MUSICA[i]; };
+  const aiBrani = () => { if (!radio) return; radio = false; const suonava = !a.paused || a.dataset.voluto === "1"; carica(); if (suonava) a.play().catch(() => {}); };
+  a.addEventListener("error", aiBrani);
+  a.addEventListener("ended", () => { if (radio) { aiBrani(); return; } i = (i + 1) % MUSICA.length; carica(); a.play().catch(() => {}); });
+  a.addEventListener("play", () => { a.dataset.voluto = "1"; if (radio) setTimeout(() => { if (radio && (a.readyState < 3 || a.currentTime === 0)) aiBrani(); }, 15000); });
   carica();
   return a;
 })();
