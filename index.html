@@ -1211,8 +1211,8 @@ function renderVideo(s) {
   left.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo), lr);
   const media = el("div", "video-media");
   const v = document.createElement("video");
-  v.src = s.video; if (s.poster) v.poster = s.poster;
-  v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto";
+  v.dataset.src = s.video; if (s.poster) v.poster = s.poster;   // il video si carica solo quando la slide è in onda
+  v.muted = true; v.loop = true; v.playsInline = true; v.preload = "none";
   v.setAttribute("muted", ""); v.setAttribute("playsinline", "");
   media.append(v);
   slide.append(left, media);
@@ -1222,8 +1222,8 @@ function renderVideo(s) {
 function renderVideoPieno(s) {
   const slide = el("section", "slide videopieno");
   const v = document.createElement("video");
-  v.src = s.video; if (s.poster) v.poster = s.poster;
-  v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto";
+  v.dataset.src = s.video; if (s.poster) v.poster = s.poster;   // il video si carica solo quando la slide è in onda
+  v.muted = true; v.loop = true; v.playsInline = true; v.preload = "none";
   v.setAttribute("muted", ""); v.setAttribute("playsinline", "");
   const txt = el("div", "videopieno-testo");
   txt.append(el("div", "kicker", s.kicker), el("h1", null, s.titolo));
@@ -1447,7 +1447,7 @@ function build() {
   MODO_TORNEO = inModalitaTorneo() && live.length > 0;
   if (MODO_TORNEO) {
     // giorno del torneo: quasi solo info per i partecipanti, alternate a locandina, video e sponsor
-    const extra = servizi.filter(n => /Gentlemen/i.test((n.querySelector("h1") || {}).textContent || "") || n.classList.contains("sponsor-slide") || n.querySelector("video[src*='gentlemens']"));
+    const extra = servizi.filter(n => /Gentlemen/i.test((n.querySelector("h1") || {}).textContent || "") || n.classList.contains("sponsor-slide") || n.querySelector("video[data-src*='gentlemens']"));
     nodes = [];
     (extra.length ? extra : [null]).forEach(e => { nodes.push(...renderLiveSlides()); if (e) nodes.push(e); });
   } else if (live.length) { nodes.splice(1, 0, ...live); const meta = Math.floor(nodes.length / 2); nodes.splice(meta, 0, ...renderLiveSlides()); }
@@ -1465,9 +1465,17 @@ function build() {
 function show(i) {
   nodes.forEach((n, k) => n.classList.toggle("active", k === i));
   [...dots.children].forEach((d, k) => d.classList.toggle("on", k === i));
+  // un solo video alla volta: Fire TV e iPad hanno pochi decoder, i video in attesa restano scarichi
   nodes.forEach((n, k) => n.querySelectorAll("video").forEach(v => {
-    if (k === i) { try { if (v.dataset.vert) { const want = document.getElementById("stage").classList.contains("verticale") ? v.dataset.vert : v.dataset.oriz; if (v.getAttribute("src") !== want) v.src = want; } v.currentTime = 0; const p = v.play(); if (p) p.catch(() => {}); } catch (e) {} }
-    else { try { v.pause(); } catch (e) {} }
+    try {
+      if (k === i) {
+        let want = v.dataset.src || v.getAttribute("src");
+        if (v.dataset.vert) want = document.getElementById("stage").classList.contains("verticale") ? v.dataset.vert : v.dataset.oriz;
+        if (want && v.getAttribute("src") !== want) { v.src = want; v.load(); }
+        else v.currentTime = 0;
+        const p = v.play(); if (p) p.catch(() => setTimeout(() => { const q = v.play(); if (q) q.catch(() => {}); }, 800));
+      } else if (v.getAttribute("src")) { v.pause(); v.removeAttribute("src"); v.load(); }
+    } catch (e) {}
   }));
   clearInterval(window._gal);
   const g = nodes[i].querySelector(".galleria-media");
