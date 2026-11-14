@@ -1,11 +1,11 @@
 {
  "attivo": true,
- "aggiornato": "14:11",
+ "aggiornato": "18:01",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
- "stato": "iscrizioni",
+ "stato": "gironi",
  "posti": {
-  "iscritti": 14,
+  "iscritti": 16,
   "max": 16
  },
  "iscritti": [
@@ -17,16 +17,176 @@
   "Esposito L.",
   "Marra T.",
   "Mognato E.",
+  "Monteverde L.",
   "Pitrelli Q.",
   "Ranalli A.",
   "Rossi G.",
   "Sepe N.",
   "Spinelli M.",
+  "Spitaleri P.",
   "Tursi D."
  ],
- "gironi": [],
+ "gironi": [
+  {
+   "nome": "Girone A",
+   "completo": false,
+   "righe": [
+    {
+     "n": "Esposito L.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    },
+    {
+     "n": "Mognato E.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    },
+    {
+     "n": "Pitrelli Q.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    },
+    {
+     "n": "Spinelli M.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    }
+   ]
+  },
+  {
+   "nome": "Girone B",
+   "completo": false,
+   "righe": [
+    {
+     "n": "Corvi P.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    },
+    {
+     "n": "Marra T.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    },
+    {
+     "n": "Monteverde L.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    },
+    {
+     "n": "Tursi D.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    }
+   ]
+  },
+  {
+   "nome": "Girone C",
+   "completo": false,
+   "righe": [
+    {
+     "n": "De Sanctis V.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    },
+    {
+     "n": "Dunn K.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    },
+    {
+     "n": "Rossi G.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    },
+    {
+     "n": "Spitaleri P.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    }
+   ]
+  },
+  {
+   "nome": "Girone D",
+   "completo": false,
+   "righe": [
+    {
+     "n": "Cuccui M.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    },
+    {
+     "n": "D'Andrea S.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    },
+    {
+     "n": "Ranalli A.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    },
+    {
+     "n": "Sepe N.",
+     "g": 0,
+     "v": 0,
+     "diff": 0
+    }
+   ]
+  }
+ ],
  "risultati": [],
- "prossime": [],
+ "prossime": [
+  {
+   "fase": "Girone A",
+   "a": "Pitrelli Q.",
+   "b": "Esposito L.",
+   "campo": null
+  },
+  {
+   "fase": "Girone A",
+   "a": "Mognato E.",
+   "b": "Spinelli M.",
+   "campo": null
+  },
+  {
+   "fase": "Girone B",
+   "a": "Monteverde L.",
+   "b": "Marra T.",
+   "campo": null
+  },
+  {
+   "fase": "Girone B",
+   "a": "Tursi D.",
+   "b": "Corvi P.",
+   "campo": null
+  },
+  {
+   "fase": "Girone C",
+   "a": "Dunn K.",
+   "b": "Spitaleri P.",
+   "campo": null
+  },
+  {
+   "fase": "Girone C",
+   "a": "Rossi G.",
+   "b": "De Sanctis V.",
+   "campo": null
+  }
+ ],
  "finali": {
   "principale": [],
   "consolazione": []
