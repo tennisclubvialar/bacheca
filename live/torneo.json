@@ -1,18 +1,20 @@
 {
  "attivo": true,
- "aggiornato": "12:35",
+ "aggiornato": "14:11",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "iscrizioni",
  "posti": {
-  "iscritti": 12,
+  "iscritti": 14,
   "max": 16
  },
  "iscritti": [
+  "Corvi P.",
   "Cuccui M.",
   "D'Andrea S.",
   "De Sanctis V.",
   "Dunn K.",
+  "Esposito L.",
   "Marra T.",
   "Mognato E.",
   "Pitrelli Q.",
