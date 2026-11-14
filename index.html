@@ -1651,7 +1651,7 @@ async function controllaAggiornamenti() {
     if (t == null) continue;
     if (firme[url] != null && firme[url] !== t) {
       firme[url] = t;
-      if (url === "index.html") { location.reload(); return; }
+      if (url === "index.html") { ricaricaQuandoPossibile(); return; }
       // post o classifica nuovi: aggiorna le slide senza ricaricare (così la musica non si ferma)
       await loadPosts(); const att = nodes[idx]; build(); idx = Math.max(0, nodes.indexOf(att)); if (idx >= nodes.length) idx = 0; show(idx);
       continue;
@@ -1661,10 +1661,18 @@ async function controllaAggiornamenti() {
 }
 controllaAggiornamenti();
 setInterval(controllaAggiornamenti, 5 * 60 * 1000);
-/* ricarica comunque una volta a notte, per sicurezza */
-setInterval(async () => {   // ricarica di sicurezza ogni 6 ore, solo se internet c'è
+/* Ricarica senza interrompere la radio: se la musica sta suonando, la ricarica aspetta la notte (3:00–6:00),
+   quando al circolo non c'è nessuno; altrimenti avviene subito. */
+let ricaricaInSospeso = false;
+function staSuonando() { return typeof musica !== "undefined" && musica && !musica.paused; }
+function notte() { const h = new Date().getHours(); return h >= 3 && h < 6; }
+async function ricaricaQuandoPossibile() {
+  ricaricaInSospeso = true;
+  if (staSuonando() && !notte()) return;
   try { const r = await fetch("index.html?t=" + Date.now(), { cache: "no-store" }); if (r.ok) location.reload(); } catch (e) {}
-}, 6 * 60 * 60 * 1000);
+}
+setInterval(() => { if (ricaricaInSospeso) ricaricaQuandoPossibile(); }, 60 * 1000);
+setInterval(() => ricaricaQuandoPossibile(), 6 * 60 * 60 * 1000);   // ricarica di sicurezza ogni 6 ore (rispettando la radio)
 
 
 /* ===== Meteo: Open-Meteo, gratuito e senza chiave. Coordinate del circolo. ===== */
@@ -1759,7 +1767,7 @@ function tuttoSchermo() {
   try { const r = (d.requestFullscreen || d.webkitRequestFullscreen).call(d, { navigationUI: "hide" }); if (r && r.catch) r.catch(() => {}); } catch (e) {}
 }
 
-// Musica di sottofondo: brani originali che si alternano. Parte alla prima pressione di OK (i browser bloccano l'audio automatico).
+// Musica di sottofondo: prova a partire da sola; se il browser blocca l'audio automatico parte alla prima pressione di OK.
 // Per spegnerla: aggiungi ?musica=0 all'indirizzo.
 const MUSICA = ["assets/musica/reception-1.m4a", "assets/musica/reception-2.m4a", "assets/musica/reception-3.m4a"];
 // Radio in diretta (RTL 102.5). Se lo streaming non risponde, si passa da soli ai brani di sottofondo.
@@ -1805,6 +1813,9 @@ function avviaMusica() {
 // Prima la musica, poi il tutto schermo (il tutto schermo "consuma" il permesso del tasto premuto)
 ["keydown", "keyup", "click", "pointerdown", "touchend"].forEach(ev => document.addEventListener(ev, () => { avviaMusica(); tuttoSchermo(); }, true));
 avviaMusica();
+// La radio prova a partire da sola: all'apertura e poi ogni 20 secondi finché non suona
+// (quando il browser lo consente l'avvio è automatico, senza premere OK)
+setInterval(() => { if (musica && musica.paused) { const p = musica.play(); if (p && p.catch) p.catch(() => {}); } }, 20000);
 // Un video minuscolo e invisibile sempre in riproduzione: su Fire TV e Silk evita modalità ambiente e standby
 (function videoSveglia() {
   const v = document.createElement("video");
