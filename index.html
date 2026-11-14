@@ -1786,7 +1786,10 @@ const musica = (() => {
   const q = new URLSearchParams(location.search).get("musica");
   if (q === "0") return null;
   const a = new Audio(); a.volume = 0.4; a.preload = "none";
-  let i = Math.floor(Math.random() * MUSICA.length), radio = q !== "brani", fonte = 0, hls = null, tentativi = 0;
+  let i = Math.floor(Math.random() * MUSICA.length), radio = q !== "brani", hls = null, tentativi = 0;
+  // Su Silk (Fire TV) parte prima il flusso MP3, che Silk riproduce di sicuro; altrove lo streaming ufficiale
+  let fonte = /Silk|AFT|Vega|Kepler/i.test(navigator.userAgent) ? 1 : 0;
+  const stato = t => { const d = document.getElementById("avviso-musica"); if (d) d.textContent = t; };
   const nativoHls = !!a.canPlayType("application/vnd.apple.mpegurl");
   const staccaHls = () => { if (hls) { try { hls.destroy(); } catch (e) {} hls = null; } };
   async function carica() {
@@ -1804,7 +1807,7 @@ const musica = (() => {
     }
     a.src = u + (u.includes("?") ? "" : "?r=" + Date.now());
   }
-  const suona = () => { const p = a.play(); if (p && p.catch) p.catch(() => {}); };
+  const suona = () => { const p = a.play(); if (p && p.catch) p.catch(e => stato("♪ Bloccata dal browser: premi OK (" + (e && e.name || "") + ")")); };
   async function prossima() {   // la fonte attuale non risponde: prova la successiva, poi i brani
     if (!radio) return;
     const suonava = !a.paused || a.dataset.voluto === "1";
@@ -1815,7 +1818,9 @@ const musica = (() => {
   }
   a.addEventListener("error", () => { if (radio && !hls) prossima(); });
   a.addEventListener("stalled", () => { if (radio) setTimeout(() => { if (radio && a.readyState < 3) prossima(); }, 10000); });
-  a.addEventListener("playing", () => { if (radio) tentativi = 0; });
+  a.addEventListener("playing", () => { if (radio) tentativi = 0; stato(radio ? "♪ RTL 102.5 in diretta" : "♪ Musica di sottofondo"); });
+  a.addEventListener("waiting", () => stato("♪ Collegamento alla radio…"));
+  a.addEventListener("error", () => stato("♪ Radio non raggiungibile (errore " + (a.error ? a.error.code : "?") + "), provo un altro flusso…"));
   a.addEventListener("ended", async () => { if (radio) { prossima(); return; } i = (i + 1) % MUSICA.length; await carica(); suona(); });
   a.addEventListener("play", () => { a.dataset.voluto = "1"; if (radio) setTimeout(() => { if (radio && (a.readyState < 3 || a.currentTime === 0)) prossima(); }, 15000); });
   carica();
@@ -1825,17 +1830,18 @@ const musica = (() => {
 const avvisoMusica = (() => {
   if (!musica) return null;
   const d = document.createElement("div");
-  d.textContent = "♪ Premi OK sul telecomando per la musica";
+  d.id = "avviso-musica"; d.textContent = "♪ Premi OK sul telecomando per la musica";
   d.style.cssText = "position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:50;background:rgba(255,255,255,.92);color:#06177a;font:800 20px Inter,Arial,sans-serif;letter-spacing:.5px;padding:10px 22px;border-radius:999px;box-shadow:0 10px 30px rgba(0,10,80,.35);transition:opacity .6s";
   document.body.appendChild(d);
-  musica.addEventListener("playing", () => { d.style.opacity = "0"; });
+  musica.addEventListener("playing", () => { setTimeout(() => { if (!musica.paused) d.style.opacity = "0"; }, 4000); });
   musica.addEventListener("pause", () => { if (!musica.ended) d.style.opacity = "1"; });
   return d;
 })();
 function avviaMusica() {
   if (!musica || !musica.paused) return;
   const p = musica.play();
-  if (p && p.catch) p.catch(() => { if (avvisoMusica) avvisoMusica.style.opacity = "1"; });
+  if (avvisoMusica) { avvisoMusica.style.opacity = "1"; avvisoMusica.textContent = "♪ Avvio della radio…"; }
+  if (p && p.catch) p.catch(e => { if (avvisoMusica) { avvisoMusica.style.opacity = "1"; avvisoMusica.textContent = "♪ Premi OK sul telecomando per la musica"; } });
 }
 // Prima la musica, poi il tutto schermo (il tutto schermo "consuma" il permesso del tasto premuto)
 ["keydown", "keyup", "click", "pointerdown", "touchend"].forEach(ev => document.addEventListener(ev, () => { avviaMusica(); tuttoSchermo(); }, true));
