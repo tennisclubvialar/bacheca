@@ -1770,27 +1770,54 @@ function tuttoSchermo() {
 // Musica di sottofondo: prova a partire da sola; se il browser blocca l'audio automatico parte alla prima pressione di OK.
 // Per spegnerla: aggiungi ?musica=0 all'indirizzo.
 const MUSICA = ["assets/musica/reception-1.m4a", "assets/musica/reception-2.m4a", "assets/musica/reception-3.m4a"];
-// Radio in diretta (RTL 102.5). Se lo streaming non risponde, si passa da soli ai brani di sottofondo.
-const RADIO = "https://streamingv2.shoutcast.com/rtl-1025";
+// Radio in diretta (RTL 102.5): prima lo streaming ufficiale (HLS), poi un flusso MP3 di riserva;
+// se nessuno risponde si passa da soli ai brani di sottofondo.
+const RADIO = [
+  "https://dd782ed59e2a4e86aabf6fc508674b59.msvdn.net/live/S97044836/tbbP8T1ZRPBL/playlist_audio.m3u8",
+  "https://stream.rcast.net/210096"
+];
+let hlsPronto = null;
+function caricaHls() {
+  if (hlsPronto) return hlsPronto;
+  hlsPronto = new Promise(res => { const sc = document.createElement("script"); sc.src = "assets/js/hls.light.min.js"; sc.onload = () => res(window.Hls); sc.onerror = () => res(null); document.head.appendChild(sc); });
+  return hlsPronto;
+}
 const musica = (() => {
   const q = new URLSearchParams(location.search).get("musica");
   if (q === "0") return null;
   const a = new Audio(); a.volume = 0.4; a.preload = "none";
-  let i = Math.floor(Math.random() * MUSICA.length), radio = q !== "brani";
-  const carica = () => { a.src = radio ? RADIO : MUSICA[i]; };
-  let tentativi = 0;
-  const aiBrani = () => {
+  let i = Math.floor(Math.random() * MUSICA.length), radio = q !== "brani", fonte = 0, hls = null, tentativi = 0;
+  const nativoHls = !!a.canPlayType("application/vnd.apple.mpegurl");
+  const staccaHls = () => { if (hls) { try { hls.destroy(); } catch (e) {} hls = null; } };
+  async function carica() {
+    staccaHls();
+    if (!radio) { a.src = MUSICA[i]; return; }
+    const u = RADIO[fonte];
+    if (u.includes(".m3u8") && !nativoHls) {
+      const H = await caricaHls();
+      if (H && H.isSupported()) {
+        hls = new H({ lowLatencyMode: false });
+        hls.on(H.Events.ERROR, (e, d) => { if (d && d.fatal) prossima(); });
+        hls.loadSource(u); hls.attachMedia(a); return;
+      }
+      fonte = (fonte + 1) % RADIO.length; return carica();   // HLS non supportato: flusso MP3
+    }
+    a.src = u + (u.includes("?") ? "" : "?r=" + Date.now());
+  }
+  const suona = () => { const p = a.play(); if (p && p.catch) p.catch(() => {}); };
+  async function prossima() {   // la fonte attuale non risponde: prova la successiva, poi i brani
     if (!radio) return;
     const suonava = !a.paused || a.dataset.voluto === "1";
-    if (tentativi < 3) { tentativi++; setTimeout(() => { a.src = RADIO + "?r=" + Date.now(); if (suonava) a.play().catch(() => {}); }, 4000); return; }   // la radio si è interrotta: riprova
-    radio = false; carica(); if (suonava) a.play().catch(() => {});
-    setTimeout(() => { radio = true; tentativi = 0; }, 20 * 60 * 1000);   // dopo 20 minuti, al cambio brano, ritenta la radio
-  };
-  a.addEventListener("error", aiBrani);
-  a.addEventListener("stalled", () => { if (radio) setTimeout(() => { if (radio && a.readyState < 3) aiBrani(); }, 8000); });
+    tentativi++;
+    if (tentativi <= RADIO.length * 2) { fonte = (fonte + 1) % RADIO.length; await carica(); if (suonava) suona(); return; }
+    radio = false; await carica(); if (suonava) suona();
+    setTimeout(() => { radio = true; tentativi = 0; fonte = 0; }, 20 * 60 * 1000);   // dopo 20 minuti, al cambio brano, ritenta la radio
+  }
+  a.addEventListener("error", () => { if (radio && !hls) prossima(); });
+  a.addEventListener("stalled", () => { if (radio) setTimeout(() => { if (radio && a.readyState < 3) prossima(); }, 10000); });
   a.addEventListener("playing", () => { if (radio) tentativi = 0; });
-  a.addEventListener("ended", () => { if (radio) { aiBrani(); return; } i = (i + 1) % MUSICA.length; carica(); a.play().catch(() => {}); });
-  a.addEventListener("play", () => { a.dataset.voluto = "1"; if (radio) setTimeout(() => { if (radio && (a.readyState < 3 || a.currentTime === 0)) aiBrani(); }, 15000); });
+  a.addEventListener("ended", async () => { if (radio) { prossima(); return; } i = (i + 1) % MUSICA.length; await carica(); suona(); });
+  a.addEventListener("play", () => { a.dataset.voluto = "1"; if (radio) setTimeout(() => { if (radio && (a.readyState < 3 || a.currentTime === 0)) prossima(); }, 15000); });
   carica();
   return a;
 })();
