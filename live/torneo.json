@@ -1,6 +1,6 @@
 {
  "attivo": true,
- "aggiornato": "12:15",
+ "aggiornato": "15:35",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "gironi",
@@ -99,15 +99,15 @@
     },
     {
      "n": "De Sanctis V.",
-     "g": 0,
-     "v": 0,
-     "diff": 0
+     "g": 1,
+     "v": 1,
+     "diff": 4
     },
     {
      "n": "Rossi G.",
-     "g": 0,
+     "g": 1,
      "v": 0,
-     "diff": 0
+     "diff": -4
     },
     {
      "n": "Spitaleri P.",
@@ -152,6 +152,46 @@
   {
    "fase": "Girone C",
    "a": "Dunn K.",
+   "b": "Vincente 4",
+   "campo": null,
+   "score": "0-6",
+   "vince": "b"
+  },
+  {
+   "fase": "Girone C",
+   "a": "Dunn K.",
+   "b": "De Sanctis V.",
+   "campo": null,
+   "score": "0-6",
+   "vince": "b"
+  },
+  {
+   "fase": "Girone B",
+   "a": "Monteverde L.",
+   "b": "Corvi P.",
+   "campo": 3,
+   "score": "6-0",
+   "vince": "a"
+  },
+  {
+   "fase": "Girone A",
+   "a": "Esposito L.",
+   "b": "Mognato E.",
+   "campo": null,
+   "score": "0-6",
+   "vince": "b"
+  },
+  {
+   "fase": "Girone C",
+   "a": "Rossi G.",
+   "b": "De Sanctis V.",
+   "campo": 1,
+   "score": "2-6",
+   "vince": "b"
+  },
+  {
+   "fase": "Girone C",
+   "a": "Dunn K.",
    "b": "Spitaleri P.",
    "campo": 3,
    "score": "6-1",
@@ -172,32 +212,9 @@
    "campo": 3,
    "score": "6-0",
    "vince": "a"
-  },
-  {
-   "fase": "Girone A",
-   "a": "Mognato E.",
-   "b": "Spinelli M.",
-   "campo": 2,
-   "score": "2-6",
-   "vince": "b"
-  },
-  {
-   "fase": "Girone A",
-   "a": "Pitrelli Q.",
-   "b": "Esposito L.",
-   "campo": 1,
-   "score": "6-2",
-   "vince": "a"
   }
  ],
  "prossime": [
-  {
-   "fase": "Girone C",
-   "a": "Rossi G.",
-   "b": "De Sanctis V.",
-   "campo": 1,
-   "incorso": true
-  },
   {
    "fase": "Girone D",
    "a": "D'Andrea S.",
@@ -213,22 +230,29 @@
    "incorso": true
   },
   {
-   "fase": "Girone B",
-   "a": "Monteverde L.",
-   "b": "Corvi P.",
+   "fase": "Girone A",
+   "a": "Pitrelli Q.",
+   "b": "Spinelli M.",
    "campo": 3,
    "incorso": true
   },
   {
-   "fase": "Girone A",
-   "a": "Pitrelli Q.",
-   "b": "Spinelli M.",
+   "fase": "Girone B",
+   "a": "Marra T.",
+   "b": "Tursi D.",
+   "campo": 1,
+   "incorso": true
+  },
+  {
+   "fase": "Girone C",
+   "a": "Spitaleri P.",
+   "b": "Rossi G.",
    "campo": null
   },
   {
-   "fase": "Girone A",
-   "a": "Esposito L.",
-   "b": "Mognato E.",
+   "fase": "Girone D",
+   "a": "Vincente 1",
+   "b": "Vincente 2",
    "campo": null
   }
  ],
@@ -281,5 +305,8 @@
   ]
  },
  "campioni": {},
- "news": []
+ "news": [
+  "Kennet Dunn e Lorenzo Esposito si sono ritirati: le loro partite restanti sono assegnate a tavolino (6-0)"
+ ],
+ "modoTorneo": true
 }

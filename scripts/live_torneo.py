@@ -97,5 +97,6 @@ out = dict(
     data=T.get("date"), nome=d.get("titolo") or T.get("name"), stato=T.get("status"),
     posti=dict(iscritti=len(iscritti), max=T.get("max")), iscritti=iscritti,
     gironi=gironi, risultati=risultati, prossime=prossime, finali=finali, campioni=campioni, news=news)
+if "modoTorneo" in d: out["modoTorneo"] = d["modoTorneo"]   # true/false: forza la modalità torneo sulla bacheca
 json.dump(out, open(d.get("out", "live/torneo.json"), "w"), ensure_ascii=False, indent=1)
 print("ok", out["stato"], len(iscritti), "iscritti", len(risultati), "risultati")
