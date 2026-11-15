@@ -1,6 +1,6 @@
 {
  "attivo": true,
- "aggiornato": "11:51",
+ "aggiornato": "12:03",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "gironi",
@@ -32,6 +32,12 @@
    "completo": false,
    "righe": [
     {
+     "n": "Pitrelli Q.",
+     "g": 1,
+     "v": 1,
+     "diff": 4
+    },
+    {
      "n": "Spinelli M.",
      "g": 1,
      "v": 1,
@@ -39,15 +45,9 @@
     },
     {
      "n": "Esposito L.",
-     "g": 0,
+     "g": 1,
      "v": 0,
-     "diff": 0
-    },
-    {
-     "n": "Pitrelli Q.",
-     "g": 0,
-     "v": 0,
-     "diff": 0
+     "diff": -4
     },
     {
      "n": "Mognato E.",
@@ -69,15 +69,15 @@
     },
     {
      "n": "Corvi P.",
-     "g": 0,
-     "v": 0,
-     "diff": 0
+     "g": 1,
+     "v": 1,
+     "diff": 5
     },
     {
      "n": "Tursi D.",
-     "g": 0,
+     "g": 1,
      "v": 0,
-     "diff": 0
+     "diff": -5
     },
     {
      "n": "Marra T.",
@@ -151,6 +151,14 @@
  "risultati": [
   {
    "fase": "Girone B",
+   "a": "Tursi D.",
+   "b": "Corvi P.",
+   "campo": 4,
+   "score": "1-6",
+   "vince": "b"
+  },
+  {
+   "fase": "Girone B",
    "a": "Monteverde L.",
    "b": "Marra T.",
    "campo": 3,
@@ -164,28 +172,29 @@
    "campo": 2,
    "score": "2-6",
    "vince": "b"
-  }
- ],
- "prossime": [
+  },
   {
    "fase": "Girone A",
    "a": "Pitrelli Q.",
    "b": "Esposito L.",
    "campo": 1,
-   "incorso": true
-  },
-  {
-   "fase": "Girone B",
-   "a": "Tursi D.",
-   "b": "Corvi P.",
-   "campo": 4,
-   "incorso": true
-  },
+   "score": "6-2",
+   "vince": "a"
+  }
+ ],
+ "prossime": [
   {
    "fase": "Girone C",
    "a": "Dunn K.",
    "b": "Spitaleri P.",
    "campo": 3,
+   "incorso": true
+  },
+  {
+   "fase": "Girone C",
+   "a": "Rossi G.",
+   "b": "De Sanctis V.",
+   "campo": 1,
    "incorso": true
   },
   {
@@ -196,15 +205,22 @@
    "incorso": true
   },
   {
-   "fase": "Girone C",
-   "a": "Rossi G.",
-   "b": "De Sanctis V.",
-   "campo": null
-  },
-  {
    "fase": "Girone D",
    "a": "Ranalli A.",
    "b": "Cuccui M.",
+   "campo": 4,
+   "incorso": true
+  },
+  {
+   "fase": "Girone A",
+   "a": "Pitrelli Q.",
+   "b": "Spinelli M.",
+   "campo": null
+  },
+  {
+   "fase": "Girone A",
+   "a": "Esposito L.",
+   "b": "Mognato E.",
    "campo": null
   }
  ],
