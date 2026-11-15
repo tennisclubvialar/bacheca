@@ -338,14 +338,14 @@ header, main, footer { position: relative; z-index: 1; }
 .live-dot { width: 16px; height: 16px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 0 0 rgba(255,59,48,.7); animation: live-pulse 1.6s infinite; }
 @keyframes live-pulse { 0% { box-shadow: 0 0 0 0 rgba(255,59,48,.7); } 70% { box-shadow: 0 0 0 16px rgba(255,59,48,0); } 100% { box-shadow: 0 0 0 0 rgba(255,59,48,0); } }
 .live-agg { font-size: 22px; font-weight: 700; opacity: .85; }
-.live-gironi { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 26px; }
-.live-card { background: #fff; color: #06177a; border-radius: 22px; padding: 18px 22px; box-shadow: 0 18px 40px rgba(0,10,80,.3); }
+.live-gironi { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 26px; }
+.live-card { background: #fff; color: #06177a; border-radius: 22px; padding: 14px 22px; box-shadow: 0 18px 40px rgba(0,10,80,.3); }
 .live-card h3 { font-family: var(--display); font-size: 36px; text-transform: uppercase; color: #0a3cff; margin: 0 0 8px; display: flex; justify-content: space-between; align-items: baseline; }
 .live-card h3 small { font-family: inherit; font-size: 18px; color: #5b6478; letter-spacing: 1px; }
 .live-tab { width: 100%; border-collapse: collapse; font-size: 27px; }
 .live-tab th { font-size: 15px; letter-spacing: 1.5px; color: #5b6478; text-align: right; padding: 2px 8px; font-weight: 800; }
 .live-tab th:first-child, .live-tab td:first-child { text-align: left; }
-.live-tab td { padding: 7px 8px; border-top: 1.5px solid #e3e7f1; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.live-tab td { padding: 4px 8px; border-top: 1.5px solid #e3e7f1; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
 .live-tab td.n { font-weight: 800; }
 .live-tab tr.q td { color: #0a3cff; }
 .live-tab tr.q td.n::after { content: " ●"; color: #ffd23f; font-size: 18px; }
@@ -499,7 +499,7 @@ const BACHECA = {
   /* Striscia avvisi in basso: compare solo se qui c'è almeno un avviso, es. "Circolo chiuso il 25 dicembre" */
   avvisi: [],
   // Domenica del torneo: dalle 10:45 alle 15:30 la bacheca mostra soprattutto le info live per i partecipanti
-  modalitaTorneo: { data: "2026-11-15", dalle: "10:45", alle: "15:30" },
+  modalitaTorneo: { data: "2026-11-15", dalle: "10:00", alle: "15:30" },
   /* Calendario della stagione: stato "fatto" oppure "da fare". Solo il mese, perché le date possono cambiare. */
   calendario: [
     { titolo: "Scuola tennis", chi: "Per i ragazzi della scuola tennis", eventi: [
@@ -1392,6 +1392,8 @@ let FASCIA = null;
 
 
 function inModalitaTorneo() {
+  // il file live/torneo.json può accendere o spegnere la modalità torneo senza ricaricare la pagina ("modoTorneo": true/false)
+  if (typeof LIVE !== "undefined" && LIVE && typeof LIVE.modoTorneo === "boolean") return LIVE.modoTorneo;
   const m = BACHECA.modalitaTorneo; if (!m) return false;
   const now = new Date();
   const d = now.toLocaleDateString("sv-SE", { timeZone: "Europe/Rome" });
