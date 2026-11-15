@@ -1,6 +1,6 @@
 {
  "attivo": true,
- "aggiornato": "15:47",
+ "aggiornato": "15:59",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "gironi",
@@ -128,16 +128,16 @@
      "diff": 3
     },
     {
-     "n": "D'Andrea S.",
-     "g": 0,
-     "v": 0,
-     "diff": 0
+     "n": "Sepe N.",
+     "g": 1,
+     "v": 1,
+     "diff": 1
     },
     {
-     "n": "Sepe N.",
-     "g": 0,
+     "n": "D'Andrea S.",
+     "g": 1,
      "v": 0,
-     "diff": 0
+     "diff": -1
     },
     {
      "n": "Cuccui M.",
@@ -182,6 +182,14 @@
    "vince": "a"
   },
   {
+   "fase": "Girone D",
+   "a": "D'Andrea S.",
+   "b": "Sepe N.",
+   "campo": 2,
+   "score": "5-6",
+   "vince": "b"
+  },
+  {
    "fase": "Girone C",
    "a": "Rossi G.",
    "b": "De Sanctis V.",
@@ -204,24 +212,9 @@
    "campo": 4,
    "score": "1-6",
    "vince": "b"
-  },
-  {
-   "fase": "Girone B",
-   "a": "Monteverde L.",
-   "b": "Marra T.",
-   "campo": 3,
-   "score": "6-0",
-   "vince": "a"
   }
  ],
  "prossime": [
-  {
-   "fase": "Girone D",
-   "a": "D'Andrea S.",
-   "b": "Sepe N.",
-   "campo": 2,
-   "incorso": true
-  },
   {
    "fase": "Girone A",
    "a": "Pitrelli Q.",
@@ -242,6 +235,19 @@
    "b": "Rossi G.",
    "campo": 4,
    "incorso": true
+  },
+  {
+   "fase": "Girone D",
+   "a": "Sepe N.",
+   "b": "Ranalli A.",
+   "campo": 2,
+   "incorso": true
+  },
+  {
+   "fase": "Girone D",
+   "a": "D'Andrea S.",
+   "b": "Cuccui M.",
+   "campo": null
   }
  ],
  "finali": {
