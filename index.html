@@ -252,6 +252,15 @@ h1.lungo { font-size: 138px; }
 #stage.rosso .foto-layer::after { background: linear-gradient(90deg, rgba(168,10,24,.94) 0%, rgba(206,20,34,.82) 45%, rgba(212,22,36,.55) 100%); }
 .foto-layer.on { opacity: 1; }
 header, main, footer { position: relative; z-index: 1; }
+/* Sponsor che girano in alto in ogni slide (in modalità torneo al posto del meteo) */
+.sponsor-giro { display: none; align-items: center; gap: 16px; margin-left: auto; margin-right: 40px; }
+#stage.modo-torneo .sponsor-giro { display: flex; }
+#stage.modo-torneo .meteo { display: none; }
+.sg-lab { font-weight: 800; font-size: 16px; letter-spacing: 3px; text-transform: uppercase; opacity: .85; writing-mode: vertical-rl; transform: rotate(180deg); }
+.sg-box { width: 300px; height: 104px; border-radius: 18px; display: grid; place-items: center; padding: 12px 22px; box-shadow: 0 12px 30px rgba(0,10,80,.35); transition: background-color .5s; }
+.sg-box img { max-width: 100%; max-height: 80px; object-fit: contain; transition: opacity .5s; }
+#stage.verticale .sg-box { width: 220px; height: 84px; }
+#stage.verticale .sg-box img { max-height: 62px; }
 .tema-rosso .kicker { color: #d4162a; }
 .tema-rosso .fact { color: #6e0a14; }
 .tema-rosso .fact-value, .tema-rosso .fact-note { color: #d4162a; }
@@ -468,6 +477,7 @@ header { gap: 40px; }
         </div>
       </div>
       <div class="meteo" id="meteo" aria-label="Meteo a Roma"></div>
+      <div class="sponsor-giro" id="sponsor-giro" aria-label="Sponsor"><span class="sg-lab">Sponsor</span><div class="sg-box"><img id="sg-img" alt=""></div></div>
       <div class="clock">
         <div class="clock-time" id="time">--:--</div>
         <div class="clock-date" id="date"></div>
@@ -544,8 +554,8 @@ const BACHECA = {
       tipo: "testo", finoAl: "2026-11-15", durata: 15,
       kicker: "Domenica 15 novembre · ore 11:00",
       titolo: "Gentlemen's Cup",
-      testo: "Il rodeo maschile con Breakpoint official sponsor: allestimento con attrezzatura e gadget per tutti i partecipanti. Ogni partita vale punti per la Race to Finals 2027. Ultimi 2 posti: iscriviti in segreteria!",
-      chips: ["Ultimi 2 posti", "Official sponsor Breakpoint", "Quota 30 €"],
+      testo: "Il rodeo maschile con Breakpoint official sponsor: allestimento con attrezzatura e gadget per tutti i partecipanti. Ogni partita vale punti per la Race to Finals 2027. Tabellone al completo: 16 giocatori in campo, vieni a fare il tifo!",
+      chips: ["Tabellone completo", "Official sponsor Breakpoint", "16 giocatori"],
       immagine: "assets/locandine/gentlemens-cup.jpg"
     },
     {
@@ -1415,7 +1425,20 @@ function aggiornaTicker() {
   document.querySelector(".footer-label").textContent = MODO_TORNEO ? "Live" : "Avvisi";
   document.getElementById("ticker").replaceChildren(...voci.map(a => el("span", null, a)));
   document.getElementById("stage").classList.toggle("senza-avvisi", !voci.length);
+  document.getElementById("stage").classList.toggle("modo-torneo", !!MODO_TORNEO);
 }
+// Rotazione dei loghi sponsor in alto (Breakpoint, sponsor ufficiale del torneo, a giri alterni)
+(function giroSponsor() {
+  const conf = BACHECA.slide.find(s => s.tipo === "sponsor"); if (!conf) return;
+  const tutti = conf.sponsor.filter(sp => sp.logo);
+  const bp = tutti.find(sp => /breakpoint/i.test(sp.nome));
+  const altri = tutti.filter(sp => sp !== bp);
+  const giro = []; altri.forEach(sp => { if (bp) giro.push(bp); giro.push(sp); });
+  if (!giro.length) return;
+  let k = 0; const box = document.querySelector(".sg-box"), img = document.getElementById("sg-img");
+  const mostra = () => { const sp = giro[k % giro.length]; img.style.opacity = 0; setTimeout(() => { img.src = sp.logo; img.alt = sp.nome; box.style.backgroundColor = sp.sfondo || "#fff"; img.style.opacity = 1; }, 300); k++; };
+  mostra(); setInterval(mostra, 5000);
+})();
 
 function build() {
   FASCIA = fasciaAttuale();
