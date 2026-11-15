@@ -1,6 +1,6 @@
 {
  "attivo": true,
- "aggiornato": "16:58",
+ "aggiornato": "17:35",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "gironi",
@@ -135,20 +135,28 @@
     },
     {
      "n": "D'Andrea S.",
-     "g": 1,
-     "v": 0,
-     "diff": -1
+     "g": 2,
+     "v": 1,
+     "diff": 0
     },
     {
      "n": "Cuccui M.",
-     "g": 1,
+     "g": 2,
      "v": 0,
-     "diff": -3
+     "diff": -4
     }
    ]
   }
  ],
  "risultati": [
+  {
+   "fase": "Consolazione · Semifinale",
+   "a": "Spinelli M.",
+   "b": "Rossi G.",
+   "campo": 2,
+   "score": "3-6",
+   "vince": "b"
+  },
   {
    "fase": "Girone C",
    "a": "Dunn K.",
@@ -175,6 +183,14 @@
   },
   {
    "fase": "Girone D",
+   "a": "D'Andrea S.",
+   "b": "Cuccui M.",
+   "campo": 1,
+   "score": "2-1",
+   "vince": "a"
+  },
+  {
+   "fase": "Girone D",
    "a": "Sepe N.",
    "b": "Ranalli A.",
    "campo": 2,
@@ -196,45 +212,28 @@
    "campo": null,
    "score": "0-6",
    "vince": "b"
-  },
-  {
-   "fase": "Girone B",
-   "a": "Marra T.",
-   "b": "Tursi D.",
-   "campo": 1,
-   "score": "5-6",
-   "vince": "b"
-  },
-  {
-   "fase": "Girone B",
-   "a": "Monteverde L.",
-   "b": "Corvi P.",
-   "campo": 3,
-   "score": "6-0",
-   "vince": "a"
   }
  ],
  "prossime": [
-  {
-   "fase": "Girone D",
-   "a": "D'Andrea S.",
-   "b": "Cuccui M.",
-   "campo": 1,
-   "incorso": true
-  },
-  {
-   "fase": "Consolazione · Semifinale",
-   "a": "Spinelli M.",
-   "b": "Rossi G.",
-   "campo": 2,
-   "incorso": true
-  },
   {
    "fase": "Semifinale",
    "a": "Pitrelli Q.",
    "b": "De Sanctis V.",
    "campo": 3,
    "incorso": true
+  },
+  {
+   "fase": "Semifinale",
+   "a": "Monteverde L.",
+   "b": "Sepe N.",
+   "campo": 1,
+   "incorso": true
+  },
+  {
+   "fase": "Girone D",
+   "a": "Ranalli A.",
+   "b": "D'Andrea S.",
+   "campo": null
   }
  ],
  "finali": {
@@ -249,7 +248,7 @@
    {
     "fase": "Semifinale",
     "a": "Monteverde L.",
-    "b": "1° Girone D",
+    "b": "Sepe N.",
     "score": "",
     "vince": null
    },
@@ -266,8 +265,8 @@
     "fase": "Consolazione · Semifinale",
     "a": "Spinelli M.",
     "b": "Rossi G.",
-    "score": "",
-    "vince": null
+    "score": "3-6",
+    "vince": "b"
    },
    {
     "fase": "Consolazione · Semifinale",
@@ -278,7 +277,7 @@
    },
    {
     "fase": "Consolazione · Finale",
-    "a": "Vincente semifinale 1",
+    "a": "Rossi G.",
     "b": "Vincente semifinale 2",
     "score": "",
     "vince": null
@@ -287,7 +286,8 @@
  },
  "campioni": {},
  "news": [
-  "Kennet Dunn e Lorenzo Esposito si sono ritirati: le loro partite restanti sono assegnate a tavolino (6-0)"
+  "Kennet Dunn e Lorenzo Esposito si sono ritirati: le loro partite restanti sono assegnate a tavolino (6-0)",
+  "Cuccui si è ritirato sul 2-1 per D'Andrea. Il 2° posto del girone D si decide con un tie-break a 10 tra D'Andrea e Ranalli"
  ],
  "modoTorneo": true
 }
