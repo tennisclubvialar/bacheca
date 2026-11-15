@@ -1,6 +1,6 @@
 {
  "attivo": true,
- "aggiornato": "12:03",
+ "aggiornato": "12:15",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "gironi",
@@ -92,13 +92,13 @@
    "completo": false,
    "righe": [
     {
-     "n": "De Sanctis V.",
-     "g": 0,
-     "v": 0,
-     "diff": 0
+     "n": "Dunn K.",
+     "g": 1,
+     "v": 1,
+     "diff": 5
     },
     {
-     "n": "Dunn K.",
+     "n": "De Sanctis V.",
      "g": 0,
      "v": 0,
      "diff": 0
@@ -111,9 +111,9 @@
     },
     {
      "n": "Spitaleri P.",
-     "g": 0,
+     "g": 1,
      "v": 0,
-     "diff": 0
+     "diff": -5
     }
    ]
   },
@@ -150,6 +150,14 @@
  ],
  "risultati": [
   {
+   "fase": "Girone C",
+   "a": "Dunn K.",
+   "b": "Spitaleri P.",
+   "campo": 3,
+   "score": "6-1",
+   "vince": "a"
+  },
+  {
    "fase": "Girone B",
    "a": "Tursi D.",
    "b": "Corvi P.",
@@ -185,13 +193,6 @@
  "prossime": [
   {
    "fase": "Girone C",
-   "a": "Dunn K.",
-   "b": "Spitaleri P.",
-   "campo": 3,
-   "incorso": true
-  },
-  {
-   "fase": "Girone C",
    "a": "Rossi G.",
    "b": "De Sanctis V.",
    "campo": 1,
@@ -209,6 +210,13 @@
    "a": "Ranalli A.",
    "b": "Cuccui M.",
    "campo": 4,
+   "incorso": true
+  },
+  {
+   "fase": "Girone B",
+   "a": "Monteverde L.",
+   "b": "Corvi P.",
+   "campo": 3,
    "incorso": true
   },
   {
