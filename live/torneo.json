@@ -1,6 +1,6 @@
 {
  "attivo": true,
- "aggiornato": "16:46",
+ "aggiornato": "16:58",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "gironi",
@@ -122,14 +122,14 @@
    "completo": false,
    "righe": [
     {
-     "n": "Ranalli A.",
-     "g": 1,
-     "v": 1,
+     "n": "Sepe N.",
+     "g": 2,
+     "v": 2,
      "diff": 3
     },
     {
-     "n": "Sepe N.",
-     "g": 1,
+     "n": "Ranalli A.",
+     "g": 2,
      "v": 1,
      "diff": 1
     },
@@ -174,6 +174,14 @@
    "vince": "a"
   },
   {
+   "fase": "Girone D",
+   "a": "Sepe N.",
+   "b": "Ranalli A.",
+   "campo": 2,
+   "score": "6-4",
+   "vince": "a"
+  },
+  {
    "fase": "Girone C",
    "a": "Spitaleri P.",
    "b": "Rossi G.",
@@ -204,24 +212,9 @@
    "campo": 3,
    "score": "6-0",
    "vince": "a"
-  },
-  {
-   "fase": "Girone A",
-   "a": "Esposito L.",
-   "b": "Mognato E.",
-   "campo": null,
-   "score": "0-6",
-   "vince": "b"
   }
  ],
  "prossime": [
-  {
-   "fase": "Girone D",
-   "a": "Sepe N.",
-   "b": "Ranalli A.",
-   "campo": 2,
-   "incorso": true
-  },
   {
    "fase": "Girone D",
    "a": "D'Andrea S.",
@@ -230,17 +223,18 @@
    "incorso": true
   },
   {
+   "fase": "Consolazione · Semifinale",
+   "a": "Spinelli M.",
+   "b": "Rossi G.",
+   "campo": 2,
+   "incorso": true
+  },
+  {
    "fase": "Semifinale",
    "a": "Pitrelli Q.",
    "b": "De Sanctis V.",
    "campo": 3,
    "incorso": true
-  },
-  {
-   "fase": "Consolazione · Semifinale",
-   "a": "Spinelli M.",
-   "b": "Rossi G.",
-   "campo": null
   }
  ],
  "finali": {
