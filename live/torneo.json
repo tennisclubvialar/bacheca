@@ -1,6 +1,6 @@
 {
  "attivo": true,
- "aggiornato": "16:34",
+ "aggiornato": "16:46",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "gironi",
@@ -29,7 +29,7 @@
  "gironi": [
   {
    "nome": "Girone A",
-   "completo": false,
+   "completo": true,
    "righe": [
     {
      "n": "Pitrelli Q.",
@@ -38,16 +38,16 @@
      "diff": 9
     },
     {
-     "n": "Mognato E.",
-     "g": 2,
-     "v": 1,
-     "diff": 2
+     "n": "Spinelli M.",
+     "g": 3,
+     "v": 2,
+     "diff": 1
     },
     {
-     "n": "Spinelli M.",
-     "g": 2,
+     "n": "Mognato E.",
+     "g": 3,
      "v": 1,
-     "diff": -1
+     "diff": 0
     },
     {
      "n": "Esposito L.",
@@ -59,7 +59,7 @@
   },
   {
    "nome": "Girone B",
-   "completo": false,
+   "completo": true,
    "righe": [
     {
      "n": "Monteverde L.",
@@ -69,15 +69,15 @@
     },
     {
      "n": "Corvi P.",
-     "g": 2,
-     "v": 1,
-     "diff": -1
+     "g": 3,
+     "v": 2,
+     "diff": 4
     },
     {
      "n": "Tursi D.",
-     "g": 2,
+     "g": 3,
      "v": 1,
-     "diff": -4
+     "diff": -9
     },
     {
      "n": "Marra T.",
@@ -158,6 +158,22 @@
    "vince": "b"
   },
   {
+   "fase": "Girone B",
+   "a": "Corvi P.",
+   "b": "Tursi D.",
+   "campo": null,
+   "score": "6-1",
+   "vince": "a"
+  },
+  {
+   "fase": "Girone A",
+   "a": "Spinelli M.",
+   "b": "Mognato E.",
+   "campo": 3,
+   "score": "6-4",
+   "vince": "a"
+  },
+  {
    "fase": "Girone C",
    "a": "Spitaleri P.",
    "b": "Rossi G.",
@@ -196,22 +212,6 @@
    "campo": null,
    "score": "0-6",
    "vince": "b"
-  },
-  {
-   "fase": "Girone A",
-   "a": "Pitrelli Q.",
-   "b": "Spinelli M.",
-   "campo": 3,
-   "score": "6-1",
-   "vince": "a"
-  },
-  {
-   "fase": "Girone D",
-   "a": "Ranalli A.",
-   "b": "Cuccui M.",
-   "campo": 4,
-   "score": "6-3",
-   "vince": "a"
   }
  ],
  "prossime": [
@@ -230,16 +230,16 @@
    "incorso": true
   },
   {
-   "fase": "Girone A",
-   "a": "Spinelli M.",
-   "b": "Mognato E.",
+   "fase": "Semifinale",
+   "a": "Pitrelli Q.",
+   "b": "De Sanctis V.",
    "campo": 3,
    "incorso": true
   },
   {
-   "fase": "Girone B",
-   "a": "Corvi P.",
-   "b": "Tursi D.",
+   "fase": "Consolazione · Semifinale",
+   "a": "Spinelli M.",
+   "b": "Rossi G.",
    "campo": null
   }
  ],
@@ -247,14 +247,14 @@
   "principale": [
    {
     "fase": "Semifinale",
-    "a": "1° Girone A",
+    "a": "Pitrelli Q.",
     "b": "De Sanctis V.",
     "score": "",
     "vince": null
    },
    {
     "fase": "Semifinale",
-    "a": "1° Girone B",
+    "a": "Monteverde L.",
     "b": "1° Girone D",
     "score": "",
     "vince": null
@@ -270,14 +270,14 @@
   "consolazione": [
    {
     "fase": "Consolazione · Semifinale",
-    "a": "2° Girone A",
+    "a": "Spinelli M.",
     "b": "Rossi G.",
     "score": "",
     "vince": null
    },
    {
     "fase": "Consolazione · Semifinale",
-    "a": "2° Girone B",
+    "a": "Corvi P.",
     "b": "2° Girone D",
     "score": "",
     "vince": null
