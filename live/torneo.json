@@ -1,6 +1,6 @@
 {
  "attivo": true,
- "aggiornato": "17:35",
+ "aggiornato": "17:46",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "gironi",
@@ -150,6 +150,14 @@
  ],
  "risultati": [
   {
+   "fase": "Semifinale",
+   "a": "Monteverde L.",
+   "b": "Sepe N.",
+   "campo": 1,
+   "score": "6-0",
+   "vince": "a"
+  },
+  {
    "fase": "Consolazione · Semifinale",
    "a": "Spinelli M.",
    "b": "Rossi G.",
@@ -204,36 +212,22 @@
    "campo": 4,
    "score": "2-6",
    "vince": "b"
-  },
-  {
-   "fase": "Girone C",
-   "a": "Dunn K.",
-   "b": "De Sanctis V.",
-   "campo": null,
-   "score": "0-6",
-   "vince": "b"
   }
  ],
  "prossime": [
+  {
+   "fase": "Girone D",
+   "a": "Ranalli A.",
+   "b": "D'Andrea S.",
+   "campo": 1,
+   "incorso": true
+  },
   {
    "fase": "Semifinale",
    "a": "Pitrelli Q.",
    "b": "De Sanctis V.",
    "campo": 3,
    "incorso": true
-  },
-  {
-   "fase": "Semifinale",
-   "a": "Monteverde L.",
-   "b": "Sepe N.",
-   "campo": 1,
-   "incorso": true
-  },
-  {
-   "fase": "Girone D",
-   "a": "Ranalli A.",
-   "b": "D'Andrea S.",
-   "campo": null
   }
  ],
  "finali": {
@@ -249,13 +243,13 @@
     "fase": "Semifinale",
     "a": "Monteverde L.",
     "b": "Sepe N.",
-    "score": "",
-    "vince": null
+    "score": "6-0",
+    "vince": "a"
    },
    {
     "fase": "Finale",
     "a": "Vincente semifinale 1",
-    "b": "Vincente semifinale 2",
+    "b": "Monteverde L.",
     "score": "",
     "vince": null
    }
