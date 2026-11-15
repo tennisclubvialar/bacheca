@@ -1,6 +1,6 @@
 {
  "attivo": true,
- "aggiornato": "17:57",
+ "aggiornato": "18:22",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "finali",
@@ -150,6 +150,14 @@
  ],
  "risultati": [
   {
+   "fase": "Finale",
+   "a": "De Sanctis V.",
+   "b": "Monteverde L.",
+   "campo": 2,
+   "score": "0-6",
+   "vince": "b"
+  },
+  {
    "fase": "Semifinale",
    "a": "Monteverde L.",
    "b": "Sepe N.",
@@ -204,14 +212,6 @@
    "campo": 3,
    "score": "6-4",
    "vince": "a"
-  },
-  {
-   "fase": "Girone D",
-   "a": "D'Andrea S.",
-   "b": "Cuccui M.",
-   "campo": 1,
-   "score": "2-1",
-   "vince": "a"
   }
  ],
  "prossime": [
@@ -220,13 +220,6 @@
    "a": "Corvi P.",
    "b": "D'Andrea S.",
    "campo": 1,
-   "incorso": true
-  },
-  {
-   "fase": "Finale",
-   "a": "De Sanctis V.",
-   "b": "Monteverde L.",
-   "campo": 2,
    "incorso": true
   }
  ],
@@ -250,8 +243,8 @@
     "fase": "Finale",
     "a": "De Sanctis V.",
     "b": "Monteverde L.",
-    "score": "",
-    "vince": null
+    "score": "0-6",
+    "vince": "b"
    }
   ],
   "consolazione": [
@@ -278,10 +271,12 @@
    }
   ]
  },
- "campioni": {},
+ "campioni": {
+  "principale": "Monteverde L."
+ },
  "news": [
-  "Kennet Dunn e Lorenzo Esposito si sono ritirati: le loro partite restanti sono assegnate a tavolino (6-0)",
-  "Gironi conclusi: D'Andrea vince il tie-break 10-8 su Ranalli ed è 2° nel girone D"
+  "Luca Monteverde vince la Gentlemen's Cup: 6-0 in finale su De Sanctis. Complimenti!",
+  "In campo la consolazione: semifinale Corvi – D'Andrea, poi la finale contro Rossi"
  ],
  "modoTorneo": true
 }
