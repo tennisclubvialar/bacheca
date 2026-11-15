@@ -259,6 +259,15 @@ header, main, footer { position: relative; z-index: 1; }
 .sg-lab { font-weight: 800; font-size: 16px; letter-spacing: 3px; text-transform: uppercase; opacity: .85; writing-mode: vertical-rl; transform: rotate(180deg); }
 .sg-box { width: 300px; height: 104px; border-radius: 18px; display: grid; place-items: center; padding: 12px 22px; box-shadow: 0 12px 30px rgba(0,10,80,.35); transition: background-color .5s; }
 .sg-box img { max-width: 100%; max-height: 80px; object-fit: contain; transition: opacity .5s; }
+.sg-row { display: flex; gap: 8px; align-items: center; }
+.sg-row div { width: 108px; height: 68px; border-radius: 14px; display: grid; place-items: center; padding: 8px 12px; box-shadow: 0 10px 24px rgba(0,10,80,.3); }
+.sg-row div.top { width: 146px; height: 84px; outline: 4px solid #ffd400; outline-offset: -2px; }
+.sg-row img { max-width: 100%; max-height: 100%; object-fit: contain; }
+#stage:not(.verticale) .sg-box { display: none; }
+#stage.verticale .sg-row { display: none; }
+#stage:not(.verticale) .sponsor-giro { margin-right: 24px; gap: 10px; }
+#stage.modo-torneo .brand-sub, #stage.modo-torneo .clock-date { white-space: nowrap; }
+#stage.modo-torneo:not(.verticale) .brand-sub { font-size: 15px; letter-spacing: 2px; }
 #stage.verticale .sg-box { width: 220px; height: 84px; }
 #stage.verticale .sg-box img { max-height: 62px; }
 .tema-rosso .kicker { color: #d4162a; }
@@ -489,7 +498,7 @@ header { gap: 40px; }
         </div>
       </div>
       <div class="meteo" id="meteo" aria-label="Meteo a Roma"></div>
-      <div class="sponsor-giro" id="sponsor-giro" aria-label="Sponsor"><span class="sg-lab">Sponsor</span><div class="sg-box"><img id="sg-img" alt=""></div></div>
+      <div class="sponsor-giro" id="sponsor-giro" aria-label="Sponsor"><span class="sg-lab">Partner</span><div class="sg-box"><img id="sg-img" alt=""></div><div class="sg-row" id="sg-row"></div></div>
       <div class="clock">
         <div class="clock-time" id="time">--:--</div>
         <div class="clock-date" id="date"></div>
@@ -1447,6 +1456,9 @@ function aggiornaTicker() {
   const altri = tutti.filter(sp => sp !== bp);
   const giro = []; altri.forEach(sp => { if (bp) giro.push(bp); giro.push(sp); });
   if (!giro.length) return;
+  // in orizzontale tutti i partner insieme (Breakpoint in evidenza), in verticale uno alla volta
+  const row = document.getElementById("sg-row");
+  [bp, ...altri].filter(Boolean).forEach(sp => { const d = el("div", sp === bp ? "top" : null); d.style.backgroundColor = sp.sfondo || "#fff"; const im = el("img"); im.src = sp.logo; im.alt = sp.nome; d.append(im); row.append(d); });
   let k = 0; const box = document.querySelector(".sg-box"), img = document.getElementById("sg-img");
   const mostra = () => { const sp = giro[k % giro.length]; img.style.opacity = 0; setTimeout(() => { img.src = sp.logo; img.alt = sp.nome; box.style.backgroundColor = sp.sfondo || "#fff"; img.style.opacity = 1; }, 300); k++; };
   mostra(); setInterval(mostra, 5000);
