@@ -47,6 +47,11 @@ for g in range(G):
         if w == "a": st[a]["v"] += 1
         elif w == "b": st[b]["v"] += 1
     rows = sorted(st.values(), key=lambda r: (-r["v"], -(r["gf"] - r["gs"]), -r["gf"], r["n"]))
+    # formato a doppia eliminazione (GSL): a girone concluso l'ordine lo decidono le partite
+    if all(M.get(f"g{g}-{i}", {}).get("done") for i in range(1, 6)):
+        ordine_gsl = [rid(f"w:g{g}-3"), rid(f"w:g{g}-5"), rid(f"l:g{g}-5"), rid(f"l:g{g}-4")]
+        if all(x in st for x in ordine_gsl) and len(set(ordine_gsl)) == 4:
+            rows = [st[x] for x in ordine_gsl]
     gironi.append(dict(nome="Girone " + LET[g], completo=(tot > 0 and done == tot), righe=[dict(n=r["n"], g=r["g"], v=r["v"], diff=r["gf"] - r["gs"]) for r in rows], _ids=[r["id"] for r in rows]))
 def risolvi(ref):
     if not ref or ref == "-": return "riposo"

@@ -1,6 +1,6 @@
 {
  "attivo": true,
- "aggiornato": "16:11",
+ "aggiornato": "16:34",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "gironi",
@@ -75,21 +75,21 @@
     },
     {
      "n": "Tursi D.",
-     "g": 1,
-     "v": 0,
-     "diff": -5
+     "g": 2,
+     "v": 1,
+     "diff": -4
     },
     {
      "n": "Marra T.",
-     "g": 1,
+     "g": 2,
      "v": 0,
-     "diff": -6
+     "diff": -7
     }
    ]
   },
   {
    "nome": "Girone C",
-   "completo": false,
+   "completo": true,
    "righe": [
     {
      "n": "De Sanctis V.",
@@ -98,22 +98,22 @@
      "diff": 10
     },
     {
-     "n": "Dunn K.",
-     "g": 2,
-     "v": 1,
-     "diff": -1
+     "n": "Rossi G.",
+     "g": 3,
+     "v": 2,
+     "diff": 6
     },
     {
-     "n": "Rossi G.",
-     "g": 1,
-     "v": 0,
-     "diff": -4
+     "n": "Dunn K.",
+     "g": 3,
+     "v": 1,
+     "diff": -7
     },
     {
      "n": "Spitaleri P.",
-     "g": 1,
+     "g": 2,
      "v": 0,
-     "diff": -5
+     "diff": -9
     }
    ]
   },
@@ -152,9 +152,33 @@
   {
    "fase": "Girone C",
    "a": "Dunn K.",
+   "b": "Rossi G.",
+   "campo": null,
+   "score": "0-6",
+   "vince": "b"
+  },
+  {
+   "fase": "Girone C",
+   "a": "Spitaleri P.",
+   "b": "Rossi G.",
+   "campo": 4,
+   "score": "2-6",
+   "vince": "b"
+  },
+  {
+   "fase": "Girone C",
+   "a": "Dunn K.",
    "b": "De Sanctis V.",
    "campo": null,
    "score": "0-6",
+   "vince": "b"
+  },
+  {
+   "fase": "Girone B",
+   "a": "Marra T.",
+   "b": "Tursi D.",
+   "campo": 1,
+   "score": "5-6",
    "vince": "b"
   },
   {
@@ -188,52 +212,21 @@
    "campo": 4,
    "score": "6-3",
    "vince": "a"
-  },
-  {
-   "fase": "Girone D",
-   "a": "D'Andrea S.",
-   "b": "Sepe N.",
-   "campo": 2,
-   "score": "5-6",
-   "vince": "b"
-  },
-  {
-   "fase": "Girone C",
-   "a": "Rossi G.",
-   "b": "De Sanctis V.",
-   "campo": 1,
-   "score": "2-6",
-   "vince": "b"
-  },
-  {
-   "fase": "Girone C",
-   "a": "Dunn K.",
-   "b": "Spitaleri P.",
-   "campo": 3,
-   "score": "6-1",
-   "vince": "a"
   }
  ],
  "prossime": [
-  {
-   "fase": "Girone B",
-   "a": "Marra T.",
-   "b": "Tursi D.",
-   "campo": 1,
-   "incorso": true
-  },
-  {
-   "fase": "Girone C",
-   "a": "Spitaleri P.",
-   "b": "Rossi G.",
-   "campo": 4,
-   "incorso": true
-  },
   {
    "fase": "Girone D",
    "a": "Sepe N.",
    "b": "Ranalli A.",
    "campo": 2,
+   "incorso": true
+  },
+  {
+   "fase": "Girone D",
+   "a": "D'Andrea S.",
+   "b": "Cuccui M.",
+   "campo": 1,
    "incorso": true
   },
   {
@@ -244,9 +237,9 @@
    "incorso": true
   },
   {
-   "fase": "Girone D",
-   "a": "D'Andrea S.",
-   "b": "Cuccui M.",
+   "fase": "Girone B",
+   "a": "Corvi P.",
+   "b": "Tursi D.",
    "campo": null
   }
  ],
@@ -255,7 +248,7 @@
    {
     "fase": "Semifinale",
     "a": "1° Girone A",
-    "b": "1° Girone C",
+    "b": "De Sanctis V.",
     "score": "",
     "vince": null
    },
@@ -278,7 +271,7 @@
    {
     "fase": "Consolazione · Semifinale",
     "a": "2° Girone A",
-    "b": "2° Girone C",
+    "b": "Rossi G.",
     "score": "",
     "vince": null
    },
