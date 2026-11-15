@@ -17,6 +17,16 @@ def winner(m):
     s = m.get("sets") or []
     wa = sum(1 for a, b in s if a > b); wb = sum(1 for a, b in s if b > a)
     return "a" if wa > wb else "b" if wb > wa else None
+def rid(ref):   # id del giocatore dietro un riferimento p:/w:/l: (None se non ancora deciso)
+    if not ref: return None
+    t, _, rest = ref.partition(":")
+    if t == "p": return rest
+    if t in ("w", "l"):
+        m = M.get(rest)
+        if m and m.get("done"):
+            w = winner(m)
+            if w: return rid(m["a"] if (w == "a") == (t == "w") else m["b"])
+    return None
 # classifiche gironi
 gironi = []
 for g in range(G):
@@ -28,7 +38,7 @@ for g in range(G):
         tot += 1
         if not m.get("done"): continue
         done += 1
-        a, b = m["a"][2:], m["b"][2:]
+        a, b = rid(m["a"]), rid(m["b"])
         if a not in st or b not in st: continue
         st[a]["g"] += 1; st[b]["g"] += 1
         for x, y in m.get("sets") or []:

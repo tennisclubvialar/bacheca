@@ -33,27 +33,27 @@
    "righe": [
     {
      "n": "Pitrelli Q.",
-     "g": 1,
-     "v": 1,
-     "diff": 4
-    },
-    {
-     "n": "Spinelli M.",
-     "g": 1,
-     "v": 1,
-     "diff": 4
-    },
-    {
-     "n": "Esposito L.",
-     "g": 1,
-     "v": 0,
-     "diff": -4
+     "g": 2,
+     "v": 2,
+     "diff": 9
     },
     {
      "n": "Mognato E.",
-     "g": 1,
+     "g": 2,
+     "v": 1,
+     "diff": 2
+    },
+    {
+     "n": "Spinelli M.",
+     "g": 2,
+     "v": 1,
+     "diff": -1
+    },
+    {
+     "n": "Esposito L.",
+     "g": 2,
      "v": 0,
-     "diff": -4
+     "diff": -10
     }
    ]
   },
@@ -63,15 +63,15 @@
    "righe": [
     {
      "n": "Monteverde L.",
-     "g": 1,
-     "v": 1,
-     "diff": 6
+     "g": 2,
+     "v": 2,
+     "diff": 12
     },
     {
      "n": "Corvi P.",
-     "g": 1,
+     "g": 2,
      "v": 1,
-     "diff": 5
+     "diff": -1
     },
     {
      "n": "Tursi D.",
@@ -92,16 +92,16 @@
    "completo": false,
    "righe": [
     {
-     "n": "Dunn K.",
-     "g": 1,
-     "v": 1,
-     "diff": 5
+     "n": "De Sanctis V.",
+     "g": 2,
+     "v": 2,
+     "diff": 10
     },
     {
-     "n": "De Sanctis V.",
-     "g": 1,
+     "n": "Dunn K.",
+     "g": 2,
      "v": 1,
-     "diff": 4
+     "diff": -1
     },
     {
      "n": "Rossi G.",
