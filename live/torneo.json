@@ -1,6 +1,6 @@
 {
  "attivo": true,
- "aggiornato": "10:03",
+ "aggiornato": "11:26",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "gironi",
@@ -154,25 +154,29 @@
    "fase": "Girone A",
    "a": "Pitrelli Q.",
    "b": "Esposito L.",
-   "campo": null
+   "campo": 1,
+   "incorso": true
   },
   {
    "fase": "Girone A",
    "a": "Mognato E.",
    "b": "Spinelli M.",
-   "campo": null
+   "campo": 2,
+   "incorso": true
   },
   {
    "fase": "Girone B",
    "a": "Monteverde L.",
    "b": "Marra T.",
-   "campo": null
+   "campo": 3,
+   "incorso": true
   },
   {
    "fase": "Girone B",
    "a": "Tursi D.",
    "b": "Corvi P.",
-   "campo": null
+   "campo": 4,
+   "incorso": true
   },
   {
    "fase": "Girone C",
@@ -188,8 +192,52 @@
   }
  ],
  "finali": {
-  "principale": [],
-  "consolazione": []
+  "principale": [
+   {
+    "fase": "Semifinale",
+    "a": "1° Girone A",
+    "b": "1° Girone C",
+    "score": "",
+    "vince": null
+   },
+   {
+    "fase": "Semifinale",
+    "a": "1° Girone B",
+    "b": "1° Girone D",
+    "score": "",
+    "vince": null
+   },
+   {
+    "fase": "Finale",
+    "a": "Vincente semifinale 1",
+    "b": "Vincente semifinale 2",
+    "score": "",
+    "vince": null
+   }
+  ],
+  "consolazione": [
+   {
+    "fase": "Consolazione · Semifinale",
+    "a": "2° Girone A",
+    "b": "2° Girone C",
+    "score": "",
+    "vince": null
+   },
+   {
+    "fase": "Consolazione · Semifinale",
+    "a": "2° Girone B",
+    "b": "2° Girone D",
+    "score": "",
+    "vince": null
+   },
+   {
+    "fase": "Consolazione · Finale",
+    "a": "Vincente semifinale 1",
+    "b": "Vincente semifinale 2",
+    "score": "",
+    "vince": null
+   }
+  ]
  },
  "campioni": {},
  "news": []

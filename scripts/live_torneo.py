@@ -42,7 +42,7 @@ def risolvi(ref):
     if not ref or ref == "-": return "riposo"
     t, _, rest = ref.partition(":")
     if t == "p": return nome(rest)
-    if t == "o":
+    if t in ("o", "g"):   # posizione nel girone: "g:<girone>:<posizione>"
         g, pos = map(int, rest.split(":"))
         gi = gironi[g] if g < len(gironi) else None
         if gi and gi["completo"] and pos < len(gi["_ids"]): return nome(gi["_ids"][pos])
@@ -52,6 +52,7 @@ def risolvi(ref):
         if m and m.get("done"):
             w = winner(m)
             if w: return risolvi(m["a"] if (w == "a") == (t == "w") else m["b"])
+        if rest.startswith(("m-", "c-")): return ("Vincente" if t == "w" else "Perdente") + " semifinale " + rest.split("-")[-1]
         return ("Vincente " if t == "w" else "Perdente ") + rest.split("-")[-1]
     return ref
 FASE = {"group": "Girone", "main": "Tabellone principale", "cons": "Consolazione"}
@@ -70,12 +71,13 @@ for k, m in partite:
     a, b = risolvi(m.get("a")), risolvi(m.get("b"))
     if "riposo" in (a, b): continue
     r = dict(fase=etichetta(k, m), a=a, b=b, campo=m.get("court"))
+    if not m.get("done") and m.get("st") == "incorso": r["incorso"] = True
     if m.get("done"):
         w = winner(m); r.update(score=score(m), vince=w); risultati.append(r)
     else:
         prossime.append(r)
 risultati = risultati[::-1][:8]
-prossime = prossime[:6]
+prossime = sorted(prossime, key=lambda r: not r.get("incorso"))[:6]   # prima le partite in campo
 def tabellone(stage):
     out = []
     for k, m in partite:
