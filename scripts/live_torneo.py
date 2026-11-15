@@ -70,6 +70,7 @@ risultati, prossime = [], []
 for k, m in partite:
     a, b = risolvi(m.get("a")), risolvi(m.get("b"))
     if "riposo" in (a, b): continue
+    if any(x.startswith(("Vincente", "Perdente")) or "° Girone" in x for x in (a, b)): continue   # avversario non ancora deciso
     r = dict(fase=etichetta(k, m), a=a, b=b, campo=m.get("court"))
     if not m.get("done") and m.get("st") == "incorso": r["incorso"] = True
     if m.get("done"):

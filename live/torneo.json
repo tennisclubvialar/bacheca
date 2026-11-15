@@ -152,14 +152,6 @@
   {
    "fase": "Girone C",
    "a": "Dunn K.",
-   "b": "Vincente 4",
-   "campo": null,
-   "score": "0-6",
-   "vince": "b"
-  },
-  {
-   "fase": "Girone C",
-   "a": "Dunn K.",
    "b": "De Sanctis V.",
    "campo": null,
    "score": "0-6",
@@ -212,6 +204,14 @@
    "campo": 3,
    "score": "6-0",
    "vince": "a"
+  },
+  {
+   "fase": "Girone A",
+   "a": "Mognato E.",
+   "b": "Spinelli M.",
+   "campo": 2,
+   "score": "2-6",
+   "vince": "b"
   }
  ],
  "prossime": [
@@ -247,12 +247,6 @@
    "fase": "Girone C",
    "a": "Spitaleri P.",
    "b": "Rossi G.",
-   "campo": null
-  },
-  {
-   "fase": "Girone D",
-   "a": "Vincente 1",
-   "b": "Vincente 2",
    "campo": null
   }
  ],
