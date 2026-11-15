@@ -1,6 +1,6 @@
 {
  "attivo": true,
- "aggiornato": "15:35",
+ "aggiornato": "15:47",
  "data": "2026-11-15",
  "nome": "Gentlemen's Cup",
  "stato": "gironi",
@@ -122,19 +122,13 @@
    "completo": false,
    "righe": [
     {
-     "n": "Cuccui M.",
-     "g": 0,
-     "v": 0,
-     "diff": 0
+     "n": "Ranalli A.",
+     "g": 1,
+     "v": 1,
+     "diff": 3
     },
     {
      "n": "D'Andrea S.",
-     "g": 0,
-     "v": 0,
-     "diff": 0
-    },
-    {
-     "n": "Ranalli A.",
      "g": 0,
      "v": 0,
      "diff": 0
@@ -144,6 +138,12 @@
      "g": 0,
      "v": 0,
      "diff": 0
+    },
+    {
+     "n": "Cuccui M.",
+     "g": 1,
+     "v": 0,
+     "diff": -3
     }
    ]
   }
@@ -172,6 +172,14 @@
    "campo": null,
    "score": "0-6",
    "vince": "b"
+  },
+  {
+   "fase": "Girone D",
+   "a": "Ranalli A.",
+   "b": "Cuccui M.",
+   "campo": 4,
+   "score": "6-3",
+   "vince": "a"
   },
   {
    "fase": "Girone C",
@@ -204,14 +212,6 @@
    "campo": 3,
    "score": "6-0",
    "vince": "a"
-  },
-  {
-   "fase": "Girone A",
-   "a": "Mognato E.",
-   "b": "Spinelli M.",
-   "campo": 2,
-   "score": "2-6",
-   "vince": "b"
   }
  ],
  "prossime": [
@@ -220,13 +220,6 @@
    "a": "D'Andrea S.",
    "b": "Sepe N.",
    "campo": 2,
-   "incorso": true
-  },
-  {
-   "fase": "Girone D",
-   "a": "Ranalli A.",
-   "b": "Cuccui M.",
-   "campo": 4,
    "incorso": true
   },
   {
@@ -247,7 +240,8 @@
    "fase": "Girone C",
    "a": "Spitaleri P.",
    "b": "Rossi G.",
-   "campo": null
+   "campo": 4,
+   "incorso": true
   }
  ],
  "finali": {
