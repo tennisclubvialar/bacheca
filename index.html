@@ -368,6 +368,18 @@ header, main, footer { position: relative; z-index: 1; }
 .live-match.next .s { background: #ffd23f; color: #06177a; font-size: 22px; padding: 6px 12px; }
 .live-news { margin-top: 18px; background: rgba(255,255,255,.14); border: 1.5px solid rgba(255,255,255,.35); border-radius: 16px; padding: 12px 20px; font-size: 26px; font-weight: 700; }
 .live-news b { color: #ffd23f; margin-right: 10px; }
+.reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
+.reg-card { background: #fff; color: #06177a; border-radius: 22px; padding: 16px 24px 12px; box-shadow: 0 18px 40px rgba(0,10,80,.3); }
+.reg-h { display: flex; align-items: center; gap: 16px; margin-bottom: 6px; }
+.reg-n { flex: none; width: 54px; height: 54px; border-radius: 50%; background: #0a3cff; color: #fff; display: grid; place-items: center; font-family: var(--display); font-size: 34px; }
+.reg-t { font-family: var(--display); font-size: 34px; text-transform: uppercase; color: #0a3cff; line-height: 1; }
+.reg-s { font-size: 18px; font-weight: 700; color: #5b6478; margin-top: 3px; }
+.reg-l { list-style: none; margin: 0; padding: 0; }
+.reg-l li { display: flex; gap: 12px; align-items: baseline; font-size: 23px; font-weight: 600; line-height: 1.25; padding: 5px 0; border-top: 1.5px solid #e3e7f1; }
+.reg-l li b { font-weight: 800; color: #0a2bd6; }
+.reg-ic { flex: none; width: 32px; text-align: center; }
+#stage.verticale .reg-grid { grid-template-columns: 1fr; gap: 12px; }
+#stage.verticale .reg-l li { font-size: 19px; padding: 3px 0; }
 .live-iscritti { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 26px; }
 .live-iscritti div { background: #fff; color: #06177a; border-radius: 14px; padding: 14px 16px; font-size: 26px; font-weight: 800; text-align: center; }
 .live-iscritti div.libero { background: transparent; color: #ffd23f; border: 2.5px dashed #ffd23f; }
@@ -1610,6 +1622,40 @@ function renderLiveSlides() {
       t.innerHTML = "<tr><th>Giocatore</th><th>G</th><th>V</th><th>+/-</th></tr>";
       gi.righe.forEach((r, k) => { const tr = el("tr", k < 2 ? "q" : ""); [r.n, r.g, r.v, (r.diff > 0 ? "+" : "") + r.diff].forEach((x, j) => tr.append(el("td", j === 0 ? "n" : null, String(x)))); t.append(tr); });
       c.append(t); g.append(c);
+    });
+    s.append(g); out.push(s);
+  }
+  if (!(LIVE.campioni && LIVE.campioni.principale)) { // regolamento spiegato in 4 passi
+    const s = el("section", "slide live-slide"); s.dataset.live = "1"; s.dataset.durata = 22;
+    liveTesta(s, "Come funziona", "Il regolamento in 4 passi");
+    const g = el("div", "reg-grid");
+    const passi = [
+      ["1", "Il girone", "16 giocatori, 4 gironi da 4", [
+        ["🎾", "<b>1° turno:</b> due partite, tutti in campo"],
+        ["🏆", "<b>Vincenti contro vincenti:</b> chi vince è <b>1°</b> del girone"],
+        ["🔁", "<b>Perdenti contro perdenti:</b> chi perde è <b>4°</b>"],
+        ["⚔️", "<b>Spareggio</b> tra chi resta: chi vince è <b>2°</b>, chi perde <b>3°</b>"]]],
+      ["2", "La fase finale", "Semifinali incrociate e finale", [
+        ["🥇", "I <b>primi</b> dei gironi: <b>Tabellone principale</b>"],
+        ["🥈", "I <b>secondi</b>: <b>Tabellone di consolazione</b>"],
+        ["✖️", "Semifinali <b>A contro C</b> e <b>B contro D</b>"],
+        ["🏁", "Le vincenti si giocano la <b>finale</b>"]]],
+      ["3", "Come si gioca", "Partite veloci, ogni punto conta", [
+        ["1️⃣", "<b>1 set a 6 game</b>"],
+        ["⏱️", "Sul <b>5-5</b> si gioca il <b>tie-break</b>"],
+        ["⚡", "<b>Killer point:</b> sul 40-40 si gioca un punto secco"],
+        ["🎾", "Si gioca su <b>4 campi</b> in contemporanea"]]],
+      ["4", "Test atletici e Race", "Non solo tennis", [
+        ["🏃", "<b>5 test:</b> sprint 20 m, agilità a T, salto in lungo, palla medica, plank"],
+        ["📄", "A ognuno un <b>report PDF</b> con i suoi dati"],
+        ["📈", "Ogni partita vale <b>punti per la Race to Finals 2027</b>"],
+        ["🎁", "Gadget e attrezzatura a cura di <b>Breakpoint</b>, official sponsor"]]]
+    ];
+    passi.forEach(([n, t, sub, righe]) => {
+      const c = el("div", "reg-card");
+      const h = el("div", "reg-h"); h.append(el("span", "reg-n", n)); const ht = el("div"); ht.append(el("div", "reg-t", t), el("div", "reg-s", sub)); h.append(ht); c.append(h);
+      const ul = el("ul", "reg-l"); righe.forEach(([ic, tx]) => { const li = el("li"); li.append(el("span", "reg-ic", ic)); const sp = el("span"); sp.innerHTML = tx; li.append(sp); ul.append(li); }); c.append(ul);
+      g.append(c);
     });
     s.append(g); out.push(s);
   }
