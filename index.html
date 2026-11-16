@@ -531,6 +531,9 @@ h1 .aw > span { display: inline-block; transform: translateY(108%); }
 .soc-vuoto .t { font-family: var(--display); font-size: 70px; line-height: 1; text-transform: uppercase; }
 .soc-vuoto .d { font-size: 30px; font-weight: 600; margin-top: 16px; }
 #stage.verticale .soc-nomi { grid-template-columns: 1fr 1fr; }
+/* Il video resta invisibile (si vede la foto di copertina) finché non sta davvero andando: niente riquadri neri */
+.video-slide video, .slide.videopieno video { visibility: hidden; }
+.video-slide.va video, .slide.videopieno.va video { visibility: visible; }
 /* Video: niente zoom o scale (sulla Fire TV un video trasformato può diventare nero), solo dissolvenza */
 .slide.video-slide, .slide.videopieno, .slide.video-slide.uscita, .slide.videopieno.uscita { transform: none !important; transition: opacity .9s ease !important; }
 .slide.active .video-media, .slide.active.videopieno video, .slide.video-slide video, .slide.videopieno video { animation: none !important; transform: none !important; }
@@ -1310,6 +1313,7 @@ function renderVideo(s) {
   v.muted = true; v.loop = true; v.playsInline = true; v.preload = "none";
   v.setAttribute("muted", ""); v.setAttribute("playsinline", "");
   media.append(v);
+  if (s.poster) media.style.background = `#06177a url("${s.poster}") center / cover no-repeat`;   // se il video non parte resta la foto, mai un riquadro nero
   slide.append(left, media);
   return slide;
 }
@@ -1325,6 +1329,7 @@ function renderVideoPieno(s) {
   const logo = el("div", "videopieno-logo");
   logo.innerHTML = '<svg viewBox="0 0 387 332" aria-hidden="true"><g fill="#fff"><polygon points="0,0 90,0 182,153 136,234"/><polygon points="114,0 272,0 193,136"/><polygon points="294,0 387,0 193,332 148,254"/></g></svg><span>T.C. VIALAR</span>';
   if (s.videoVerticale) { v.dataset.oriz = s.video; v.dataset.vert = s.videoVerticale; }   // su iPad in verticale usa la versione 9:16
+  if (s.poster) slide.style.background = `#06177a url("${s.poster}") center / cover no-repeat`;   // se il video non parte resta la foto, mai lo schermo nero
   if (s.pulito) { slide.classList.add("pulito"); slide.append(v); return slide; }   // video con grafica già montata: niente scritte sopra
   slide.append(v, logo, txt);
   return slide;
@@ -1707,10 +1712,18 @@ function show(i) {
       if (k === i) {
         let want = v.dataset.src || v.getAttribute("src");
         if (v.dataset.vert) want = document.getElementById("stage").classList.contains("verticale") ? v.dataset.vert : v.dataset.oriz;
+        n.classList.remove("va");
+        if (!v._va) { v._va = true; v.addEventListener("playing", () => { if (n.classList.contains("active")) n.classList.add("va"); }); }
         if (want && v.getAttribute("src") !== want) { v.src = want; v.load(); }
         else v.currentTime = 0;
         const p = v.play(); if (p) p.catch(() => setTimeout(() => { const q = v.play(); if (q) q.catch(() => {}); }, 800));
-      } else if (v.getAttribute("src")) { v.pause(); v.removeAttribute("src"); v.load(); }
+        // controllo: se dopo 6 secondi il video non è partito, lo ricarica una volta (intanto si vede la foto)
+        clearTimeout(v._wd);
+        v._wd = setTimeout(() => {
+          if (!n.classList.contains("active") || n.classList.contains("va")) return;
+          try { v.load(); const q = v.play(); if (q) q.catch(() => {}); } catch (e) {}
+        }, 6000);
+      } else { n.classList.remove("va"); clearTimeout(v._wd); if (v.getAttribute("src")) { v.pause(); v.removeAttribute("src"); v.load(); } }
     } catch (e) {}
   }));
   clearInterval(window._gal);
