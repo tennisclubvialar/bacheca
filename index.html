@@ -500,6 +500,21 @@ h1 .aw > span { display: inline-block; transform: translateY(108%); }
 .slide.active .post-media, .slide.active .foto-media, .slide.active .video-media, .slide.active .galleria-media, .slide.active .locandina img { animation: a-rivela 1.6s var(--ease) both !important; }
 .slide.active .foto-media img, .slide.active .post-media img { animation: a-lento 22s linear both !important; }
 
+
+/* Main sponsor VESA: sempre visibile in alto (in modalità torneo è il primo, in evidenza, nella fila dei partner) */
+.main-sponsor { display: flex; align-items: center; gap: 14px; margin-right: 34px; padding-right: 34px; border-right: 3px solid rgba(255,255,255,.35); }
+.ms-lab { font-size: 15px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; line-height: 1.15; text-align: right; color: #fff; opacity: .9; }
+.ms-box { width: 210px; height: 78px; border-radius: 16px; background: #0b2a6e; display: grid; place-items: center; padding: 10px 18px; box-shadow: 0 0 0 3px #fff, 0 12px 30px rgba(0,10,80,.4); }
+.ms-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+#stage.modo-torneo .main-sponsor { display: none; }
+#stage.verticale .main-sponsor { margin-right: 20px; padding-right: 20px; gap: 10px; }
+#stage.verticale .ms-box { width: 160px; height: 62px; }
+#stage.verticale .ms-lab { font-size: 12px; }
+/* sulle slide a tutto schermo (locandine e video) l'intestazione è coperta: VESA resta in un angolo */
+.vesa-angolo { position: fixed; z-index: 7; right: 22px; bottom: 14px; display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 14px; border-radius: 16px; background: rgba(11,42,110,.92); box-shadow: 0 0 0 2px rgba(255,255,255,.85), 0 10px 26px rgba(0,0,0,.35); opacity: 0; transform: translateY(12px); transition: opacity .8s var(--ease, ease), transform .8s var(--ease, ease); pointer-events: none; }
+.vesa-angolo span { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #fff; opacity: .85; }
+.vesa-angolo img { height: 34px; width: auto; max-width: 120px; object-fit: contain; }
+#stage.tutto-schermo .vesa-angolo { opacity: 1; transform: none; transition-delay: .6s; }
 /* ===== Torneo Sociale: iscrizioni aperte, countdown e iscritti (dati da live/sociale.json) ===== */
 .soc-slide { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
 .soc-slide h1 { font-size: 150px; }
@@ -560,12 +575,14 @@ h1 .aw > span { display: inline-block; transform: translateY(108%); }
         </div>
       </div>
       <div class="meteo" id="meteo" aria-label="Meteo a Roma"></div>
+      <div class="main-sponsor" aria-label="Main sponsor: Centro medico VESA"><span class="ms-lab">Main<br>sponsor</span><div class="ms-box"><img src="assets/sponsor/vesa.png" alt="VESA"></div></div>
       <div class="sponsor-giro" id="sponsor-giro" aria-label="Sponsor"><span class="sg-lab">Partner</span><div class="sg-box"><img id="sg-img" alt=""></div><div class="sg-row" id="sg-row"></div></div>
       <div class="clock">
         <div class="clock-time" id="time">--:--</div>
         <div class="clock-date" id="date"></div>
       </div>
     </header>
+      <div class="vesa-angolo" id="vesa-angolo"><span>Main sponsor</span><img src="assets/sponsor/vesa.png" alt="VESA"></div>
     <main id="slides"></main>
     <div class="progress" id="progress"></div>
     <div class="dots" id="dots"></div>
@@ -1096,11 +1113,11 @@ const BACHECA = {
       testo: "Grazie alle aziende che sostengono il T.C. Vialar e le sue attività.",
       invito: { titolo: "Diventa partner", testo: "Porta il tuo marchio al T.C. Vialar: chiedi in segreteria" },
       sponsor: [
+        { nome: "Centro medico VESA · Main sponsor", logo: "assets/sponsor/vesa.png", sfondo: "#0b2a6e" },
         { nome: "Tennis & Padel in vacanza", logo: "assets/sponsor/tennis-padel-in-vacanza.png", sfondo: "#ffffff" },
         { nome: "Professionisti Immobiliari", logo: "assets/sponsor/professionisti-immobiliari.png", sfondo: "#3d485a" },
         { nome: "Breakpoint", logo: "assets/sponsor/breakpoint.png", sfondo: "#d9dee4" },
-        { nome: "Nidea Web Marketing Agency", logo: "assets/sponsor/nidea.png", sfondo: "#202020" },
-        { nome: "Centro medico VESA", logo: "assets/sponsor/vesa.png", sfondo: "#0b2a6e" }
+        { nome: "Nidea Web Marketing Agency", logo: "assets/sponsor/nidea.png", sfondo: "#202020" }
       ]
     },
     {
@@ -1520,7 +1537,7 @@ function aggiornaTicker() {
 (function giroSponsor() {
   const conf = BACHECA.slide.find(s => s.tipo === "sponsor"); if (!conf) return;
   const tutti = conf.sponsor.filter(sp => sp.logo);
-  const bp = tutti.find(sp => /breakpoint/i.test(sp.nome));
+  const bp = tutti.find(sp => /vesa/i.test(sp.nome)) || tutti.find(sp => /breakpoint/i.test(sp.nome));   // VESA è il main sponsor
   const altri = tutti.filter(sp => sp !== bp);
   const giro = []; altri.forEach(sp => { if (bp) giro.push(bp); giro.push(sp); });
   if (!giro.length) return;
@@ -1705,6 +1722,7 @@ function show(i) {
   if (ATTIVA >= 0 && ATTIVA !== i && nodes[ATTIVA]) { const u = nodes[ATTIVA]; u.classList.add("uscita"); setTimeout(() => u.classList.remove("uscita"), 1300); }
   ATTIVA = i;
   nodes.forEach((n, k) => n.classList.toggle("active", k === i));
+  { const st = document.getElementById("stage"), n = nodes[i]; if (st && n) st.classList.toggle("tutto-schermo", n.classList.contains("pieno") || n.classList.contains("videopieno")); }
   [...dots.children].forEach((d, k) => d.classList.toggle("on", k === i));
   // un solo video alla volta: Fire TV e iPad hanno pochi decoder, i video in attesa restano scarichi
   nodes.forEach((n, k) => n.querySelectorAll("video").forEach(v => {
