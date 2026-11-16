@@ -495,10 +495,42 @@ h1 .aw > span { display: inline-block; transform: translateY(108%); }
 .slide.active .kicker { animation: a-appare 1s .05s var(--ease) both !important; }
 .slide.active .lead-row, .slide.active .post-caption, .slide.active .post-date, .slide.active .lead { animation: a-appare 1.1s .5s var(--ease) both !important; }
 .slide.active .chips, .slide.active .cta, .slide.active .ig-row, .slide.active .ig-handle { animation: a-appare 1.1s .7s var(--ease) both !important; }
-.slide.active .fact, .slide.active .sponsor-card, .slide.active .ig-tile, .slide.active .rank, .slide.active .staff-card, .slide.active .cal-ev, .slide.active .qr-card, .slide.active .scalata-card, .slide.active .live-col, .slide.active .reg-card {
+.slide.active .fact, .slide.active .sponsor-card, .slide.active .ig-tile, .slide.active .rank, .slide.active .staff-card, .slide.active .cal-ev, .slide.active .qr-card, .slide.active .scalata-card, .slide.active .live-col, .slide.active .reg-card, .slide.active .soc-item {
   animation: a-emerge 1.1s var(--ease) both !important; animation-delay: calc(.55s + var(--i, 0) * .09s) !important; }
 .slide.active .post-media, .slide.active .foto-media, .slide.active .video-media, .slide.active .galleria-media, .slide.active .locandina img { animation: a-rivela 1.6s var(--ease) both !important; }
 .slide.active .foto-media img, .slide.active .post-media img { animation: a-lento 22s linear both !important; }
+
+/* ===== Torneo Sociale: iscrizioni aperte, countdown e iscritti (dati da live/sociale.json) ===== */
+.soc-slide { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+.soc-slide h1 { font-size: 150px; }
+.soc-cd { display: flex; gap: 16px; margin-top: 30px; }
+.soc-cd .u { background: #fff; color: #06177a; border-radius: 22px; padding: 16px 22px; min-width: 130px; text-align: center; box-shadow: 0 16px 40px rgba(0,10,80,.35); }
+.soc-cd .n { font-family: var(--display); font-size: 92px; line-height: 1; font-variant-numeric: tabular-nums; }
+.soc-cd .l { font-size: 18px; font-weight: 800; letter-spacing: 3px; color: #0a3cff; margin-top: 4px; }
+.soc-prossima { font-size: 30px; font-weight: 700; margin-top: 26px; }
+.soc-prossima b { font-family: var(--display); font-weight: 400; font-size: 44px; letter-spacing: .5px; }
+.soc-lista { display: flex; flex-direction: column; gap: 12px; }
+.soc-row { display: flex; align-items: center; gap: 20px; background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.22); border-radius: 22px; padding: 14px 22px; }
+.soc-row.chiusa { opacity: .45; }
+.soc-row.prima { background: #fff; color: #06177a; border-color: #fff; }
+.soc-bol { flex: none; width: 70px; height: 70px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #081238; }
+.soc-bol .a { font-family: var(--display); font-size: 25px; line-height: 1; }
+.soc-bol .b { font-size: 9px; font-weight: 900; letter-spacing: 1px; margin-top: 2px; }
+.soc-nome { flex: 1; font-family: var(--display); font-size: 40px; line-height: 1; text-transform: uppercase; }
+.soc-nome small { display: block; font-family: Inter, Arial, sans-serif; font-size: 18px; font-weight: 700; text-transform: none; opacity: .8; margin-top: 6px; letter-spacing: 0; }
+.soc-giorni { text-align: right; flex: none; }
+.soc-giorni .n { font-family: var(--display); font-size: 46px; line-height: 1; }
+.soc-giorni .l { font-size: 16px; font-weight: 800; letter-spacing: 2px; opacity: .8; }
+.soc-iscr { flex: none; min-width: 110px; text-align: center; border-left: 2px solid rgba(255,255,255,.25); padding-left: 18px; }
+.soc-row.prima .soc-iscr { border-color: rgba(6,23,122,.2); }
+.soc-iscr .n { font-family: var(--display); font-size: 46px; line-height: 1; }
+.soc-iscr .l { font-size: 15px; font-weight: 800; letter-spacing: 2px; opacity: .8; }
+.soc-nomi { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; align-content: center; }
+.soc-nomi .soc-item { background: #fff; color: #06177a; border-radius: 16px; padding: 14px 18px; font-family: var(--display); font-size: 34px; line-height: 1; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.soc-vuoto { background: rgba(255,255,255,.12); border: 2px dashed rgba(255,255,255,.5); border-radius: 28px; padding: 50px 40px; text-align: center; }
+.soc-vuoto .t { font-family: var(--display); font-size: 70px; line-height: 1; text-transform: uppercase; }
+.soc-vuoto .d { font-size: 30px; font-weight: 600; margin-top: 16px; }
+#stage.verticale .soc-nomi { grid-template-columns: 1fr 1fr; }
 /* Video: niente zoom o scale (sulla Fire TV un video trasformato può diventare nero), solo dissolvenza */
 .slide.video-slide, .slide.videopieno, .slide.video-slide.uscita, .slide.videopieno.uscita { transform: none !important; transition: opacity .9s ease !important; }
 .slide.active .video-media, .slide.active.videopieno video, .slide.video-slide video, .slide.videopieno video { animation: none !important; transform: none !important; }
@@ -1495,6 +1527,91 @@ function aggiornaTicker() {
   mostra(); setInterval(mostra, 5000);
 })();
 
+
+/* ===== Torneo Sociale: legge live/sociale.json (iscritti dall'app Tornei circolo) ===== */
+let SOCIALE = null;
+async function caricaSociale() {
+  try { const r = await fetch("live/sociale.json?t=" + Date.now(), { cache: "no-store" }); if (r.ok) SOCIALE = await r.json(); } catch (e) {}
+}
+function socScadenza(c) { return new Date(c.chiusura + "T23:59:59+01:00").getTime(); }
+function socDataBreve(iso) { return new Date(iso + "T12:00:00").toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "short" }); }
+function socAperte() {
+  if (!SOCIALE || !SOCIALE.categorie) return [];
+  const ora = Date.now();
+  return SOCIALE.categorie.filter(c => socScadenza(c) >= ora);
+}
+function bollinoSoc(c) {
+  const b = el("div", "soc-bol"); b.style.background = c.colore;
+  b.append(el("div", "a", c.bt), el("div", "b", c.bs)); return b;
+}
+function renderSocialeCountdown() {
+  const aperte = socAperte(); if (!aperte.length) return null;
+  const prima = aperte[0];
+  const slide = el("section", "slide soc-slide");
+  const left = el("div");
+  left.append(el("div", "kicker", "Torneo Sociale · Stagione 2026-27"), el("h1", null, "Iscrizioni aperte"));
+  const p = el("div", "soc-prossima"); p.innerHTML = `Chiudono tra poco le iscrizioni<br><b>${prima.nome}</b> · ${socDataBreve(prima.chiusura)}`;
+  const cd = el("div", "soc-cd"); cd.dataset.scad = socScadenza(prima);
+  [["g", "GIORNI"], ["h", "ORE"], ["m", "MINUTI"]].forEach(([k, l]) => { const u = el("div", "u"); u.append(el("div", "n " + k, "–"), el("div", "l", l)); cd.append(u); });
+  const lead = el("div", "lead-row"); lead.append(el("p", "lead", "Iscriviti in segreteria: 30 € singolo, 15 € doppio a persona."));
+  left.append(p, cd, lead);
+  const right = el("div", "soc-lista");
+  SOCIALE.categorie.forEach((c, k) => {
+    const chiusa = socScadenza(c) < Date.now();
+    const r = el("div", "soc-row soc-item" + (chiusa ? " chiusa" : "") + (c === prima ? " prima" : ""));
+    const nm = el("div", "soc-nome"); nm.innerHTML = `${c.nome}<small>${chiusa ? "iscrizioni chiuse" : "iscrizioni entro " + socDataBreve(c.chiusura)} · si parte ${socDataBreve(c.partenza)}</small>`;
+    const gg = el("div", "soc-giorni"); gg.dataset.scadg = socScadenza(c);
+    gg.append(el("div", "n", "–"), el("div", "l", "GIORNI"));
+    const is = el("div", "soc-iscr"); is.append(el("div", "n", String((c.iscritti || []).length)), el("div", "l", "ISCRITTI"));
+    r.append(bollinoSoc(c), nm, chiusa ? el("div") : gg, is); right.append(r);
+  });
+  slide.append(left, right); slide.dataset.durata = 16;
+  return slide;
+}
+function renderSocialeIscritti(c) {
+  const slide = el("section", "slide soc-slide");
+  const left = el("div");
+  left.append(el("div", "kicker", "Torneo Sociale · chi si è iscritto"), el("h1", null, c.nome));
+  const n = (c.iscritti || []).length;
+  const p = el("div", "soc-prossima"); p.innerHTML = `<b>${n}</b> ${n === 1 ? "iscritto" : "iscritti"} · iscrizioni entro ${socDataBreve(c.chiusura)}`;
+  const cd = el("div", "soc-cd"); cd.dataset.scad = socScadenza(c);
+  [["g", "GIORNI"], ["h", "ORE"], ["m", "MINUTI"]].forEach(([k, l]) => { const u = el("div", "u"); u.append(el("div", "n " + k, "–"), el("div", "l", l)); cd.append(u); });
+  const lead = el("div", "lead-row"); lead.append(el("p", "lead", `${c.tipo} · ${c.quota} € a persona · si parte ${socDataBreve(c.partenza)}. Iscriviti in segreteria!`));
+  left.append(p, cd, lead);
+  let right;
+  if (n) {
+    right = el("div", "soc-nomi");
+    c.iscritti.slice(0, 24).forEach(x => right.append(el("div", "soc-item", x)));
+    if (n > 24) right.append(el("div", "soc-item", "+ altri " + (n - 24)));
+  } else {
+    right = el("div", "soc-vuoto");
+    right.append(el("div", "t", "Sii il primo!"), el("div", "d", "Le iscrizioni sono aperte: passa in segreteria e metti il tuo nome nel tabellone."));
+  }
+  slide.append(left, right); slide.dataset.durata = n > 12 ? 16 : 13;
+  return slide;
+}
+function renderSocialeSlides() {
+  const out = []; const cd = renderSocialeCountdown(); if (!cd) return out;
+  out.push(cd);
+  socAperte().slice(0, 2).forEach(c => out.push(renderSocialeIscritti(c)));
+  return out;
+}
+function aggiornaCountdown() {
+  const ora = Date.now();
+  document.querySelectorAll("[data-scad]").forEach(cd => {
+    let ms = Math.max(0, +cd.dataset.scad - ora);
+    const g = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+    const set = (k, v) => { const e = cd.querySelector(".n." + k); if (e) e.textContent = String(v).padStart(k === "g" ? 1 : 2, "0"); };
+    set("g", g); set("h", h); set("m", m);
+  });
+  document.querySelectorAll("[data-scadg]").forEach(e => {
+    const ms = +e.dataset.scadg - ora, g = Math.ceil(ms / 864e5);
+    e.querySelector(".n").textContent = g <= 1 ? (ms > 0 ? "Oggi" : "–") : String(g);
+    e.querySelector(".l").textContent = g <= 1 ? "ULTIMO GIORNO" : "GIORNI";
+  });
+}
+setInterval(aggiornaCountdown, 20000);
+
 function build() {
   FASCIA = fasciaAttuale();
   const fa = fasciaAttuale();
@@ -1532,6 +1649,12 @@ function build() {
     nodes = [];
     (extra.length ? extra : [null]).forEach(e => { nodes.push(...renderLiveSlides()); if (e) nodes.push(e); });
   } else if (live.length) { nodes.splice(1, 0, ...live); const meta = Math.floor(nodes.length / 2); nodes.splice(meta, 0, ...renderLiveSlides()); }
+  // Torneo Sociale: iscrizioni aperte con countdown e iscritti, all'inizio del giro e a metà
+  const soc = renderSocialeSlides();
+  if (soc.length) {
+    if (MODO_TORNEO) { nodes.splice(1, 0, ...soc); }
+    else { nodes.splice(1, 0, ...soc); const meta = Math.floor(nodes.length / 2); nodes.splice(meta, 0, ...renderSocialeSlides()); }
+  }
   // distribuisce le locandine (sponsor) a intervalli regolari nella rotazione
   const loc = MODO_TORNEO ? [] : BACHECA.locandine.filter(l => !l.finoAl || oggiISO <= l.finoAl).map(renderLocandina);
   if (loc.length) {
@@ -1541,6 +1664,7 @@ function build() {
   box.replaceChildren(...nodes);
   dots.replaceChildren(...nodes.map(() => el("div", "dot")));
   aggiornaTicker();
+  aggiornaCountdown();
 }
 
 
@@ -1565,7 +1689,7 @@ function preparaAnim(n) {
     });
     walk(h);
   });
-  const seq = ".fact, .sponsor-card, .ig-tile, .rank, .staff-card, .cal-ev, .qr-card, .scalata-card, .live-col, .reg-card";
+  const seq = ".fact, .sponsor-card, .ig-tile, .rank, .staff-card, .cal-ev, .qr-card, .scalata-card, .live-col, .reg-card, .soc-item";
   const gruppi = new Map();
   n.querySelectorAll(seq).forEach(e => { const k = e.parentNode; const j = gruppi.get(k) || 0; e.style.setProperty("--i", j); gruppi.set(k, j + 1); });
 }
@@ -1776,6 +1900,7 @@ async function loadPosts() {
     if (r.ok) POSTS = (await r.json()).posts || [];
   } catch (e) { POSTS = []; }
   await loadLive();
+  await caricaSociale();
 }
 
 (async () => {
@@ -1791,7 +1916,7 @@ async function firma(url) {
   catch (e) { return null; }
 }
 async function controllaAggiornamenti() {
-  for (const url of ["index.html", "instagram/posts.json", "classifica/classifica.json"]) {
+  for (const url of ["index.html", "instagram/posts.json", "classifica/classifica.json", "live/sociale.json"]) {
     const t = await firma(url);
     if (t == null) continue;
     if (firme[url] != null && firme[url] !== t) {
