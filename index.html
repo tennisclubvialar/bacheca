@@ -477,8 +477,31 @@ header { gap: 40px; }
 .cal-ev.prossimo .cal-stato { background: #fff; color: var(--navy); }
 .slide.active .cal-ev { animation: entra .6s cubic-bezier(.2,.8,.2,1) both; }
 
+
+/* ===== Animazioni "stile Apple": entrate morbide, titoli che salgono parola per parola, foto che si rivelano ===== */
+:root { --ease: cubic-bezier(.16,1,.3,1); }
+.slide { transform: scale(1.035); transition: opacity 1.1s var(--ease), transform 1.6s var(--ease); }
+.slide.active { transform: none; }
+.slide.uscita { opacity: 0; transform: scale(.97); transition: opacity .8s ease, transform 1.2s var(--ease); }
+@keyframes a-riga { from { transform: translateY(108%); } to { transform: none; } }
+@keyframes a-appare { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+@keyframes a-emerge { from { opacity: 0; transform: translateY(40px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes a-rivela { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: none; } }
+@keyframes a-lento { from { transform: scale(1.02); } to { transform: scale(1.12); } }
+h1 .aw { display: inline-block; overflow: hidden; vertical-align: top; padding: .06em 0 .1em; margin: -.06em 0 -.1em; }
+h1 .aw > span { display: inline-block; transform: translateY(108%); }
+.slide.active h1 { animation: none !important; }
+.slide.active h1 .aw > span { animation: a-riga 1.15s var(--ease) both; animation-delay: calc(.18s + var(--i, 0) * .06s); }
+.slide.active .kicker { animation: a-appare 1s .05s var(--ease) both !important; }
+.slide.active .lead-row, .slide.active .post-caption, .slide.active .post-date, .slide.active .lead { animation: a-appare 1.1s .5s var(--ease) both !important; }
+.slide.active .chips, .slide.active .cta, .slide.active .ig-row, .slide.active .ig-handle { animation: a-appare 1.1s .7s var(--ease) both !important; }
+.slide.active .fact, .slide.active .sponsor-card, .slide.active .ig-tile, .slide.active .rank, .slide.active .staff-card, .slide.active .cal-ev, .slide.active .qr-card, .slide.active .scalata-card, .slide.active .live-col, .slide.active .reg-card {
+  animation: a-emerge 1.1s var(--ease) both !important; animation-delay: calc(.55s + var(--i, 0) * .09s) !important; }
+.slide.active .post-media, .slide.active .foto-media, .slide.active .video-media, .slide.active .galleria-media, .slide.active .locandina img { animation: a-rivela 1.6s var(--ease) both !important; }
+.slide.active .foto-media img, .slide.active .post-media img { animation: a-lento 22s linear both !important; }
 @media (prefers-reduced-motion: reduce) {
   .slide.active * { animation: none !important; }
+  h1 .aw > span { transform: none; }
   .slide { transition: none; transform: none; }
   .ticker-track { animation-duration: 120s; }
 }
@@ -1513,7 +1536,38 @@ function build() {
   aggiornaTicker();
 }
 
+
+// prepara una slide per le animazioni: titoli divisi in parole, elementi in sequenza (ritardo crescente)
+function preparaAnim(n) {
+  if (!n || n.dataset.anim) return; n.dataset.anim = "1";
+  n.querySelectorAll("h1").forEach(h => {
+    let i = 0;
+    const walk = node => [...node.childNodes].forEach(c => {
+      if (c.nodeType === 3) {
+        const parts = c.textContent.split(/(\s+)/); if (!c.textContent.trim()) return;
+        const frag = document.createDocumentFragment();
+        parts.forEach(t => {
+          if (!t) return;
+          if (/^\s+$/.test(t)) { frag.append(document.createTextNode(" ")); return; }
+          const w = document.createElement("span"); w.className = "aw";
+          const inn = document.createElement("span"); inn.textContent = t; inn.style.setProperty("--i", i++);
+          w.append(inn); frag.append(w);
+        });
+        c.replaceWith(frag);
+      } else if (c.nodeType === 1 && c.tagName !== "BR" && !c.classList.contains("aw")) walk(c);
+    });
+    walk(h);
+  });
+  const seq = ".fact, .sponsor-card, .ig-tile, .rank, .staff-card, .cal-ev, .qr-card, .scalata-card, .live-col, .reg-card";
+  const gruppi = new Map();
+  n.querySelectorAll(seq).forEach(e => { const k = e.parentNode; const j = gruppi.get(k) || 0; e.style.setProperty("--i", j); gruppi.set(k, j + 1); });
+}
+
+let ATTIVA = -1;
 function show(i) {
+  preparaAnim(nodes[i]);
+  if (ATTIVA >= 0 && ATTIVA !== i && nodes[ATTIVA]) { const u = nodes[ATTIVA]; u.classList.add("uscita"); setTimeout(() => u.classList.remove("uscita"), 1300); }
+  ATTIVA = i;
   nodes.forEach((n, k) => n.classList.toggle("active", k === i));
   [...dots.children].forEach((d, k) => d.classList.toggle("on", k === i));
   // un solo video alla volta: Fire TV e iPad hanno pochi decoder, i video in attesa restano scarichi
