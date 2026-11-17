@@ -606,8 +606,11 @@ const BACHECA = {
   durataLocandina: 10,
   instagram: "tennisclubvialar",
   postInRotazione: 3,       // quanti post recenti mostrare a tutto schermo tra una slide e l'altra
-  /* Striscia avvisi in basso: compare solo se qui c'è almeno un avviso, es. "Circolo chiuso il 25 dicembre" */
-  avvisi: [],
+  /* Striscia avvisi in basso: compare solo se qui c'è almeno un avviso, es. "Circolo chiuso il 25 dicembre".
+     Per farlo sparire da solo: { testo: "...", finoAl: "AAAA-MM-GG" } (resta visibile fino a quel giorno compreso) */
+  avvisi: [
+    { testo: "Torneo Sociale 2026-27 · Open Maschile: iscrizioni aperte fino a lunedì 23 novembre. Si parte sabato 28 novembre!", finoAl: "2026-11-23" }
+  ],
   // Domenica del torneo: dalle 10:45 alle 15:30 la bacheca mostra soprattutto le info live per i partecipanti
   modalitaTorneo: { data: "2026-11-15", dalle: "10:00", alle: "23:59" },
   /* Calendario della stagione: stato "fatto" oppure "da fare". Solo il mese, perché le date possono cambiare. */
@@ -1542,7 +1545,10 @@ function tickerTorneo() {
 }
 let MODO_TORNEO = false;
 function aggiornaTicker() {
-  const voci = MODO_TORNEO ? tickerTorneo() : BACHECA.avvisi;
+  const oggi = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Rome" });
+  const voci = MODO_TORNEO ? tickerTorneo() : BACHECA.avvisi   // un avviso può essere un testo o { testo, finoAl }
+    .filter(a => typeof a === "string" || !a.finoAl || oggi <= a.finoAl)
+    .map(a => typeof a === "string" ? a : a.testo);
   document.querySelector(".footer-label").textContent = MODO_TORNEO ? "Live" : "Avvisi";
   document.getElementById("ticker").replaceChildren(...voci.map(a => el("span", null, a)));
   document.getElementById("stage").classList.toggle("senza-avvisi", !voci.length);
