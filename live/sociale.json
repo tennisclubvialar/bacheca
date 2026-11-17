@@ -1,5 +1,5 @@
 {
- "aggiornato": "16/11 18:42",
+ "aggiornato": "17/11 16:42",
  "finali": "2027-04-04",
  "categorie": [
   {
@@ -12,7 +12,9 @@
    "partenza": "2026-11-28",
    "fine": "2026-12-20",
    "quota": 30,
-   "iscritti": []
+   "iscritti": [
+    "Giannini F."
+   ]
   },
   {
    "nome": "Over 50 Maschile",
