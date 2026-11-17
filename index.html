@@ -1552,7 +1552,10 @@ function aggiornaTicker() {
     .filter(a => typeof a === "string" || !a.finoAl || oggi <= a.finoAl)
     .map(a => typeof a === "string" ? a : a.testo);
   document.querySelector(".footer-label").textContent = MODO_TORNEO ? "Live" : "Avvisi";
-  document.getElementById("ticker").replaceChildren(...voci.map(a => el("span", null, a)));
+  const track = document.getElementById("ticker");
+  track.replaceChildren(...voci.map(a => el("span", null, a)));
+  // velocità costante (~65 px/s) qualunque sia la lunghezza degli avvisi, minimo 60 s per giro
+  requestAnimationFrame(() => { if (track.scrollWidth) track.style.animationDuration = Math.max(60, Math.round(track.scrollWidth / 65)) + "s"; });
   document.getElementById("stage").classList.toggle("senza-avvisi", !voci.length);
   document.getElementById("stage").classList.toggle("modo-torneo", !!MODO_TORNEO);
 }
