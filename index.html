@@ -159,6 +159,9 @@ footer { position: relative; z-index: 2; display: flex; align-items: center; bac
 #stage.senza-avvisi .progress { bottom: 0; height: 8px; }
 #stage.senza-avvisi .dots { bottom: 26px; }
 #stage.senza-avvisi::after { bottom: 0; }
+/* con la striscia avvisi, locandine e video a tutto schermo si fermano sopra la striscia: niente sovrapposizioni */
+#stage:not(.senza-avvisi) .slide.locandina.pieno, #stage:not(.senza-avvisi) .slide.videopieno { bottom: 110px; }
+#stage.tutto-schermo:not(.senza-avvisi) .vesa-angolo { bottom: 124px; }
 
 /* tipografia più grande e d'impatto */
 .slide { padding: 30px 100px 90px; gap: 80px; }
