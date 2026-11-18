@@ -1,5 +1,5 @@
 {
- "aggiornato": "17/11 16:42",
+ "aggiornato": "18/11 12:42",
  "finali": "2027-04-04",
  "categorie": [
   {
@@ -13,7 +13,16 @@
    "fine": "2026-12-20",
    "quota": 30,
    "iscritti": [
-    "Giannini F."
+    "Eboli G.",
+    "Giannini F.",
+    "Libonati F.",
+    "Monteverde L.",
+    "Quinto M.",
+    "Raggio S.",
+    "Romano G.",
+    "Sanacore F.",
+    "Soccodato A.",
+    "Sponzilli A."
    ]
   },
   {
@@ -27,7 +36,15 @@
    "fine": "2027-01-17",
    "quota": 30,
    "iscritti": [
-    "Corvi P."
+    "Ara P.",
+    "Cannata A.",
+    "Corvi P.",
+    "Eboli G.",
+    "Fiore A.",
+    "Martinelli G.",
+    "Ottaviani P.",
+    "Ranalli A.",
+    "Sepe N."
    ]
   },
   {
@@ -76,7 +93,9 @@
    "partenza": "2027-02-27",
    "fine": "2027-03-14",
    "quota": 15,
-   "iscritti": []
+   "iscritti": [
+    "Viola A."
+   ]
   },
   {
    "nome": "Open Femminile",
