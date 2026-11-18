@@ -519,6 +519,34 @@ h1 .aw > span { display: inline-block; transform: translateY(108%); }
 .vesa-angolo span { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #fff; opacity: .85; }
 .vesa-angolo img { height: 34px; width: auto; max-width: 120px; object-fit: contain; }
 #stage.tutto-schermo .vesa-angolo { opacity: 1; transform: none; transition-delay: .6s; }
+
+/* Torneo Sociale in primo piano */
+.soc-focus { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 70px; align-items: center; }
+.soc-ftit { display: flex; align-items: center; gap: 28px; margin-top: 6px; }
+.soc-ftit .soc-bol { flex: none; width: 104px; height: 104px; box-shadow: 0 0 0 6px #fff; }
+.soc-ftit .soc-bol .a { font-size: 38px; } .soc-ftit .soc-bol .b { font-size: 12px; }
+.slide.soc-focus h1 { font-size: 104px; line-height: .95; margin: 0; }
+.soc-urg { display: inline-block; margin-top: 18px; background: #fff; color: #0a3cff; font-weight: 900; font-size: 26px; letter-spacing: 2px; text-transform: uppercase; padding: 10px 22px; border-radius: 999px; box-shadow: 0 0 0 4px var(--cat); animation: soc-pulse 2.4s ease-in-out infinite; }
+@keyframes soc-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+.soc-focus .soc-cd { margin-top: 20px; }
+.soc-focus .soc-cd .u { padding: 10px 18px; min-width: 112px; } .soc-focus .soc-cd .n { font-size: 66px; }
+.soc-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px; }
+.soc-tile { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.25); border-radius: 18px; padding: 14px 16px; }
+.soc-tile small { display: block; font-size: 17px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; opacity: .8; }
+.soc-tile b { display: block; font-family: var(--display); font-weight: 400; font-size: 34px; line-height: 1.05; margin-top: 6px; white-space: nowrap; }
+.soc-formula { margin-top: 0; font-size: 24px; font-weight: 600; line-height: 1.45; opacity: .95; }
+.soc-formula b { font-weight: 800; color: #fff; }
+.soc-destra { display: flex; flex-direction: column; gap: 22px; }
+.soc-conta { display: flex; align-items: center; gap: 22px; }
+.soc-conta b { font-family: var(--display); font-weight: 400; font-size: 130px; line-height: .9; color: var(--cat); text-shadow: 0 10px 30px rgba(0,10,80,.35); }
+.soc-conta span { font-family: var(--display); font-size: 46px; line-height: 1.05; text-transform: uppercase; }
+.soc-focus .soc-nomi { gap: 12px 14px; }
+.soc-focus .soc-nomi .soc-item { border-left: 10px solid var(--cat); font-size: 32px; padding: 12px 18px; }
+.soc-focus .soc-nomi.fitti .soc-item { font-size: 28px; padding: 10px 14px; }
+.soc-cta { align-self: flex-start; background: var(--cat); color: #081238; font-family: var(--display); font-size: 40px; text-transform: uppercase; padding: 14px 28px; border-radius: 18px; }
+#stage.verticale .soc-focus { grid-template-columns: 1fr; gap: 30px; align-content: center; }
+#stage.verticale .slide.soc-focus h1 { font-size: 110px; }
+
 /* ===== Torneo Sociale: iscrizioni aperte, countdown e iscritti (dati da live/sociale.json) ===== */
 .soc-slide { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
 .soc-slide h1 { font-size: 150px; }
@@ -614,10 +642,11 @@ const BACHECA = {
      Per farlo sparire da solo: { testo: "...", finoAl: "AAAA-MM-GG" } (resta visibile fino a quel giorno compreso) */
   avvisi: [
     { testo: "Scuola Adulti · II trimestre: il rinnovo è automatico. Chi non vuole rinnovare lo comunica in segreteria entro lunedì 23 novembre, pagamento entro venerdì 27 novembre. Pausa natalizia dal 24 dicembre al 4 gennaio", finoAl: "2026-11-27" },
-    { testo: "Torneo Sociale 2026-27 · Open Maschile: iscrizioni aperte fino a lunedì 23 novembre, quota 30 €. Iscriviti in segreteria! Si parte sabato 28 novembre", finoAl: "2026-11-23" },
     { testo: "Sabato 21 novembre ore 11:00 · Body Flow: open day gratuito di pilates, ingresso libero per tutti e tutte", finoAl: "2026-11-21" },
     { testo: "Sabato 21 novembre 8:00-14:00 · Move better, play better: valutazione fisioterapica gratuita di 30 minuti, sono rimasti solo 4 posti! Prenota in segreteria", finoAl: "2026-11-21" }
   ],
+  /* Torneo Sociale in primo piano: queste categorie girano molto più spesso (iscritti + info), fino al giorno indicato compreso */
+  socialeFocus: { categorie: ["Open Maschile", "Over 50 Maschile"], finoAl: "2026-11-23" },
   // Domenica del torneo: dalle 10:45 alle 15:30 la bacheca mostra soprattutto le info live per i partecipanti
   modalitaTorneo: { data: "2026-11-15", dalle: "10:00", alle: "23:59" },
   /* Calendario della stagione: stato "fatto" oppure "da fare". Solo il mese, perché le date possono cambiare. */
@@ -1557,6 +1586,8 @@ function aggiornaTicker() {
   const voci = MODO_TORNEO ? tickerTorneo() : BACHECA.avvisi   // un avviso può essere un testo o { testo, finoAl }
     .filter(a => typeof a === "string" || !a.finoAl || oggi <= a.finoAl)
     .map(a => typeof a === "string" ? a : a.testo);
+  if (!MODO_TORNEO) voci.unshift(...socFocus().map(c => { const n = (c.iscritti || []).length;
+    return `Torneo Sociale · ${c.nome}: ${n ? n + (n === 1 ? " iscritto" : " iscritti") + " finora, " : ""}iscrizioni entro ${socDataLunga(c.chiusura)}, si parte ${socDataLunga(c.partenza)}. ${c.quota} € a persona, gadget per tutti. Iscriviti in segreteria!`; }));
   document.querySelector(".footer-label").textContent = MODO_TORNEO ? "Live" : "Avvisi";
   const track = document.getElementById("ticker");
   track.replaceChildren(...voci.map(a => el("span", null, a)));
@@ -1644,10 +1675,50 @@ function renderSocialeIscritti(c) {
   slide.append(left, right); slide.dataset.durata = n > 12 ? 16 : 13;
   return slide;
 }
+function socDataLunga(iso) { return new Date(iso + "T12:00:00").toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" }); }
+function socFocus() {
+  const f = BACHECA.socialeFocus; if (!f || !SOCIALE) return [];
+  const oggi = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Rome" });
+  if (f.finoAl && oggi > f.finoAl) return [];
+  return socAperte().filter(c => (f.categorie || []).includes(c.nome));
+}
+// Slide in primo piano: chi si è iscritto + tutte le info utili della categoria
+function renderSocialeFocus(c) {
+  const slide = el("section", "slide soc-slide soc-focus");
+  slide.style.setProperty("--cat", c.colore || "#9aa8ff");
+  const left = el("div");
+  const n = (c.iscritti || []).length;
+  const urg = el("div", "soc-urg", "Iscrizioni entro " + socDataLunga(c.chiusura));
+  const tit = el("div", "soc-ftit"); tit.append(bollinoSoc(c), el("h1", null, c.nome));
+  left.append(el("div", "kicker", "Torneo Sociale 2026-27 · " + c.tipo), tit, urg);
+  const cd = el("div", "soc-cd"); cd.dataset.scad = socScadenza(c);
+  [["g", "GIORNI"], ["h", "ORE"], ["m", "MINUTI"]].forEach(([k, l]) => { const u = el("div", "u"); u.append(el("div", "n " + k, "–"), el("div", "l", l)); cd.append(u); });
+  const info = el("div", "soc-info");
+  [["Si parte", socDataBreve(c.partenza)], ["Fine prevista", c.fine ? socDataBreve(c.fine) : "–"], ["Quota", c.quota + " €"]]
+    .forEach(([a, b]) => { const t = el("div", "soc-tile"); t.append(el("small", null, a), el("b", null, b)); info.append(t); });
+  const formula = el("div", "soc-formula");
+  formula.innerHTML = "3 set a 6 game · killer point subito · tie-break a 10 sull'1-1<br><b>Finali domenica 4 aprile · un gadget per tutti i partecipanti</b>";
+  left.append(cd, info);
+  const right = el("div", "soc-destra");
+  const conta = el("div", "soc-conta"); conta.innerHTML = `<b>${n}</b><span>${n === 1 ? "iscritto" : "iscritti"}<br>${n ? "manchi solo tu!" : "sii il primo!"}</span>`;
+  right.append(conta);
+  if (n) {
+    const nomi = el("div", "soc-nomi" + (n > 12 ? " fitti" : ""));
+    c.iscritti.slice(0, 20).forEach(x => nomi.append(el("div", "soc-item", x)));
+    if (n > 20) nomi.append(el("div", "soc-item", "+ altri " + (n - 20)));
+    right.append(nomi);
+  } else {
+    const v = el("div", "soc-vuoto"); v.append(el("div", "t", "Sii il primo!"), el("div", "d", "Passa in segreteria e metti il tuo nome nel tabellone.")); right.append(v);
+  }
+  const cta = el("div", "soc-cta", "Iscriviti in segreteria"); right.append(cta, formula);
+  slide.append(left, right); slide.dataset.durata = 18;
+  return slide;
+}
 function renderSocialeSlides() {
   const out = []; const cd = renderSocialeCountdown(); if (!cd) return out;
   out.push(cd);
-  socAperte().slice(0, 2).forEach(c => out.push(renderSocialeIscritti(c)));
+  const foc = socFocus();
+  if (!foc.length) socAperte().slice(0, 2).forEach(c => out.push(renderSocialeIscritti(c)));
   return out;
 }
 function aggiornaCountdown() {
@@ -1714,6 +1785,16 @@ function build() {
   if (loc.length) {
     const passo = Math.max(2, Math.floor(nodes.length / loc.length));
     loc.forEach((l, k) => nodes.splice(Math.min(nodes.length, (k + 1) * passo + k), 0, l));
+  }
+  // settimana in primo piano: le categorie del focus tornano ogni 4 slide circa, alternandosi
+  const foc = MODO_TORNEO ? [] : socFocus();
+  if (foc.length) {
+    let k = 0;
+    for (let pos = 3; pos < nodes.length; pos += 5) {
+      const vicino = [nodes[pos - 1], nodes[pos]].some(n => n && n.classList.contains("soc-slide"));
+      if (vicino) pos++;
+      nodes.splice(pos, 0, renderSocialeFocus(foc[k++ % foc.length]));
+    }
   }
   box.replaceChildren(...nodes);
   dots.replaceChildren(...nodes.map(() => el("div", "dot")));
