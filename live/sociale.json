@@ -1,5 +1,5 @@
 {
- "aggiornato": "18/11 22:42",
+ "aggiornato": "19/11 08:43",
  "finali": "2027-04-04",
  "categorie": [
   {
@@ -15,6 +15,7 @@
    "iscritti": [
     "Bongianni F.",
     "Campisano S.",
+    "Cavallo S.",
     "Cuccui M.",
     "De Sanctis V.",
     "Eboli G.",
@@ -29,9 +30,13 @@
     "Raggio S.",
     "Romano G.",
     "Sanacore F.",
+    "Sentinelli A.",
+    "Sicuranza A.",
     "Soccodato A.",
     "Soprani S.",
+    "Spitaleri P.",
     "Sponzilli A.",
+    "TEDESCHI A.",
     "Vincenzoni A."
    ]
   },
@@ -58,6 +63,8 @@
     "Ottaviani P.",
     "Pulitelli A.",
     "Ranalli A.",
+    "Romeo A.",
+    "Santilli A.",
     "Sepe N."
    ]
   },
@@ -71,7 +78,10 @@
    "partenza": "2027-01-16",
    "fine": "2027-02-07",
    "quota": 30,
-   "iscritti": []
+   "iscritti": [
+    "Andreani L.",
+    "Grilli M."
+   ]
   },
   {
    "nome": "Doppio Maschile Open",
