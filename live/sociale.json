@@ -1,5 +1,5 @@
 {
- "aggiornato": "19/11 16:42",
+ "aggiornato": "22/11 18:42",
  "finali": "2027-04-04",
  "categorie": [
   {
@@ -13,18 +13,17 @@
    "fine": "2026-12-20",
    "quota": 30,
    "iscritti": [
+    "Bassetti C.",
     "Bongianni F.",
     "Campisano S.",
-    "Cavallo S.",
-    "Cuccui M.",
     "De Sanctis V.",
+    "Dunn K.",
     "Eboli G.",
     "Escher F.",
     "Gambacciani M.",
     "Giannini F.",
     "Goutagny C.",
     "Libonati F.",
-    "Loy J.",
     "Loy J.",
     "Monteverde L.",
     "Orano A.",
@@ -33,14 +32,16 @@
     "Romano G.",
     "Rotondi F.",
     "Sanacore F.",
+    "Sartori F.",
+    "Schlegel M.",
     "Sentinelli A.",
     "Sicuranza A.",
-    "Soccodato A.",
     "Soprani S.",
     "Spitaleri P.",
     "Sponzilli A.",
     "Tedeschi A.",
-    "Vincenzoni A."
+    "Vincenzoni A.",
+    "butera F."
    ]
   },
   {
@@ -60,8 +61,12 @@
     "Cannata A.",
     "Cavallo S.",
     "Corvi P.",
+    "Cuccui M.",
     "D'Andrea S.",
+    "Di Nepi D.",
     "Di Veroli M.",
+    "Diotallevi M.",
+    "Dominici S.",
     "Eboli G.",
     "Fiore A.",
     "Imbriaco D.",
@@ -104,7 +109,10 @@
    "partenza": "2027-02-06",
    "fine": "2027-02-28",
    "quota": 15,
-   "iscritti": []
+   "iscritti": [
+    "Brandelli A.",
+    "Meringolo M."
+   ]
   },
   {
    "nome": "Doppio Femminile Open",
@@ -129,6 +137,12 @@
    "fine": "2027-03-14",
    "quota": 15,
    "iscritti": [
+    "Andreani L.",
+    "Dominici S.",
+    "Meringolo M.",
+    "Mosconi W.",
+    "PACIONI G.",
+    "Turreni R.",
     "Viola A."
    ]
   },
