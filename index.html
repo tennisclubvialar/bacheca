@@ -578,6 +578,8 @@ h1 .aw > span { display: inline-block; transform: translateY(108%); }
 .soc-vuoto .t { font-family: var(--display); font-size: 70px; line-height: 1; text-transform: uppercase; }
 .soc-vuoto .d { font-size: 30px; font-weight: 600; margin-top: 16px; }
 #stage.verticale .soc-nomi { grid-template-columns: 1fr 1fr; }
+.soc-nomi.tre { grid-template-columns: 1fr 1fr 1fr; gap: 10px 12px; }
+.soc-nomi.tre .soc-item { font-size: 27px; padding: 11px 14px; border-radius: 12px; }
 /* Il video resta invisibile (si vede la foto di copertina) finché non sta davvero andando: niente riquadri neri */
 .video-slide video, .slide.videopieno video { visibility: hidden; }
 .video-slide.va video, .slide.videopieno.va video { visibility: visible; }
@@ -641,12 +643,17 @@ const BACHECA = {
   /* Striscia avvisi in basso: compare solo se qui c'è almeno un avviso, es. "Circolo chiuso il 25 dicembre".
      Per farlo sparire da solo: { testo: "...", finoAl: "AAAA-MM-GG" } (resta visibile fino a quel giorno compreso) */
   avvisi: [
+    { testo: "Torneo Sociale · Open Maschile: iscrizioni chiuse! 29 iscritti, i match iniziano questa settimana. La segreteria vi contatta sul gruppo WhatsApp del tabellone. In bocca al lupo a tutti!", finoAl: "2026-11-29" },
     { testo: "Scuola Adulti · II trimestre: il rinnovo è automatico. Chi non vuole rinnovare lo comunica in segreteria entro lunedì 23 novembre, pagamento entro venerdì 27 novembre. Pausa natalizia dal 24 dicembre al 4 gennaio", finoAl: "2026-11-27" },
     { testo: "Sabato 21 novembre ore 11:00 · Body Flow: open day gratuito di pilates, ingresso libero per tutti e tutte", finoAl: "2026-11-21" },
     { testo: "Sabato 21 novembre 8:00-14:00 · Move better, play better: valutazione fisioterapica gratuita di 30 minuti, sono rimasti solo 4 posti! Prenota in segreteria", finoAl: "2026-11-21" }
   ],
   /* Torneo Sociale in primo piano: queste categorie girano molto più spesso (iscritti + info), fino al giorno indicato compreso */
   socialeFocus: { categorie: ["Open Maschile", "Over 50 Maschile"], finoAl: "2026-11-23" },
+  /* Categorie con iscrizioni chiuse in anticipo rispetto al calendario */
+  socialeChiuse: ["Open Maschile"],
+  /* Tabellone al via: slide con gli iscritti e "si gioca", fino al giorno indicato compreso */
+  socialeAlVia: [{ categoria: "Open Maschile", finoAl: "2026-11-29" }],
   // Domenica del torneo: dalle 10:45 alle 15:30 la bacheca mostra soprattutto le info live per i partecipanti
   modalitaTorneo: { data: "2026-11-15", dalle: "10:00", alle: "23:59" },
   /* Calendario della stagione: stato "fatto" oppure "da fare". Solo il mese, perché le date possono cambiare. */
@@ -1618,7 +1625,7 @@ let SOCIALE = null;
 async function caricaSociale() {
   try { const r = await fetch("live/sociale.json?t=" + Date.now(), { cache: "no-store" }); if (r.ok) SOCIALE = await r.json(); } catch (e) {}
 }
-function socScadenza(c) { return new Date(c.chiusura + "T23:59:59+01:00").getTime(); }
+function socScadenza(c) { if ((BACHECA.socialeChiuse || []).includes(c.nome)) return 0; return new Date(c.chiusura + "T23:59:59+01:00").getTime(); }
 function socDataBreve(iso) { return new Date(iso + "T12:00:00").toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "short" }); }
 function socAperte() {
   if (!SOCIALE || !SOCIALE.categorie) return [];
@@ -1714,8 +1721,29 @@ function renderSocialeFocus(c) {
   slide.append(left, right); slide.dataset.durata = 18;
   return slide;
 }
+// Tabellone al via: iscrizioni chiuse, elenco iscritti e "si gioca"
+function renderSocialeAlVia(c) {
+  const slide = el("section", "slide soc-slide");
+  const left = el("div");
+  left.append(el("div", "kicker", "Torneo Sociale · tabellone al via"), el("h1", null, c.nome));
+  const n = (c.iscritti || []).length;
+  const p = el("div", "soc-prossima"); p.innerHTML = `Iscrizioni chiuse · <b>${n}</b> ${n === 1 ? "iscritto" : "iscritti"}<br>I match iniziano questa settimana`;
+  const lead = el("div", "lead-row"); lead.append(el("p", "lead", "Gli incontri arrivano sul gruppo WhatsApp del tabellone. In bocca al lupo!"));
+  left.append(p, lead);
+  const right = el("div", "soc-nomi" + (n > 22 ? " tre" : ""));
+  (c.iscritti || []).slice(0, 36).forEach(x => right.append(el("div", "soc-item", x)));
+  if (n > 36) right.append(el("div", "soc-item", "+ altri " + (n - 36)));
+  slide.append(left, right); slide.dataset.durata = 16;
+  return slide;
+}
+function socAlVia() {
+  if (!SOCIALE || !SOCIALE.categorie) return [];
+  const oggi = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Rome" });
+  return (BACHECA.socialeAlVia || []).filter(a => !a.finoAl || oggi <= a.finoAl)
+    .map(a => SOCIALE.categorie.find(c => c.nome === a.categoria)).filter(Boolean);
+}
 function renderSocialeSlides() {
-  const out = []; const cd = renderSocialeCountdown(); if (!cd) return out;
+  const out = socAlVia().map(renderSocialeAlVia); const cd = renderSocialeCountdown(); if (!cd) return out;
   out.push(cd);
   const foc = socFocus();
   if (!foc.length) socAperte().slice(0, 2).forEach(c => out.push(renderSocialeIscritti(c)));
