@@ -592,6 +592,16 @@ h1 .aw > span { display: inline-block; transform: translateY(108%); }
   .slide { transition: none; transform: none; }
   .ticker-track { animation-duration: 120s; }
 }
+
+/* ===== Locandine a tutto schermo: nulla si sovrappone =====
+   In basso resta sempre una fascia libera: con gli avvisi è la striscia stessa (sponsor a destra dentro la striscia),
+   senza avvisi è una fascia sottile con sponsor e barra di avanzamento. I puntini delle slide si nascondono. */
+#stage.tutto-schermo .dots { display: none; }
+#stage:not(.senza-avvisi) .slide.locandina.pieno, #stage:not(.senza-avvisi) .slide.videopieno { bottom: 116px; }
+#stage.tutto-schermo:not(.senza-avvisi) .vesa-angolo { bottom: 30px; right: 26px; }
+#stage.tutto-schermo:not(.senza-avvisi) footer { padding-right: 310px; }
+#stage.senza-avvisi .slide.locandina.pieno { bottom: 76px; }
+#stage.tutto-schermo.senza-avvisi .vesa-angolo { bottom: 14px; right: 26px; }
 </style>
 </head>
 <body>
@@ -698,7 +708,7 @@ const BACHECA = {
     // Torneo Sociale 2026-27: in bacheca fino alla chiusura dell'ultima iscrizione (Open Femminile, lun 8 marzo)
     { immagine: "assets/locandine/tabellone-open-maschile.svg", pieno: true, sfondo: "#081238", finoAl: "2027-03-08", titolo: "Torneo Sociale 2026-27: tabellone Open Maschile" },
     { immagine: "assets/locandine/torneo-sociale-1.jpg", verticale: "assets/locandine/torneo-sociale-1-storia.jpg", pieno: true, sfondo: "#081238", finoAl: "2027-03-08", titolo: "Torneo Sociale 2026-27: lascia il segno" },
-    { immagine: "assets/locandine/torneo-sociale-2.jpg", pieno: true, sfondo: "#081238", finoAl: "2027-03-08", titolo: "Torneo Sociale 2026-27: categorie e date" },
+    { immagine: "assets/locandine/torneo-sociale-2.jpg", verticale: "assets/locandine/torneo-sociale-2-storia.jpg", pieno: true, sfondo: "#081238", finoAl: "2027-03-08", titolo: "Torneo Sociale 2026-27: categorie e date" },
     { immagine: "assets/locandine/torneo-sociale-3.jpg", verticale: "assets/locandine/torneo-sociale-3-storia.jpg", pieno: true, sfondo: "#081238", finoAl: "2027-03-08", titolo: "Torneo Sociale 2026-27: come si gioca" },
     { immagine: "assets/locandine/scuola-adulti-rinnovo-bacheca.jpg", verticale: "assets/locandine/scuola-adulti-rinnovo-storia.jpg", pieno: true, sfondo: "#6b2c1a", finoAl: "2026-11-27", titolo: "Scuola Adulti II trimestre: rinnovo automatico" },
     { immagine: "assets/locandine/body-flow-bacheca.jpg", verticale: "assets/locandine/body-flow-storia.jpg", pieno: true, sfondo: "#140829", finoAl: "2026-11-21", titolo: "Body Flow: open day di pilates" },
@@ -2282,22 +2292,27 @@ const musica = (() => {
   carica();
   return a;
 })();
+const TOCCO = matchMedia("(pointer: coarse)").matches;   // iPad e tablet: si tocca lo schermo, niente telecomando
 // Avviso discreto in basso finché la musica non parte (il browser la blocca fino al primo tasto premuto)
 const avvisoMusica = (() => {
   if (!musica) return null;
   const d = document.createElement("div");
-  d.id = "avviso-musica"; d.textContent = "♪ Premi OK sul telecomando per la musica";
+  d.id = "avviso-musica"; d.textContent = TOCCO ? "♪ Tocca lo schermo per la musica" : "♪ Premi OK sul telecomando per la musica";
   d.style.cssText = "position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:50;background:rgba(255,255,255,.92);color:#06177a;font:800 20px Inter,Arial,sans-serif;letter-spacing:.5px;padding:10px 22px;border-radius:999px;box-shadow:0 10px 30px rgba(0,10,80,.35);transition:opacity .6s";
   document.body.appendChild(d);
+  // compare per pochi secondi e poi sparisce, così non copre la striscia degli avvisi
+  let nascondi = null;
+  const mostra = () => { d.style.opacity = "1"; clearTimeout(nascondi); nascondi = setTimeout(() => { d.style.opacity = "0"; }, 10000); };
+  mostra();
   musica.addEventListener("playing", () => { setTimeout(() => { if (!musica.paused) d.style.opacity = "0"; }, 4000); });
-  musica.addEventListener("pause", () => { if (!musica.ended) d.style.opacity = "1"; });
+  musica.addEventListener("pause", () => { if (!musica.ended) mostra(); });
   return d;
 })();
 function avviaMusica() {
   if (!musica || !musica.paused) return;
   const p = musica.play();
   if (avvisoMusica) { avvisoMusica.style.opacity = "1"; avvisoMusica.textContent = "♪ Avvio della radio…"; }
-  if (p && p.catch) p.catch(e => { if (avvisoMusica) { avvisoMusica.style.opacity = "1"; avvisoMusica.textContent = "♪ Premi OK sul telecomando per la musica"; } });
+  if (p && p.catch) p.catch(e => { if (avvisoMusica) { avvisoMusica.textContent = TOCCO ? "♪ Tocca lo schermo per la musica" : "♪ Premi OK sul telecomando per la musica"; avvisoMusica.style.opacity = "1"; setTimeout(() => { avvisoMusica.style.opacity = "0"; }, 10000); } });
 }
 // Prima la musica, poi il tutto schermo (il tutto schermo "consuma" il permesso del tasto premuto)
 ["keydown", "keyup", "click", "pointerdown", "touchend"].forEach(ev => document.addEventListener(ev, () => { avviaMusica(); tuttoSchermo(); }, true));
