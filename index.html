@@ -602,6 +602,29 @@ h1 .aw > span { display: inline-block; transform: translateY(108%); }
 #stage.tutto-schermo:not(.senza-avvisi) footer { padding-right: 310px; }
 #stage.senza-avvisi .slide.locandina.pieno { bottom: 76px; }
 #stage.tutto-schermo.senza-avvisi .vesa-angolo { bottom: 14px; right: 26px; }
+
+/* ===== Stile "pellicola": grana leggera e crocette + sulla griglia, come i segni di taglio di una stampa =====
+   Solo sulle slide normali: sulle locandine e sui video a tutto schermo spariscono. La grana si muove a scatti
+   spostando un livello già disegnato (transform), quindi non pesa sulla TV. */
+.deco-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; transition: opacity .6s; }
+.deco-layer::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 0v26M0 13h26' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 0v26M0 13h26' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 0v26M0 13h26' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 0v26M0 13h26' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 0v26M0 13h26' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 0v26M0 13h26' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 0v26M0 13h26' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Cpath d='M13 0v26M0 13h26' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 467px 167px, 947px 167px, 1427px 167px, 1867px 167px, 467px 897px, 947px 897px, 1427px 897px, 27px 897px;
+  opacity: .5;
+}
+.deco-layer .grana {
+  position: absolute; left: -240px; top: -240px; width: calc(100% + 480px); height: calc(100% + 480px);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"); opacity: .12; mix-blend-mode: overlay; will-change: transform;
+  animation: grana 1.2s steps(6) infinite;
+}
+@keyframes grana {
+  0% { transform: translate(0,0); } 17% { transform: translate(-60px,40px); } 33% { transform: translate(80px,-70px); }
+  50% { transform: translate(-120px,110px); } 67% { transform: translate(50px,90px); } 83% { transform: translate(-90px,-40px); } 100% { transform: translate(0,0); }
+}
+#stage.tutto-schermo .deco-layer { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .deco-layer .grana { animation: none; } }
 </style>
 </head>
 <body>
@@ -610,6 +633,7 @@ h1 .aw > span { display: inline-block; transform: translateY(108%); }
     <div class="tema-layer" aria-hidden="true"></div>
     <div class="notte-layer" aria-hidden="true"></div>
     <div class="foto-layer" aria-hidden="true"></div>
+    <div class="deco-layer" aria-hidden="true"><i class="grana"></i></div>
     <header>
       <div class="brand">
         <svg class="brand-mark" viewBox="0 0 387 332" aria-hidden="true"><g fill="#fff"><polygon points="0,0 90,0 182,153 136,234"/><polygon points="114,0 272,0 193,136"/><polygon points="294,0 387,0 193,332 148,254"/></g></svg>
